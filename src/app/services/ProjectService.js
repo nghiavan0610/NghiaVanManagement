@@ -1,5 +1,5 @@
 const { ApiError } = require('../../helpers/ErrorHandler');
-const { User, Project } = require('../../db/models');
+const { User, Project, Timesheet } = require('../../db/models');
 
 class ProjectService {
     // [GET] /v1/projects
@@ -152,6 +152,20 @@ class ProjectService {
                 { $push: { projects: project._id } },
             ).exec();
 
+            await project.save();
+
+            // Create a project timesheet
+            const timesheet = await Timesheet.findOneAndUpdate(
+                { project: project._id },
+                {
+                    manager: project.manager,
+                    members: [...project.leaders, ...project.members],
+                    startedAt: project.startedAt,
+                },
+                { upsert: true, runValidators: true, new: true },
+            ).exec();
+
+            project.timesheet = timesheet._id;
             await project.save();
 
             return project;

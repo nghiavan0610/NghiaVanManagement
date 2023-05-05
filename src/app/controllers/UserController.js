@@ -2,7 +2,7 @@ const userService = require('../services/UserService');
 const { response } = require('../../helpers/Response');
 
 class UserController {
-    // [GET] /api/v1/users
+    // [GET] /v1/users
     async getAllUsers(req, res, next) {
         try {
             const pipeline = req.pipeline;
@@ -26,7 +26,7 @@ class UserController {
         }
     }
 
-    // [POST] /api/v1/users/create
+    // [POST] /v1/users/create
     async createUser(req, res, next) {
         try {
             const formData = req.body;
@@ -37,7 +37,7 @@ class UserController {
         }
     }
 
-    // [PUT] /api/v1/users/:userSlug/edit-account
+    // [PUT] /v1/users/:userSlug/edit-account
     async updateUserAccount(req, res, next) {
         try {
             const formData = req.body;
@@ -50,7 +50,7 @@ class UserController {
         }
     }
 
-    // [PUT] /api/v1/users/:userSlug/edit-security
+    // [PUT] /v1/users/:userSlug/edit-security
     async updateUserSecurity(req, res, next) {
         try {
             const formData = req.body;

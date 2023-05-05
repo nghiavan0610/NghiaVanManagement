@@ -3,7 +3,7 @@ const { User, Job } = require('../../db/models');
 const redisClient = require('../../configs/init.redis');
 const { generateAccessToken } = require('../../helpers/Token');
 class UserService {
-    // [GET] /api/v1/users
+    // [GET] /v1/users
     async getAllUsers(pipeline, page, limit) {
         try {
             const users = await User.aggregate(pipeline).exec();
@@ -20,7 +20,7 @@ class UserService {
         }
     }
 
-    // [GET] /api/v1/users/:userSlug
+    // [GET] /v1/users/:userSlug
     async getUserBySlug(userSlug) {
         try {
             const user = await User.findOne({ slug: userSlug })
@@ -35,7 +35,7 @@ class UserService {
         }
     }
 
-    // [POST] /api/v1/users/create
+    // [POST] /v1/users/create
     async createUser(formData) {
         try {
             const { username, email, name, gender, birthdate, phoneNumber, address, role, jobId } = formData;
@@ -64,7 +64,7 @@ class UserService {
         }
     }
 
-    // [PUT] /api/v1/users/:userSlug/edit-account
+    // [PUT] /v1/users/:userSlug/edit-account
     async updateUserAccount(userSlug, formData, authUser) {
         try {
             const { jobId, role, ...profile } = formData;
@@ -105,7 +105,7 @@ class UserService {
         }
     }
 
-    // [PUT] /api/v1/users/:userSlug/edit-security
+    // [PUT] /v1/users/:userSlug/edit-security
     async updateUserSecurity(userSlug, formData, authUser) {
         try {
             const { oldPassword, newPassword, confirmPassword } = formData;
