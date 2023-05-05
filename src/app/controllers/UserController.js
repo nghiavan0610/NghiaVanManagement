@@ -36,6 +36,32 @@ class UserController {
             next(err);
         }
     }
+
+    // [PUT] /api/v1/users/:userSlug/edit-account
+    async updateUserAccount(req, res, next) {
+        try {
+            const formData = req.body;
+            const { userSlug } = req.params;
+            const authUser = req.user;
+            const updatedUser = await userService.updateUserAccount(userSlug, formData, authUser);
+            res.status(201).json(response({ updatedUser }));
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    // [PUT] /api/v1/users/:userSlug/edit-security
+    async updateUserSecurity(req, res, next) {
+        try {
+            const formData = req.body;
+            const { userSlug } = req.params;
+            const authUser = req.user;
+            await userService.updateUserSecurity(userSlug, formData, authUser);
+            res.status(201).json(response('Your password has been updated'));
+        } catch (err) {
+            next(err);
+        }
+    }
 }
 
 module.exports = new UserController();
