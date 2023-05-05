@@ -10,7 +10,11 @@ class AuthService {
     async signin(credentials) {
         try {
             const { username, password } = credentials;
-            let user = await User.findOne({ username }, '_id name deleted slug role password').exec();
+            let user = await User.findOne({ username }, '_id name deleted slug role password')
+                .exec()
+                .populate('job', 'name')
+                .exec();
+
             if (user?.deleted) throw new ApiError(403, `This account has been disabled`);
 
             if (user && user.comparePassword(password)) {
