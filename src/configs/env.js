@@ -15,6 +15,11 @@ const {
     MONGODB_PASSWORD,
 
     REDIS_HOST,
+
+    S3_ACCESS_KEY,
+    S3_SECRET_KEY,
+    S3_HOSTNAME,
+    S3_BUCKET,
 } = process.env;
 
 const config = {
@@ -27,6 +32,11 @@ const config = {
     REFRESH_TOKEN_EXPIRE,
 
     REDIS_HOST,
+
+    S3_ACCESS_KEY,
+    S3_SECRET_KEY,
+    S3_HOSTNAME,
+    S3_BUCKET,
 
     MONGODB_URI: `mongodb://${MONGODB_USER}:${MONGODB_PASSWORD}@${MONGODB_HOST}/${MONGODB_NAME}?authSource=admin`,
 };
