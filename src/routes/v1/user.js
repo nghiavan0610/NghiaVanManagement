@@ -5,7 +5,7 @@ const filterModel = require('../../middlewares/FilterMiddleware');
 const { authenticateToken } = require('../../middlewares/AuthMiddleware');
 const requireRole = require('../../middlewares/RoleMiddleware');
 
-router.post('/create-user', authenticateToken, requireRole('admin', 'manager'), userController.createUser);
+router.post('/create', authenticateToken, requireRole('admin', 'manager'), userController.createUser);
 router.put('/:userSlug/edit-account', authenticateToken, userController.updateUserAccount);
 router.put('/:userSlug/edit-security', authenticateToken, userController.updateUserSecurity);
 

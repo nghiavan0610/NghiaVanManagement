@@ -35,7 +35,7 @@ class UserService {
         }
     }
 
-    // [POST] /api/v1/users/create-user
+    // [POST] /api/v1/users/create
     async createUser(formData) {
         try {
             const { username, email, name, gender, birthdate, phoneNumber, address, role, jobId } = formData;

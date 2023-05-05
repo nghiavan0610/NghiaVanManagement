@@ -26,7 +26,7 @@ class UserController {
         }
     }
 
-    // [POST] /api/v1/users/create-user
+    // [POST] /api/v1/users/create
     async createUser(req, res, next) {
         try {
             const formData = req.body;

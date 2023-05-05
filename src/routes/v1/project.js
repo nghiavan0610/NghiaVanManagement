@@ -5,6 +5,16 @@ const { authenticateToken } = require('../../middlewares/AuthMiddleware');
 const requireRole = require('../../middlewares/RoleMiddleware');
 const filterModel = require('../../middlewares/FilterMiddleware');
 
+// Porject
+router.post('/create', authenticateToken, requireRole('admin', 'manager'), projectController.createProject);
+router.put('/:projectSlug/edit', authenticateToken, requireRole('admin', 'manager'), projectController.updateProject);
+router.delete(
+    '/:projectSlug/delete',
+    authenticateToken,
+    requireRole('admin', 'manager'),
+    projectController.deleteProject,
+);
+
 router.get('/:projectSlug', authenticateToken, projectController.getProjectBySlug);
 router.get('/', authenticateToken, filterModel('Project'), projectController.getAllProjects);
 
