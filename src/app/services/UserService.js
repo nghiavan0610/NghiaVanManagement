@@ -33,6 +33,35 @@ class UserService {
             throw err;
         }
     }
+
+    // [POST] /api/v1/users/create-user
+    async createUser(formData) {
+        try {
+            const { username, email, name, gender, birthdate, phoneNumber, address, role, jobId } = formData;
+            const [existsUsername, job] = await Promise.all([
+                User.find({ username }).limit(1).exec(),
+                Job.findById(jobId).exec(),
+            ]);
+
+            if (existsUsername[0]) throw new ApiError(403, 'Username already exists');
+
+            const newUser = await User.create({
+                username,
+                name,
+                password: username,
+                email,
+                gender,
+                phoneNumber,
+                address,
+                role,
+                DOB: birthdate,
+                job: jobId,
+            });
+            return newUser;
+        } catch (err) {
+            throw err;
+        }
+    }
 }
 
 module.exports = new UserService();

@@ -11,7 +11,6 @@ class AuthService {
         try {
             const { username, password } = credentials;
             let user = await User.findOne({ username }, '_id name deleted slug role password')
-                .exec()
                 .populate('job', 'name')
                 .exec();
 

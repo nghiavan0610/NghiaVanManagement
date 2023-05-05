@@ -25,6 +25,17 @@ class UserController {
             next(err);
         }
     }
+
+    // [POST] /api/v1/users/create-user
+    async createUser(req, res, next) {
+        try {
+            const formData = req.body;
+            const newUser = await userService.createUser(formData);
+            res.status(201).json(response({ newUser }));
+        } catch (err) {
+            next(err);
+        }
+    }
 }
 
 module.exports = new UserController();
