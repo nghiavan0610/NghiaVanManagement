@@ -11,7 +11,7 @@ class AuthService {
         try {
             const { username, password } = credentials;
             let user = await User.findOne({ username }, '_id name deleted slug role password').exec();
-            if (user?.deleted) throw new ApiError(403, `Tài khoản đã bị vô hiệu hóa`);
+            if (user?.deleted) throw new ApiError(403, `This account has been disabled`);
 
             if (user && user.comparePassword(password)) {
                 const accessToken = await generateAccessToken(user.id);
@@ -22,8 +22,42 @@ class AuthService {
                 user = mongooseToObject(user);
                 return [accessToken, refreshToken, user];
             } else {
-                throw new ApiError(404, 'Sai tên đăng nhập hoặc mật khẩu');
+                throw new ApiError(404, 'Invalid username or password');
             }
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    // [POST] /v1/auth/refresh-token
+    async createNewAccessToken(refreshToken) {
+        try {
+            if (!refreshToken || refreshToken === 'undefined') {
+                throw new ApiError(401, 'Refresh token was not found');
+            }
+
+            const decoded = await verifyRefreshToken(refreshToken);
+            const user = await User.findById(decoded.userId, '_id').exec();
+            const storedRefreshToken = await redisClient.get(`refreshToken:${user.id}`);
+
+            if (!user || refreshToken !== storedRefreshToken) {
+                throw new ApiError(401, 'Refresh Token has been revoked');
+            }
+
+            const accessToken = await generateAccessToken(user.id);
+            await redisClient.set(`accessToken:${user.id}`, accessToken, 'EX', config.ACCESS_TOKEN_EXPIRE);
+
+            return accessToken;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    // [GET] /v1/auth/signout
+    async signout(userId) {
+        try {
+            await redisClient.del(`accessToken:${userId}`);
+            await redisClient.del(`refreshToken:${userId}`);
         } catch (err) {
             throw err;
         }
