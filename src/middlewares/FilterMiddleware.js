@@ -49,6 +49,40 @@ const filterModel = (Model, options = true) => {
                 });
             }
 
+            if (Model === 'Project') {
+                pipeline.push({
+                    $match: {
+                        $or: [
+                            { name: { $regex: search, $options: 'i' } },
+                            { code: { $regex: search, $options: 'i' } },
+                            { location: { $regex: search, $options: 'i' } },
+                        ],
+                    },
+                });
+                pipeline.push({
+                    $lookup: {
+                        from: User.collection.name,
+                        localField: 'manager',
+                        foreignField: '_id',
+                        as: 'manager',
+                    },
+                });
+                pipeline.push({
+                    $project: {
+                        name: 1,
+                        _id: 1,
+                        code: 1,
+                        location: 1,
+                        startedAt: 1,
+                        isDone: 1,
+                        deleted: 1,
+                        slug: 1,
+                        'manager._id': 1,
+                        'manager.name': 1,
+                    },
+                });
+            }
+
             if (options) {
                 pipeline.push({
                     $facet: {

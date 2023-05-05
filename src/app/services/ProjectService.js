@@ -2,6 +2,24 @@ const { ApiError } = require('../../helpers/ErrorHandler');
 const { User, Project } = require('../../db/models');
 
 class ProjectService {
+    // [GET] /api/v1/projects
+    async getAllProjects(pipeline, page, limit) {
+        try {
+            const projects = await Project.aggregate(pipeline).exec();
+            const total =
+                Array.isArray(projects[0].count) && projects[0].count.length > 0 ? projects[0].count[0].total : 0;
+            const totalPages = Math.ceil(total / limit);
+            return {
+                projects: projects[0].results,
+                page,
+                totalProjects: total,
+                totalPages,
+            };
+        } catch (err) {
+            throw err;
+        }
+    }
+
     // [GET] /v1/projects/:projectSlug
     async getProjectBySlug(projectSlug) {
         try {
