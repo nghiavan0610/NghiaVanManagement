@@ -12,6 +12,7 @@ const XaSu = require('./xaSu');
 const TiepDia = require('./tiepDia');
 const PhuKien = require('./phuKien');
 const ThietBi = require('./thietBi');
+const Summary = require('./summary');
 
 module.exports = {
     User,
@@ -28,4 +29,5 @@ module.exports = {
     TiepDia,
     PhuKien,
     ThietBi,
+    Summary,
 };
