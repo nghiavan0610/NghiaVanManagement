@@ -1,0 +1,72 @@
+version: '3.8'
+services:
+    mongo:
+        image: mongo:6.0-focal
+        container_name: electric-mongo
+        restart: unless-stopped
+        env_file:
+            - ./.env
+        ports:
+            - $MONGODB_LOCAL_PORT:$MONGODB_DOCKER_PORT
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: $MONGODB_USER
+            MONGO_INITDB_ROOT_PASSWORD: $MONGODB_PASSWORD
+        healthcheck:
+            test: 'exit 0'
+        volumes:
+            - ./mongodata:/data/db
+        networks:
+            - electric-networks
+
+    redis:
+        image: redis:7
+        container_name: electric-redis
+        restart: unless-stopped
+        env_file:
+            - ./.env
+        ports:
+            - $REDIS_LOCAL_PORT:$REDIS_DOCKER_PORT
+        networks:
+            - electric-networks
+
+    electric-api:
+        container_name: electric-api
+        image: benacio/electric-api:latest
+        restart: unless-stopped
+        env_file:
+            - ./.env
+        environment:
+            NODE_ENV: 'production'
+            MONGODB_HOST: 'mongo'
+            REDIS_HOST: 'redis'
+        ports:
+            - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
+        depends_on:
+            mongo:
+                condition: service_healthy
+            redis:
+                condition: service_started
+        volumes:
+            - ./files:/app/files
+        networks:
+            - electric-networks
+        command: sh -c 'yarn start'
+
+    nginx:
+        container_name: electric-nginx
+        image: nginx
+        restart: unless-stopped
+        env_file:
+            - ./.env
+        volumes:
+            - ./files:/files
+        ports:
+            - $NGINX_LOCAL_PORT:$NGINX_DOCKER_PORT
+        networks:
+            - electric-networks
+        depends_on:
+            - electric-api
+        command: sh -c "nginx -g 'daemon off;'"
+
+networks:
+    electric-networks:
