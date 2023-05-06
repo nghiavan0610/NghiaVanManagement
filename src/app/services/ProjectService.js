@@ -1,5 +1,6 @@
 const { ApiError } = require('../../helpers/ErrorHandler');
 const { User, Project, Timesheet } = require('../../db/models');
+const populateProject = require('../../helpers/PopulateProject');
 
 class ProjectService {
     // [GET] /v1/projects
@@ -40,6 +41,7 @@ class ProjectService {
                     select: '_id name deleted',
                     populate: { path: 'job', select: '_id name' },
                 })
+                .populate(populateProject('originalSummary updatedSummary'))
                 .exec();
             if (!project) throw new ApiError(404, `Project was not found: ${projectSlug}`);
             return project;

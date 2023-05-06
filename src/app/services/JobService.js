@@ -17,7 +17,7 @@ class JobService {
     async getJobBySlug(jobSlug) {
         try {
             const job = await Job.findOne({ slug: jobSlug }).exec();
-            if (!job) throw new ApiError(404, `Không tìm thấy chức vụ ${jobSlug}`);
+            if (!job) throw new ApiError(404, `Job was not found ${jobSlug}`);
             return job;
         } catch (err) {
             throw err;
