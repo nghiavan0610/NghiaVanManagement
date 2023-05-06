@@ -5,7 +5,7 @@ const env = config.NODE_ENV || 'development';
 
 const connect = async () => {
     try {
-        const URI = env === 'production' ? config.MONGODB_URI : `mongodb://127.0.0.1:27017/dev_db`;
+        const URI = env === 'production' ? config.MONGODB_URI : `mongodb://127.0.0.1:27017/electric_dev_db`;
         const options = { useNewUrlParser: true, useUnifiedTopology: true };
         await mongoose.connect(URI, options);
         console.log(`Connection to MongoDb has been established successfully.`);
