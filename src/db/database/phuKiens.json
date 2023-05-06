@@ -1,0 +1,253 @@
+[
+    {
+        "_id": "6425988c62fd5fa59b95427b",
+        "name": "Giá đỡ LA - FCO đường dây",
+        "deleted": false,
+        "slug": "gia-do-la---fco-duong-day",
+        "__v": 0
+    },
+    {
+        "_id": "6425988c62fd5fa59b95427c",
+        "name": "Giá U bắt rack (dừng 2 nguồn điện) ",
+        "deleted": false,
+        "slug": "gia-u-bat-rack-(dung-2-nguon-dien)",
+        "__v": 0
+    },
+
+    {
+        "_id": "6425988c62fd5fa59b954281",
+        "name": "Ống HDPE xoắn 65/50",
+        "deleted": false,
+        "slug": "ong-hdpe-xoan-65/50",
+        "__v": 0
+    },
+    {
+        "_id": "6425988c62fd5fa59b954282",
+        "name": "Ống HDPE xoắn 85/65",
+        "deleted": false,
+        "slug": "ong-hdpe-xoan-85/65",
+        "__v": 0
+    },
+
+    {
+        "_id": "6425988c62fd5fa59b954287",
+        "name": "Nút HDPE 85/65",
+        "deleted": false,
+        "slug": "nut-hdpe-85/65",
+        "__v": 0
+    },
+
+    {
+        "_id": "6425988c62fd5fa59b95428b",
+        "name": "Đầu cosse Cu 95mm2",
+        "deleted": false,
+        "slug": "dau-cosse-cu-95mm2",
+        "__v": 0
+    },
+    {
+        "_id": "6425988c62fd5fa59b95428c",
+        "name": "Kẹp 2 rãnh song song cho dây AC 50 mm2",
+        "deleted": false,
+        "slug": "kep-2-ranh-song-song-cho-day-ac-50-mm2",
+        "__v": 0
+    },
+    {
+        "_id": "6425988c62fd5fa59b95428d",
+        "name": "Kẹp AC35",
+        "deleted": false,
+        "slug": "kep-ac35",
+        "__v": 0
+    },
+    {
+        "_id": "6425988c62fd5fa59b95428e",
+        "name": "Kẹp AC50",
+        "deleted": false,
+        "slug": "kep-ac50",
+        "__v": 0
+    },
+
+    {
+        "_id": "6425988c62fd5fa59b954295",
+        "name": "Ống nối AC35",
+        "deleted": false,
+        "slug": "ong-noi-ac35",
+        "__v": 0
+    },
+    {
+        "_id": "6425988c62fd5fa59b954296",
+        "name": "Ống nối AC50",
+        "deleted": false,
+        "slug": "ong-noi-ac50",
+        "__v": 0
+    },
+    {
+        "_id": "6425988c62fd5fa59b95429d",
+        "name": "Ống nối A35 (không lõi thép)",
+        "deleted": false,
+        "slug": "ong-noi-a35-(khong-loi-thep)",
+        "__v": 0
+    },
+    {
+        "_id": "6425988c62fd5fa59b95429e",
+        "name": "Ống nối A50 (không lõi thép)",
+        "deleted": false,
+        "slug": "ong-noi-a50-(khong-loi-thep)",
+        "__v": 0
+    },
+    {
+        "_id": "6425988c62fd5fa59b9542a5",
+        "name": "Kẹp AlCu SL1",
+        "deleted": false,
+        "slug": "kep-alcu-sl1",
+        "__v": 0
+    },
+    {
+        "_id": "6425988c62fd5fa59b9542b6",
+        "name": "Bộ kẹp quai phục vụ tiếp đất an toàn",
+        "deleted": false,
+        "slug": "bo-kep-quai-phuc-vu-tiep-dat-an-toan",
+        "__v": 0
+    },
+    {
+        "_id": "6425988c62fd5fa59b9542b7",
+        "name": "Nắp chụp LA đường dây",
+        "deleted": false,
+        "slug": "nap-chup-la-duong-day",
+        "__v": 0
+    },
+    {
+        "_id": "6425988c62fd5fa59b9542b8",
+        "name": "Nắp chụp cực trên FCO đường dây",
+        "deleted": false,
+        "slug": "nap-chup-cuc-tren-fco-duong-day",
+        "__v": 0
+    },
+    {
+        "_id": "6425988c62fd5fa59b9542b9",
+        "name": "Nắp chụp cực dưới FCO đường dây",
+        "deleted": false,
+        "slug": "nap-chup-cuc-duoi-fco-duong-day",
+        "__v": 0
+    },
+    {
+        "_id": "6425988c62fd5fa59b9542ba",
+        "name": "Nắp chụp kẹp quai và hotline đường dây",
+        "deleted": false,
+        "slug": "nap-chup-kep-quai-va-hotline-duong-day",
+        "__v": 0
+    },
+    {
+        "_id": "6425988c62fd5fa59b9542bb",
+        "name": "Nắp chụp đầu sứ đứng đường dây",
+        "deleted": false,
+        "slug": "nap-chup-dau-su-dung-duong-day",
+        "__v": 0
+    },
+    {
+        "_id": "6425988c62fd5fa59b9542bc",
+        "name": "Bịt đầu cáp ABC35",
+        "deleted": false,
+        "slug": "bit-dau-cap-abc35",
+        "__v": 0
+    },
+    {
+        "_id": "6425988c62fd5fa59b9542bd",
+        "name": "Bịt đầu cáp ABC50",
+        "deleted": false,
+        "slug": "bit-dau-cap-abc50",
+        "__v": 0
+    },
+    {
+        "_id": "6425988c62fd5fa59b9542c7",
+        "name": "Fuselink 3K",
+        "deleted": false,
+        "slug": "fuselink-3k",
+        "__v": 0
+    },
+    {
+        "_id": "6425988c62fd5fa59b9542c8",
+        "name": "Fuselink 6K",
+        "deleted": false,
+        "slug": "fuselink-6k",
+        "__v": 0
+    },
+    {
+        "_id": "6425988c62fd5fa59b9542d7",
+        "name": "Băng keo điện",
+        "deleted": false,
+        "slug": "bang-keo-dien",
+        "__v": 0
+    },
+    {
+        "_id": "6425988c62fd5fa59b9542d8",
+        "name": "Bảng số trụ trung thế + bảng nguy hiểm",
+        "deleted": false,
+        "slug": "bang-so-tru-trung-the-+-bang-nguy-hiem",
+        "__v": 0
+    },
+    {
+        "_id": "6425988c62fd5fa59b954306",
+        "name": "Đầu cosse Cu 10mm2",
+        "deleted": false,
+        "slug": "dau-cosse-cu-10mm2",
+        "__v": 0
+    },
+    {
+        "_id": "6425988c62fd5fa59b954307",
+        "name": "Đầu cosse Cu 16mm2",
+        "deleted": false,
+        "slug": "dau-cosse-cu-16mm2",
+        "__v": 0
+    },
+    {
+        "_id": "6425988c62fd5fa59b954308",
+        "name": "Đầu cosse Cu 25mm2",
+        "deleted": false,
+        "slug": "dau-cosse-cu-25mm2",
+        "__v": 0
+    },
+
+    {
+        "_id": "6425988c62fd5fa59b954314",
+        "name": "Bộ dây néo MBA (2 bên)",
+        "deleted": false,
+        "slug": "bo-day-neo-mba-(2-ben)",
+        "__v": 0
+    },
+    {
+        "_id": "6425988c62fd5fa59b954315",
+        "name": "Bộ dây dẫn trạm 160kVA",
+        "deleted": false,
+        "slug": "bo-day-dan-tram-160kva",
+        "__v": 0
+    },
+
+    {
+        "_id": "6425988c62fd5fa59b954326",
+        "name": "Thùng composite đựng điện kế 3p",
+        "deleted": false,
+        "slug": "thung-composite-dung-dien-ke-3p",
+        "__v": 0
+    },
+    {
+        "_id": "6425988c62fd5fa59b95432a",
+        "name": "Kẹp AlCu SL2",
+        "deleted": false,
+        "slug": "kep-alcu-sl2",
+        "__v": 0
+    },
+    {
+        "_id": "6425988c62fd5fa59b95432b",
+        "name": "Bộ dây dẫn phân đoạn 3 pha 25mm2",
+        "deleted": false,
+        "slug": "bo-day-dan-phan-doan-3-pha-25mm2",
+        "__v": 0
+    },
+    {
+        "_id": "6425988c62fd5fa59b95432f",
+        "name": "Chuỗi polymer + giáp níu dừng dây ACX50mm2",
+        "deleted": false,
+        "slug": "chuoi-polymer-+-giap-niu-dung-day-acx50mm2",
+        "__v": 0
+    }
+]

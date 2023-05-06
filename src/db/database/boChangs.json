@@ -1,0 +1,37 @@
+[
+    {
+        "_id": "641d9584fd9e75676e9936ef",
+        "name": "Bộ dây chằng xuống trụ 6,5m",
+        "deleted": false,
+        "slug": "bo-day-chang-xuong-tru-6,5m",
+        "__v": 0
+    },
+    {
+        "_id": "641d9584fd9e75676e9936f0",
+        "name": "Bộ dây chằng hẹp trụ 6,5m",
+        "deleted": false,
+        "slug": "bo-day-chang-hep-tru-6,5m",
+        "__v": 0
+    },
+    {
+        "_id": "641d9584fd9e75676e9936f1",
+        "name": "Bộ dây chằng xuống trụ 7,5m",
+        "deleted": false,
+        "slug": "bo-day-chang-xuong-tru-7,5m",
+        "__v": 0
+    },
+    {
+        "_id": "641d9584fd9e75676e9936f2",
+        "name": "Bộ dây chằng xuống trụ 8,5m",
+        "deleted": false,
+        "slug": "bo-day-chang-xuong-tru-8,5m",
+        "__v": 0
+    },
+    {
+        "_id": "641d9584fd9e75676e9936f3",
+        "name": "Bộ dây chằng hẹp trụ 7,5m",
+        "deleted": false,
+        "slug": "bo-day-chang-hep-tru-7,5m",
+        "__v": 0
+    }
+]

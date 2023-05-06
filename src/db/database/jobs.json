@@ -1,0 +1,86 @@
+[
+    {
+        "_id": "641d574846557d315c2fc911",
+        "name": "Giám đốc",
+        "slug": "giam-doc",
+        "__v": 0
+    },
+    {
+        "_id": "641d574846557d315c2fc912",
+        "name": "Kế toán trưởng",
+        "slug": "ke-toan-truong",
+        "__v": 0
+    },
+    {
+        "_id": "641d574846557d315c2fc913",
+        "name": "Trưởng phòng Hành chính",
+        "slug": "truong-phong-hanh-chinh",
+        "__v": 0
+    },
+    {
+        "_id": "641d574846557d315c2fc914",
+        "name": "Phó phòng Hành chính",
+        "slug": "pho-phong-hanh-chinh",
+        "__v": 0
+    },
+    {
+        "_id": "641d574846557d315c2fc916",
+        "name": "Trường phòng Vật tư",
+        "slug": "truong-phong-vat-tu",
+        "__v": 0
+    },
+    {
+        "_id": "641d574846557d315c2fc918",
+        "name": "Thủ kho",
+        "slug": "thu-kho",
+        "__v": 0
+    },
+    {
+        "_id": "641d574846557d315c2fc919",
+        "name": "TT tổ xe",
+        "slug": "tt-to-xe",
+        "__v": 0
+    },
+    {
+        "_id": "641d574846557d315c2fc91a",
+        "name": "Tài xế",
+        "slug": "tai-xe",
+        "__v": 0
+    },
+    {
+        "_id": "641d574846557d315c2fc91b",
+        "name": "TT Cơ điện",
+        "slug": "tt-co-dien",
+        "__v": 0
+    },
+    {
+        "_id": "641d574846557d315c2fc91c",
+        "name": "NV Cơ điện",
+        "slug": "nv-co-dien",
+        "__v": 0
+    },
+    {
+        "_id": "641d574846557d315c2fc91d",
+        "name": "Trưởng phòng Kỹ thuật",
+        "slug": "truong-phong-ky-thuat",
+        "__v": 0
+    },
+    {
+        "_id": "641d574846557d315c2fc91e",
+        "name": "Phó phòng Kỹ thuật",
+        "slug": "pho-phong-ky-thuat",
+        "__v": 0
+    },
+    {
+        "_id": "641d574846557d315c2fc91f",
+        "name": "Kỹ thuật viên",
+        "slug": "ky-thuat-vien",
+        "__v": 0
+    },
+    {
+        "_id": "641d574846557d315c2fc926",
+        "name": "Trưởng phòng Tư vấn",
+        "slug": "truong-phong-tu-van",
+        "__v": 0
+    }
+]

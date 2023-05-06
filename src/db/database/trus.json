@@ -1,0 +1,23 @@
+[
+    {
+        "_id": "641d9492e57d92277b25b4e9",
+        "name": "Trụ BTLT 6,5m",
+        "deleted": false,
+        "slug": "tru-btlt-6,5m",
+        "__v": 0
+    },
+    {
+        "_id": "641d9492e57d92277b25b4ea",
+        "name": "Trụ BTLT 7,5m",
+        "deleted": false,
+        "slug": "tru-btlt-7,5m",
+        "__v": 0
+    },
+    {
+        "_id": "641d9492e57d92277b25b4eb",
+        "name": "Trụ BTLT 8,5m",
+        "deleted": false,
+        "slug": "tru-btlt-8,5m",
+        "__v": 0
+    }
+]
