@@ -2,7 +2,7 @@ version: '3.8'
 services:
     mongo:
         image: mongo:6.0-focal
-        container_name: electric-mongo-dev
+        container_name: nghiavanec-mongo-dev
         restart: unless-stopped
         ports:
             - '27017:27017'
@@ -11,7 +11,7 @@ services:
 
     redis:
         image: redis:7
-        container_name: electric-redis-dev
+        container_name: nghiavanec-redis-dev
         restart: unless-stopped
         ports:
             - '6379:6379'
