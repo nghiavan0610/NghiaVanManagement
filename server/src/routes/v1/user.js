@@ -8,6 +8,9 @@ const requireRole = require('../../middlewares/RoleMiddleware');
 router.post('/create', authenticateToken, requireRole('admin', 'manager'), userController.createUser);
 router.put('/:userSlug/edit-account', authenticateToken, userController.updateUserAccount);
 router.put('/:userSlug/edit-security', authenticateToken, userController.updateUserSecurity);
+router.post('/:userSlug/delete', authenticateToken, requireRole('admin', 'manager'), userController.deleteUser);
+router.patch('/:userSlug/restore', authenticateToken, requireRole('admin'), userController.restoreUser);
+router.post('/:userSlug/force-delete', authenticateToken, requireRole('admin'), userController.forceDeleteUser);
 
 router.get('/my-projects', authenticateToken, userController.getUserProjects);
 router.get('/:userSlug', authenticateToken, userController.getUserBySlug);

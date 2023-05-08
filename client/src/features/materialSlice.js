@@ -47,7 +47,7 @@ export const addMaterial = createAsyncThunk(
     async (formData, thunkAPI) => {
         try {
             const matType = formData.materialType
-            await axios.post(`/materials/create-material`, formData);
+            await axios.post(`/materials/create`, formData);
             const data = await getMaterial(matType)
             return { matType, data }
         } catch (error) {
@@ -62,7 +62,7 @@ export const editMaterial = createAsyncThunk(
     async ({ matId, formData }, thunkAPI) => {
         try {
             const matType = formData.materialType
-            await axios.put(`/materials/${matId}`, formData);
+            await axios.put(`/materials/${matId}/edit`, formData);
             const data = await getMaterial(matType)
             return { matType, data }
         } catch (error) {
@@ -77,7 +77,7 @@ export const removeMaterial = createAsyncThunk(
     async ({ matId, formData }, thunkAPI) => {
         try {
             const matType = formData.materialType
-            await axios.delete(`/materials/${matId}`, { data: formData });
+            await axios.delete(`/materials/${matId}/delete`, { data: formData });
             const data = await getMaterial(matType)
             return { matType, data }
         } catch (error) {

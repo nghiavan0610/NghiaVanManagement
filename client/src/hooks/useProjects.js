@@ -32,7 +32,7 @@ export const useProjects = (keyword) => {
 export const useAddProject = () => {
   const queryClient = useQueryClient();
 
-  return useMutation('add-project', (data) => axios.post('/projects/create-project', data), {
+  return useMutation('add-project', (data) => axios.post('/projects/create', data), {
     onSuccess: () => {
       showToast('success', 'Đã thêm dự án');
       queryClient.invalidateQueries(['projects']);

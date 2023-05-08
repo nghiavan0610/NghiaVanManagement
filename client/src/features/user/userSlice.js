@@ -92,7 +92,7 @@ export const deleteUser = createAsyncThunk(
   'deleteUser',
   async ({ slug, password }, thunkAPI) => {
     try {
-      await axios.delete(`users/${slug}/delete`, { data: { 'confirmPassword': password } });
+      await axios.post(`users/${slug}/delete`, { data: { 'confirmPassword': password } });
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.response.data.message });
     }
@@ -103,7 +103,7 @@ export const forceDeleteUser = createAsyncThunk(
   'forceDeleteUser',
   async ({ slug, password }, thunkAPI) => {
     try {
-      await axios.delete(`users/${slug}/force-delete`, { data: { 'confirmPassword': password } });
+      await axios.post(`users/${slug}/force-delete`, { data: { 'confirmPassword': password } });
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.response.data.message });
     }

@@ -69,7 +69,7 @@ export const addProject = createAsyncThunk(
   'addProject',
   async (formData, thunkAPI) => {
     try {
-      const { data } = await axios.post(`/projects/create-project`, formData);
+      const { data } = await axios.post(`/projects/create`, formData);
       return data.data;
     } catch (error) {
       console.dir(error);
@@ -83,7 +83,7 @@ export const deleteProject = createAsyncThunk(
   'deleteProject',
   async (slug, thunkAPI) => {
     try {
-      const { data } = await axios.delete(`projects/${slug}`);
+      const { data } = await axios.delete(`projects/${slug}/delete`);
       return slug;
     } catch (error) {
       console.dir(error);
@@ -100,7 +100,7 @@ export const updateProject = createAsyncThunk(
       formData.managerId = oldData.manager._id;
       formData.leadersId = oldData.leaders.map((leader) => leader._id)
       formData.membersId = oldData.members.map((member) => member._id)
-      const response = await axios.put(`projects/${slug}`, formData);
+      const response = await axios.put(`projects/${slug}/edit`, formData);
       const { data } = await axios.get(`projects/${response.data.data.updatedProject.slug}`);
       return data.data;
     } catch (error) {
