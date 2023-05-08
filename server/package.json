@@ -36,5 +36,6 @@
         "response-time": "^2.3.2",
         "stream": "^0.0.2",
         "uuid": "^9.0.0"
-    }
+    },
+    "devDependencies": {}
 }
