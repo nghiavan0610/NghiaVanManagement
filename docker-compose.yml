@@ -1,0 +1,84 @@
+version: '3.8'
+services:
+    mongo:
+        image: mongo:6.0-focal
+        container_name: nghiavanec-mongo
+        restart: unless-stopped
+        env_file:
+            - ./.env
+        ports:
+            - $MONGODB_LOCAL_PORT:$MONGODB_DOCKER_PORT
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: $MONGODB_USER
+            MONGO_INITDB_ROOT_PASSWORD: $MONGODB_PASSWORD
+        healthcheck:
+            test: 'exit 0'
+        volumes:
+            - ./mongodata:/data/db
+        networks:
+            - nghiavanec-networks
+
+    redis:
+        image: redis:7
+        container_name: nghiavanec-redis
+        restart: unless-stopped
+        env_file:
+            - ./.env
+        ports:
+            - $REDIS_LOCAL_PORT:$REDIS_DOCKER_PORT
+        networks:
+            - nghiavanec-networks
+
+    nghiavanec-server:
+        container_name: nghiavanec-server
+        image: benacio/nghiavanec-server:latest-amd64
+        restart: unless-stopped
+        env_file:
+            - ./.env
+        environment:
+            NODE_ENV: 'production'
+            MONGODB_HOST: 'mongo'
+            REDIS_HOST: 'redis'
+        ports:
+            - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
+        depends_on:
+            mongo:
+                condition: service_healthy
+            redis:
+                condition: service_started
+        volumes:
+            - ./server:/app/server
+        networks:
+            - nghiavanec-networks
+        command: sh -c 'yarn run seed:up && yarn start'
+
+    nghiavanec-client:
+        container_name: nghiavanec-client
+        image: benacio/nghiavanec-client:latest-amd64
+        ports:
+            - $CLIENT_LOCAL_PORT:$NGINX_DOCKER_PORT
+        restart: unless-stopped
+        volumes:
+            - ./client:/app/client
+        networks:
+            - nghiavanec-networks
+
+    nginx:
+        container_name: nghiavanec-nginx
+        image: nginx
+        restart: unless-stopped
+        env_file:
+            - ./.env
+        volumes:
+            - ./files:/files
+        ports:
+            - $NGINX_LOCAL_PORT:$NGINX_DOCKER_PORT
+        networks:
+            - nghiavanec-networks
+        depends_on:
+            - nghiavanec-server
+            - nghiavanec-client
+        command: sh -c "nginx -g 'daemon off;'"
+
+networks:
+    nghiavanec-networks:
