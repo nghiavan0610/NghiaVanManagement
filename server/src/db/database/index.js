@@ -9,6 +9,9 @@ const XaSu = require('./xaSus.json');
 const TiepDia = require('./tiepDias.json');
 const PhuKien = require('./phuKiens.json');
 const ThietBi = require('./thietBis.json');
+const Project = require('./projects.json');
+const Summary = require('./summaries.json');
+const Timesheet = require('./timesheets.json');
 
 module.exports = {
     User,
@@ -22,4 +25,7 @@ module.exports = {
     TiepDia,
     PhuKien,
     ThietBi,
+    Project,
+    Summary,
+    Timesheet
 };

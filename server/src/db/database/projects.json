@@ -1,0 +1,24 @@
+[{
+  "_id": "6459cfb7b2ea111414830721",
+  "name": "Xây lắp + thiết bị đường dây trung hạ áp và trạm biến áp cấp điện cho các hộ dân chưa có điện trên địa bàn huyện Thới Lai",
+  "code": "test123",
+  "location": "huyện Thời Lai, Cần Thơ",
+  "description": null,
+  "startedAt": "2023-04-05T17:00:00.000Z",
+  "manager": "641d6cc8557176ab0c28211e",
+  "leaders": [
+    "641d6cc8557176ab0c28211c",
+    "641d6cc8557176ab0c282123"
+  ],
+  "members": [
+    "641d6cc8557176ab0c28211d",
+    "641d6cc8557176ab0c28212c",
+    "641d6cc8557176ab0c282131"
+  ],
+  "deleted": false,
+  "slug": "xay-lap-thiet-bi-duong-day-trung-ha-ap-va-tram-bien-ap-cap-dien-cho-cac-ho-dan-chua-co-dien-tren-dia-ban-huyen-thoi-lai",
+  "__v": 6,
+  "timesheet": "6459cfc144480dc9ad463023",
+  "originalSummary": "6459d1e744480dc9ad463168",
+  "updatedSummary": "6459d1e7b2ea11141483084b"
+}]
