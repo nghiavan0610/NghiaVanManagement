@@ -9,6 +9,6 @@ router.delete('/:materialId/delete', authenticateToken, materialController.delet
 router.post('/create', authenticateToken, materialController.createMaterial);
 
 router.get('/:materialSlug', authenticateToken, materialController.getMaterialBySlug);
-router.get('/', authenticateToken, filterModel('Material'), materialController.getAllMaterials);
+router.get('/', authenticateToken, filterModel('Material', false), materialController.getAllMaterials);
 
 module.exports = router;

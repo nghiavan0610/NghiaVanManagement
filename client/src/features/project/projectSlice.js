@@ -117,7 +117,7 @@ export const addMember = createAsyncThunk(
     let roleId = formData.role.value
     try {
       preUpdateData[`${roleId}Id`].push(formData.userId.value)
-      await axios.put(`projects/${preUpdateData.slug}`, preUpdateData);
+      await axios.put(`projects/${preUpdateData.slug}/edit`, preUpdateData);
 
       await getTimesheet();
 
@@ -198,7 +198,7 @@ export const deleteMember = createAsyncThunk(
     try {
       let memIndex = preUpdateData[`${roleId}Id`].indexOf(member._id)
       preUpdateData[`${roleId}Id`].splice(memIndex, 1)
-      await axios.put(`projects/${preUpdateData.slug}`, preUpdateData);
+      await axios.put(`projects/${preUpdateData.slug}/edit`, preUpdateData);
 
       const { data } = await axios.get(`projects/${preUpdateData.slug}`);
       return { data, roleId };
@@ -227,7 +227,7 @@ export const changeMemberRole = createAsyncThunk(
         preUpdateData[`${toRoleId}Id`].push(member._id);
       }
 
-      await axios.put(`projects/${preUpdateData.slug}`, preUpdateData);
+      await axios.put(`projects/${preUpdateData.slug}/edit`, preUpdateData);
 
       const { data } = await axios.get(`projects/${preUpdateData.slug}`);
       return { data, roleId };
