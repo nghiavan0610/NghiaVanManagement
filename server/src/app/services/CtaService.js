@@ -202,7 +202,9 @@ class CtaService {
                                         groupItemMap[exportItem.itemName].distance += exportPillar.distance;
                                         groupItemMap[exportItem.itemName].updatedQuantity += exportItem.updatedQuantity;
                                         groupItemMap[exportItem.itemName].lastPillarName = exportPillar.name;
-                                        groupItemMap[exportItem.itemName].comment.push(exportItem.comment);
+                                        exportItem.comment !== ''
+                                            ? groupItemMap[exportItem.itemName].comment.push(exportItem.comment)
+                                            : null;
                                     }
 
                                     // Handle BM_Tram
@@ -314,9 +316,18 @@ class CtaService {
                             );
                         } else {
                             exportStation.groupItem = Object.entries(groupItemMap)?.map(
-                                ([itemName, { ...properties }]) => ({
+                                ([itemName, { originalQuantity, updatedQuantity, distance, ...properties }]) => ({
                                     itemName,
                                     ...properties,
+                                    ...(originalQuantity && {
+                                        originalQuantity:
+                                            originalQuantity % 1 !== 0 ? originalQuantity.toFixed(2) : originalQuantity,
+                                    }),
+                                    ...(updatedQuantity && {
+                                        updatedQuantity:
+                                            updatedQuantity % 1 !== 0 ? updatedQuantity.toFixed(2) : updatedQuantity,
+                                    }),
+                                    ...(distance && { distance: distance.toFixed(2) }),
                                 }),
                             );
                         }
@@ -336,8 +347,8 @@ class CtaService {
                     exportRoute.routeDistance = routeDistance;
                     const checkGroupItemMap = /^BM_Tram\.|^BM_KeoDay\.|^BM_LapDatPD\./;
                     if (checkGroupItemMap.test(templateName)) {
-                        exportRoute.routeUpdatedQuantity = groupItemUpdatedQuantity;
-                        exportRoute.routeOriginalQuantity = groupItemOriginalQuantity;
+                        exportRoute.routeUpdatedQuantity = groupItemUpdatedQuantity.toFixed(2);
+                        exportRoute.routeOriginalQuantity = groupItemOriginalQuantity.toFixed(2);
                     } else {
                         exportRoute.routeUpdatedQuantity = routeUpdatedQuantity;
                         exportRoute.routeOriginalQuantity = routeOriginalQuantity;
