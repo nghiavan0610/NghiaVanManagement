@@ -12,6 +12,7 @@ const ThietBi = require('./thietBis.json');
 const Project = require('./projects.json');
 const Summary = require('./summaries.json');
 const Timesheet = require('./timesheets.json');
+const TimesheetDetail = require('./timesheetdetails.json');
 
 module.exports = {
     User,
@@ -27,5 +28,6 @@ module.exports = {
     ThietBi,
     Project,
     Summary,
-    Timesheet
+    Timesheet,
+    TimesheetDetail,
 };

@@ -1,0 +1,23 @@
+[
+    {
+        "_id": "645b6657cbd67622a4699b69",
+        "timesheet": "6459cfc144480dc9ad463023",
+        "workDate": "2023-05-09T17:00:00.000Z",
+        "proofs": [
+            {
+                "proofName": "BM_KeoDay_NghiemThu_2023-05-10T09_42_08.708Z.pdf",
+                "proofUri": "https://sgp1.vultrobjects.com/nghiavanec-proof/xay-lap-thiet-bi-duong-day-trung-ha-ap-va-tram-bien-ap-cap-dien-cho-cac-ho-dan-chua-co-dien-tren-dia-ban-huyen-thoi-lai/proof-BM_KeoDay_NghiemThu_2023-05-10T09_42_08_d46ec5f3-0075-495b-9eed-b3a83227e24f.pdf",
+                "isApproved": false,
+                "_id": "645b6797cbd67622a46a5320"
+            },
+            {
+                "proofName": "BM_Mong_NghiemThu_2023-05-10T09_42_08.708Z.pdf",
+                "proofUri": "https://sgp1.vultrobjects.com/nghiavanec-proof/xay-lap-thiet-bi-duong-day-trung-ha-ap-va-tram-bien-ap-cap-dien-cho-cac-ho-dan-chua-co-dien-tren-dia-ban-huyen-thoi-lai/proof-BM_Mong_NghiemThu_2023-05-10T09_42_08_aa50c45e-1f27-4d57-993f-9a9843035fcf.pdf",
+                "isApproved": false,
+                "_id": "645b6797cbd67622a46a5321"
+            }
+        ],
+        "__v": 0,
+        "comment": "Nộp BM_Mong, BM_KeoDay"
+    }
+]

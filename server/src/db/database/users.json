@@ -20,7 +20,7 @@
         "gender": "none",
         "role": "manager",
         "job": "641d574846557d315c2fc912",
-        "projects": [],
+        "projects": ["6459cfb7b2ea111414830721"],
         "deleted": false,
         "slug": "manager",
         "__v": 0
@@ -46,7 +46,7 @@
         "gender": "male",
         "role": "admin",
         "job": "641d574846557d315c2fc911",
-        "projects": [],
+        "projects": ["6459cfb7b2ea111414830721"],
         "deleted": false,
         "slug": "van-trong-nghia",
         "__v": 0
@@ -85,7 +85,7 @@
         "gender": "male",
         "role": "admin",
         "job": "641d574846557d315c2fc914",
-        "projects": [],
+        "projects": ["6459cfb7b2ea111414830721"],
         "deleted": false,
         "slug": "lam-truong-giang",
         "__v": 0
@@ -124,7 +124,7 @@
         "gender": "male",
         "role": "manager",
         "job": "641d574846557d315c2fc919",
-        "projects": [],
+        "projects": ["6459cfb7b2ea111414830721"],
         "deleted": false,
         "slug": "nguyen-trung-thuan",
         "__v": 0
@@ -137,7 +137,7 @@
         "gender": "male",
         "role": "user",
         "job": "641d574846557d315c2fc91a",
-        "projects": [],
+        "projects": ["6459cfb7b2ea111414830721"],
         "deleted": false,
         "slug": "doan-thanh-vu",
         "__v": 0
@@ -150,7 +150,7 @@
         "gender": "male",
         "role": "user",
         "job": "641d574846557d315c2fc91a",
-        "projects": [],
+        "projects": ["6459cfb7b2ea111414830721"],
         "deleted": false,
         "slug": "trang-kim-sanh",
         "__v": 0
@@ -176,7 +176,7 @@
         "gender": "male",
         "role": "manager",
         "job": "641d574846557d315c2fc91b",
-        "projects": [],
+        "projects": ["6459cfb7b2ea111414830721"],
         "deleted": false,
         "slug": "tran-van-men",
         "__v": 0
@@ -202,7 +202,7 @@
         "gender": "male",
         "role": "admin",
         "job": "641d574846557d315c2fc91d",
-        "projects": [],
+        "projects": ["6459cfb7b2ea111414830721"],
         "deleted": false,
         "slug": "nguyen-thanh-binh",
         "__v": 0
@@ -241,7 +241,7 @@
         "gender": "male",
         "role": "manager",
         "job": "641d574846557d315c2fc91f",
-        "projects": [],
+        "projects": ["6459cfb7b2ea111414830721"],
         "deleted": false,
         "slug": "tran-van-tam",
         "__v": 0
@@ -254,7 +254,7 @@
         "gender": "female",
         "role": "manager",
         "job": "641d574846557d315c2fc91f",
-        "projects": [],
+        "projects": ["6459cfb7b2ea111414830721"],
         "deleted": false,
         "slug": "thach-thanh-ngoc",
         "__v": 0
