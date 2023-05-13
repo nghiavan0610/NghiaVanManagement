@@ -5,7 +5,7 @@ const dbSeed = require('./dbSeed');
 (async function seed() {
     try {
         const arg = process.argv[2];
-        await db.connect();
+        await db.connectMongo();
 
         if (arg === 'up') {
             await dbSeed.up();
