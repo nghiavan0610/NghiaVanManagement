@@ -4,7 +4,8 @@ const { ApiError } = require('../helpers/ErrorHandler');
 const filterModel = (Model, options = true) => {
     return async (req, res, next) => {
         try {
-            const { search, job_title } = req.query;
+            const search = req.query.search || '';
+            const job_title = req.query.job_title || '';
             const page = parseInt(req.query.page) || 1;
             const limit = parseInt(req.query.limit) || 10;
             const skip = (page - 1) * limit;
