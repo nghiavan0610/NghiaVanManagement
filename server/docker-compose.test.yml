@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+    mongo:
+        image: mongo:6.0-focal
+        container_name: nghiavanec-mongo-test
+        restart: unless-stopped
+        ports:
+            - '27017:27017'
+        volumes:
+            - ./testFolder/mongodata:/data/db
+
+    redis:
+        image: redis:7
+        container_name: nghiavanec-redis-test
+        restart: unless-stopped
+        ports:
+            - '6379:6379'
+        volumes:
+            - ./testFolder/redisdata:/data
