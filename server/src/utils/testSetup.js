@@ -1,5 +1,5 @@
 const db = require('../configs/init.mongodb');
-// const redis = require('../configs/init.redis');
+const redisClient = require('../configs/init.redis');
 const config = require('../configs/env');
 
 beforeAll(async () => {

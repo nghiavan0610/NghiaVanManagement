@@ -4,6 +4,7 @@ module.exports = {
     setupFilesAfterEnv: ['./src/utils/testSetup'],
     verbose: true,
     forceExit: true,
+    detectOpenHandles: true,
     clearMocks: true,
     resetMocks: true,
     restoreMocks: true,
