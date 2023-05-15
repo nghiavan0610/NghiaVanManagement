@@ -7,7 +7,12 @@
         "description": null,
         "startedAt": "2023-04-05T17:00:00.000Z",
         "manager": "641d6cc8557176ab0c28211e",
-        "leaders": ["641d6cc8557176ab0c282121", "641d6cc8557176ab0c28211c", "641d6cc8557176ab0c28212f"],
+        "leaders": [
+            "641d6cc8557176ab0c282121",
+            "641d6cc8557176ab0c28211c",
+            "641d6cc8557176ab0c28212f",
+            "641d6cc8557176ab0c28211b"
+        ],
         "members": [
             "641d6cc8557176ab0c28212a",
             "641d6cc8557176ab0c282132",
@@ -16,12 +21,12 @@
             "641d6cc8557176ab0c282133",
             "641d6cc8557176ab0c282129"
         ],
+        "originalSummary": "645a5fe1724e247aa10de011",
+        "updatedSummary": "645a5fe2361b0627212e388f",
         "timesheet": "6459cfc144480dc9ad463023",
         "isDone": false,
         "deleted": false,
         "slug": "xay-lap-thiet-bi-duong-day-trung-ha-ap-va-tram-bien-ap-cap-dien-cho-cac-ho-dan-chua-co-dien-tren-dia-ban-huyen-thoi-lai",
-        "__v": 24,
-        "originalSummary": "645a5fe1724e247aa10de011",
-        "updatedSummary": "645a5fe2361b0627212e388f"
+        "__v": 0
     }
 ]
