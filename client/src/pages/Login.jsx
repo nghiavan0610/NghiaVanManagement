@@ -103,6 +103,12 @@ const Login = () => {
               ĐĂNG NHẬP
             </Button>
           </FormControl>
+
+          <FormControl mt={8}>
+            <FormLabel>
+                Account: <span className="text-red-500">admin - 123456789</span>
+            </FormLabel>
+          </FormControl>
         </Box>
       </Flex>
       <Box w='60%' backgroundImage={bg} bgRepeat='no-repeat' bgSize='cover' />
