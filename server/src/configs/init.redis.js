@@ -1,10 +1,13 @@
 const redis = require('redis');
-const config = require('./env');
+const env = process.env.NODE_ENV || 'development';
+const config = require(__dirname + '/mongodbConfig')[env];
 
-const redisClient =
-    config.NODE_ENV === 'production'
-        ? redis.createClient({ url: `redis://${config.REDIS_HOST}` })
-        : redis.createClient();
+let redisClient;
+if (config.REDIS_URI) {
+    redisClient = redis.createClient({ url: config.REDIS_URI });
+} else {
+    redisClient = redis.createClient();
+}
 
 (async () => {
     try {

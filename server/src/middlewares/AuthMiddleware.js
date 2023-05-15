@@ -33,6 +33,12 @@ const authenticateToken = async (req, res, next) => {
         if (err.name === 'TokenExpiredError') {
             next(new ApiError(401, 'Access token has been timed out'));
         }
+        if (
+            err.name === 'JsonWebTokenError' &&
+            (err.message === 'invalid signature' || err.message === 'jwt malformed')
+        ) {
+            next(new ApiError(401, 'Invalid signature'));
+        }
         next(err);
     }
 };

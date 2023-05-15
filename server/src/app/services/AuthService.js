@@ -25,7 +25,7 @@ class AuthService {
                 user = mongooseToObject(user);
                 return [accessToken, refreshToken, user];
             } else {
-                throw new ApiError(404, 'Invalid username or password');
+                throw new ApiError(401, 'Invalid username or password');
             }
         } catch (err) {
             throw err;
