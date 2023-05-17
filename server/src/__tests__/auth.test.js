@@ -9,22 +9,21 @@ const app = createServer();
 
 beforeEach(async () => {
     await User.deleteMany();
+    await redisClient.flushAll();
 });
 
 const mockUser = { username: 'admin', name: 'Admin', password: 'p4ssword', slug: 'admin' };
-
 const credentials = { username: 'admin', password: 'p4ssword' };
 
 const addUser = async (user = { ...mockUser }) => {
     await User.create(user);
 };
 
-const signIn = async (credentials, options = {}) => {
-    const agent = request(app).post('/v1/auth/signin');
-    return await agent.send(credentials);
+const signIn = async (credentials) => {
+    return await request(app).post('/v1/auth/signin').send(credentials);
 };
 
-const signOut = async (accessToken, options = {}) => {
+const signOut = async (accessToken) => {
     return await request(app).get('/v1/auth/signout').set('Authorization', `Bearer ${accessToken}`);
 };
 
@@ -72,27 +71,77 @@ describe('Authentication', () => {
     });
     it('return 401 when access token has been revoked', async () => {
         await addUser();
-        const userSignIn = await signIn(credentials);
-        await signOut(userSignIn.body.data.accessToken);
-        const response = await signOut(userSignIn.body.data.accessToken);
+        const {
+            body: {
+                data: { accessToken },
+            },
+        } = await signIn(credentials);
+        await signOut(accessToken);
+        const response = await signOut(accessToken);
         expect(response.status).toBe(401);
         expect(response.body.message).toBe('Access token has been revoked');
+    });
+});
+
+describe('Refresh token', () => {
+    const createNewToken = async (refreshToken) => {
+        return await request(app).post('/v1/auth/refresh-token').set('Authorization', `Bearer ${refreshToken}`);
+    };
+
+    it('return 201, new accesss token when refresh token is valid', async () => {
+        await addUser();
+        const {
+            body: {
+                data: { accessToken, refreshToken },
+            },
+        } = await signIn(credentials);
+        const oldAccessToken = accessToken;
+        const response = await createNewToken(refreshToken);
+        expect(response.status).toBe(201);
+        expect(response.body.data).toHaveProperty('accessToken');
+    });
+    it('return 401 when the refresh token was not found', async () => {
+        await addUser();
+        const response = await createNewToken();
+        expect(response.status).toBe(401);
+        expect(response.body.message).toBe('Refresh Token was not found');
+    });
+    it('return 401 when the refresh token is revoked', async () => {
+        await addUser();
+        const {
+            body: {
+                data: { accessToken, refreshToken },
+            },
+        } = await signIn(credentials);
+        await signOut(accessToken);
+
+        const response = await createNewToken(refreshToken);
+        expect(response.status).toBe(401);
+        expect(response.body.message).toBe('Refresh Token has been revoked');
     });
 });
 
 describe('Sign Out', () => {
     it('return 200 and log out account', async () => {
         await addUser();
-        const userSignIn = await signIn(credentials);
-        const response = await signOut(userSignIn.body.data.accessToken);
+        const {
+            body: {
+                data: { accessToken },
+            },
+        } = await signIn(credentials);
+        const response = await signOut(accessToken);
         expect(response.status).toBe(200);
         expect(response.body.data).toBe(`You've been logged out`);
     });
     it('return 401 and can not access by old access token after signout', async () => {
         await addUser();
-        const userSignIn = await signIn(credentials);
-        await signOut(userSignIn.body.data.accessToken);
-        const response = await signOut(userSignIn.body.data.accessToken);
+        const {
+            body: {
+                data: { accessToken },
+            },
+        } = await signIn(credentials);
+        await signOut(accessToken);
+        const response = await signOut(accessToken);
         expect(response.status).toBe(401);
         expect(response.body.message).toBe('Access token has been revoked');
     });

@@ -36,7 +36,7 @@ class AuthService {
     async createNewAccessToken(refreshToken) {
         try {
             if (!refreshToken || refreshToken === 'undefined') {
-                throw new ApiError(401, 'Refresh token was not found');
+                throw new ApiError(401, 'Refresh Token was not found');
             }
 
             const decoded = await verifyRefreshToken(refreshToken);
