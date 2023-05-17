@@ -74,44 +74,44 @@ class UserController {
         }
     }
 
-        // [POST] /v1/users/:userSlug/delete
-        async deleteUser(req, res, next) {
-            try {
-                const { id } = req.user;
-                const formData = req.body;
-                const { userSlug } = req.params;
-                await userService.deleteUser(id, userSlug, formData);
-                res.status(200).json(response('Account deleted successfully!'));
-            } catch (err) {
-                next(err);
-            }
+    // [POST] /v1/users/:userSlug/delete
+    async deleteUser(req, res, next) {
+        try {
+            const { id } = req.user;
+            const formData = req.body;
+            const { userSlug } = req.params;
+            await userService.deleteUser(id, userSlug, formData);
+            res.status(200).json(response('Account deleted successfully!'));
+        } catch (err) {
+            next(err);
         }
-    
-        // [PATCH] /v1/users/:userSlug/restore
-        async restoreUser(req, res, next) {
-            try {
-                const { id } = req.user;
-                const formData = req.body;
-                const { userSlug } = req.params;
-                await userService.restoreUser(id, userSlug, formData);
-                res.status(200).json(response('Account has been restored'));
-            } catch (err) {
-                next(err);
-            }
+    }
+
+    // [PATCH] /v1/users/:userSlug/restore
+    async restoreUser(req, res, next) {
+        try {
+            const { id } = req.user;
+            const formData = req.body;
+            const { userSlug } = req.params;
+            await userService.restoreUser(id, userSlug, formData);
+            res.status(200).json(response('Account has been restored'));
+        } catch (err) {
+            next(err);
         }
-    
-        // [POST] /v1/users/:userSlug/force-delete
-        async forceDeleteUser(req, res, next) {
-            try {
-                const { id } = req.user;
-                const formData = req.body;
-                const { userSlug } = req.params;
-                await userService.forceDeleteUser(id, userSlug, formData);
-                res.status(200).json(response('Account has been force deleted'));
-            } catch (err) {
-                next(err);
-            }
+    }
+
+    // [POST] /v1/users/:userSlug/force-delete
+    async forceDeleteUser(req, res, next) {
+        try {
+            const { id } = req.user;
+            const formData = req.body;
+            const { userSlug } = req.params;
+            await userService.forceDeleteUser(id, userSlug, formData);
+            res.status(200).json(response('Account has been force deleted'));
+        } catch (err) {
+            next(err);
         }
+    }
 }
 
 module.exports = new UserController();
