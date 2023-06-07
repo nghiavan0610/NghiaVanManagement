@@ -2,6 +2,8 @@ const { ApiError } = require('../../helpers/ErrorHandler');
 const { User, Project, Timesheet } = require('../../db/models');
 const populateProject = require('../../helpers/PopulateProject');
 
+const types = ['dayDans', 'trus', 'mongs', 'das', 'boChangs', 'tiepDias', 'xaSus', 'phuKiens', 'thietBis'];
+
 class ProjectService {
     // [GET] /v1/projects
     async getAllProjects(pipeline, page, limit) {
@@ -26,24 +28,34 @@ class ProjectService {
         try {
             const project = await Project.findOne({ slug: projectSlug })
                 .populate('deletedBy', 'name')
-                .populate({
-                    path: 'manager',
-                    select: '_id name deleted',
-                    populate: { path: 'job', select: '_id name' },
-                })
-                .populate({
-                    path: 'leaders',
-                    select: '_id name deleted',
-                    populate: { path: 'job', select: '_id name' },
-                })
-                .populate({
-                    path: 'members',
-                    select: '_id name deleted',
-                    populate: { path: 'job', select: '_id name' },
-                })
                 .populate(populateProject('originalSummary updatedSummary'))
+                .populate({
+                    path: 'manager leaders members',
+                    select: '_id name deleted',
+                    populate: { path: 'job', select: '_id name' },
+                })
+                .lean()
                 .exec();
             if (!project) throw new ApiError(404, `Project was not found: ${projectSlug}`);
+
+            let total = 0;
+            let done = 0;
+            if (project.updatedSummary) {
+                for (const { stations } of project.updatedSummary.routes) {
+                    for (const { pillars } of stations) {
+                        for (const pillar of pillars) {
+                            for (const type of types) {
+                                for (const item of pillar[type]) {
+                                    if (item.quantity) total++;
+                                    if (item.quantity && item.isDone) done++;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            project.progress = parseFloat(((done / total) * 100).toFixed(2)) || 0;
             return project;
         } catch (err) {
             throw err;
