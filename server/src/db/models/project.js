@@ -51,7 +51,7 @@ const projectSchema = new mongoose.Schema(
         members: [{ type: mongoose.SchemaTypes.ObjectId, ref: 'User' }],
         originalSummary: { type: mongoose.SchemaTypes.ObjectId, ref: 'Summary' },
         updatedSummary: { type: mongoose.SchemaTypes.ObjectId, ref: 'Summary' },
-        timesheet: { type: mongoose.SchemaTypes.ObjectId, ref: 'Timesheet' },
+        timesheets: [{ type: mongoose.SchemaTypes.ObjectId, ref: 'Timesheet' }],
         isDone: { type: Boolean, default: false },
         deleted: { type: Boolean, default: false },
         deletedBy: { type: mongoose.SchemaTypes.ObjectId, ref: 'User' },

@@ -92,7 +92,8 @@ class ProjectService {
     // [PUT] /v1/projects/:projectSlug/edit
     async updateProject(projectSlug, formData, authUser) {
         try {
-            const { code, name, location, description, startedAt, managerId, leadersId, membersId, isDone } = formData;
+            const { managerId, leadersId, membersId, ...info } = formData;
+
             const project = await Project.findOne({ slug: projectSlug }).exec();
             if (!project) throw new ApiError(404, `Project was not found: ${projectSlug}`);
             if (project.deleted) throw new ApiError(406, `This project has been disabled`);
@@ -118,14 +119,7 @@ class ProjectService {
                 }
             }
 
-            project.set({
-                code,
-                name,
-                location,
-                description,
-                startedAt,
-                isDone,
-            });
+            project.set({ ...info });
 
             // Update manager/ leaders/ members of Project
             const managerToAddId = managerId;
@@ -169,18 +163,18 @@ class ProjectService {
             await project.save();
 
             // Create a project timesheet
-            const timesheet = await Timesheet.findOneAndUpdate(
-                { project: project._id },
-                {
+            if (project.timesheets.length === 0) {
+                const timesheet = await Timesheet.create({
+                    project: project._id,
                     manager: project.manager,
                     members: [...project.leaders, ...project.members],
                     startedAt: project.startedAt,
-                },
-                { upsert: true, runValidators: true, new: true },
-            ).exec();
+                    monthYear: info.startedAt.slice(0, 7),
+                });
 
-            project.timesheet = timesheet._id;
-            await project.save();
+                project.timesheets.push(timesheet._id);
+                await project.save();
+            }
 
             return project;
         } catch (err) {
@@ -194,15 +188,24 @@ class ProjectService {
     // [DELETE] /v1/projects/:projectSlug/delete
     async deleteProject(authUser, projectSlug) {
         try {
-            const project = await Project.findOne({ slug: projectSlug, deleted: false }).exec();
-            if (!project) throw new ApiError(404, `Project was not found: ${projectSlug}`);
+            const project = await this.getLeanProject(projectSlug);
 
-            if (authUser.role !== 'admin' && !project.manager.equals(authUser.id)) {
+            if (!project.manager.equals(authUser.id)) {
                 throw new ApiError(403, 'You are not manager of this project');
             }
 
-            await project.updateOne({ deleted: true, deletedBy: authUser._id });
+            await Project.updateOne({ _id: project._id }, { deleted: true, deletedBy: authUser._id });
             await User.updateMany({ projects: project._id }, { $pull: { projects: project._id } }).exec();
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    async getLeanProject(projectSlug) {
+        try {
+            const project = await Project.findOne({ slug: projectSlug }).lean().exec();
+            if (!project) throw new ApiError(404, `Không tìm thấy dự án: ${projectSlug}`);
+            return project;
         } catch (err) {
             throw err;
         }
