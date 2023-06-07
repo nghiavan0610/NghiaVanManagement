@@ -1,9 +1,10 @@
 const { ApiError } = require('../../helpers/ErrorHandler');
-const { User, Project } = require('../../db/models');
+const { User, Project, Summary } = require('../../db/models');
 const exportToWord = require('../../helpers/ExportToWord');
 const { formatDate } = require('../../utils/formatDate');
 const populateProject = require('../../helpers/PopulateProject');
 
+// tools
 const findObjectById = (array, id) => array.find((object) => object._id.toString() === id);
 
 class CtaService {
@@ -178,6 +179,8 @@ class CtaService {
                                         }
 
                                         continue;
+                                    } else if (updatedItem.isReassembled) {
+                                        continue;
                                     } else {
                                         exportItem.itemName = updatedItem.detail.name;
                                         exportItem.comment = updatedItem.comment;
@@ -202,9 +205,7 @@ class CtaService {
                                         groupItemMap[exportItem.itemName].distance += exportPillar.distance;
                                         groupItemMap[exportItem.itemName].updatedQuantity += exportItem.updatedQuantity;
                                         groupItemMap[exportItem.itemName].lastPillarName = exportPillar.name;
-                                        exportItem.comment !== ''
-                                            ? groupItemMap[exportItem.itemName].comment.push(exportItem.comment)
-                                            : null;
+                                        groupItemMap[exportItem.itemName].comment.push(exportItem.comment);
                                     }
 
                                     // Handle BM_Tram
@@ -245,7 +246,7 @@ class CtaService {
                                         groupItemMap[exportItem.itemName].comment.push(exportItem.comment);
 
                                         // Check cáp đồng
-                                        const capDongString = ['cáp đồng'];
+                                        const capDongString = ['cáp đồng', 'cxv'];
                                         const [pdCapDongOriginal, pdCapDongUpdated] = await Promise.all([
                                             originalPillar.dayDans.find((cd) =>
                                                 cd.detail.name.toLowerCase().includes(capDongString),
@@ -316,18 +317,9 @@ class CtaService {
                             );
                         } else {
                             exportStation.groupItem = Object.entries(groupItemMap)?.map(
-                                ([itemName, { originalQuantity, updatedQuantity, distance, ...properties }]) => ({
+                                ([itemName, { ...properties }]) => ({
                                     itemName,
                                     ...properties,
-                                    ...(originalQuantity && {
-                                        originalQuantity:
-                                            originalQuantity % 1 !== 0 ? originalQuantity.toFixed(2) : originalQuantity,
-                                    }),
-                                    ...(updatedQuantity && {
-                                        updatedQuantity:
-                                            updatedQuantity % 1 !== 0 ? updatedQuantity.toFixed(2) : updatedQuantity,
-                                    }),
-                                    ...(distance && { distance: distance.toFixed(2) }),
                                 }),
                             );
                         }
@@ -347,8 +339,8 @@ class CtaService {
                     exportRoute.routeDistance = routeDistance;
                     const checkGroupItemMap = /^BM_Tram\.|^BM_KeoDay\.|^BM_LapDatPD\./;
                     if (checkGroupItemMap.test(templateName)) {
-                        exportRoute.routeUpdatedQuantity = groupItemUpdatedQuantity.toFixed(2);
-                        exportRoute.routeOriginalQuantity = groupItemOriginalQuantity.toFixed(2);
+                        exportRoute.routeUpdatedQuantity = groupItemUpdatedQuantity;
+                        exportRoute.routeOriginalQuantity = groupItemOriginalQuantity;
                     } else {
                         exportRoute.routeUpdatedQuantity = routeUpdatedQuantity;
                         exportRoute.routeOriginalQuantity = routeOriginalQuantity;

@@ -26,6 +26,7 @@ class UserService {
             const user = await User.findOne({ slug: userSlug })
                 .populate('job', 'name')
                 .populate('deletedBy', 'name')
+                .lean()
                 .exec();
             if (!user) throw new ApiError(404, `User was not found: ${userSlug}`);
 
@@ -38,14 +39,17 @@ class UserService {
     // [GET] /api/v1/users/my-projects
     async getUserProjects(authUser) {
         try {
-            const user = authUser.populate({
-                path: 'projects',
-                populate: [
-                    { path: 'manager', select: '_id name', populate: { path: 'job', select: 'name' } },
-                    { path: 'leaders', select: '_id name', populate: { path: 'job', select: 'name' } },
-                    { path: 'members', select: '_id name', populate: { path: 'job', select: 'name' } },
-                ],
-            });
+            const user = await User.findById(authUser.id)
+                .populate({
+                    path: 'projects',
+                    populate: [
+                        { path: 'manager', select: '_id name', populate: { path: 'job', select: 'name' } },
+                        { path: 'leaders', select: '_id name', populate: { path: 'job', select: 'name' } },
+                        { path: 'members', select: '_id name', populate: { path: 'job', select: 'name' } },
+                    ],
+                })
+                .lean()
+                .exec();
             return user;
         } catch (err) {
             throw err;
@@ -56,7 +60,7 @@ class UserService {
     async createUser(formData) {
         try {
             const { username, email, name, gender, birthdate, phoneNumber, address, role, jobId } = formData;
-            const [existsUsername, job] = await Promise.all([
+            const [existsUsername, ,] = await Promise.all([
                 User.find({ username }).limit(1).exec(),
                 Job.findById(jobId).exec(),
             ]);
@@ -158,84 +162,78 @@ class UserService {
         }
     }
 
-        // [POST] /v1/users/:userSlug/delete
-        async deleteUser(id, userSlug, formData) {
-            try {
-                const { confirmPassword } = formData;
-                const [user, admin] = await Promise.all([
-                    User.findOne({ slug: userSlug }).exec(),
-                    User.findById(id, 'password').exec(),
-                ]);
-                if (!user) throw new ApiError(404, `User was not found: ${userSlug}`);
-    
-                if (admin && admin.comparePassword(confirmPassword)) {
-                    await user.updateOne({ deleted: true, deletedBy: id });
-    
-                    // await Project.updateMany(
-                    //     { _id: { $in: [...user.projects] } },
-                    //     // { $or: [{ manager:  user._id},{ leaders:  user._id},{ members:  user._id}] },
-                    //     { $pull: { $or: [{ manager: user._id }, { leaders: user._id }, { members: user._id }] } },
-                    // ).exec();
-                } else {
-                    throw new ApiError(403, 'Password is not correctword');
-                }
-            } catch (err) {
-                throw err;
+    // [POST] /v1/users/:userSlug/delete
+    async deleteUser(id, userSlug, formData) {
+        try {
+            const { confirmPassword } = formData;
+            const [user, admin] = await Promise.all([
+                User.findOne({ slug: userSlug }).exec(),
+                User.findById(id, 'password').exec(),
+            ]);
+            if (!user) throw new ApiError(404, `User was not found: ${userSlug}`);
+
+            if (admin && admin.comparePassword(confirmPassword)) {
+                await user.updateOne({ deleted: true, deletedBy: id });
+            } else {
+                throw new ApiError(403, 'Password is not correctword');
             }
+        } catch (err) {
+            throw err;
         }
-    
-        // [PATCH] /v1/users/:userSlug/restore
-        async restoreUser(id, userSlug, formData) {
-            try {
-                const { confirmPassword } = formData;
-                const [user, admin] = await Promise.all([
-                    User.findOne({ slug: userSlug, deleted: true }).exec(),
-                    User.findById(id, 'password').exec(),
-                ]);
-                if (!user) throw new ApiError(404, `User was not found: ${userSlug}`);
-    
-                if (admin && admin.comparePassword(confirmPassword)) {
-                    user.deleted = false;
-                    user.deletedBy = null;
-                    await user.save();
-                } else {
-                    throw new ApiError(403, 'Password is not correct');
-                }
-            } catch (err) {
-                throw err;
+    }
+
+    // [PATCH] /v1/users/:userSlug/restore
+    async restoreUser(id, userSlug, formData) {
+        try {
+            const { confirmPassword } = formData;
+            const [user, admin] = await Promise.all([
+                User.findOne({ slug: userSlug, deleted: true }).exec(),
+                User.findById(id, 'password').exec(),
+            ]);
+            if (!user) throw new ApiError(404, `User was not found: ${userSlug}`);
+
+            if (admin && admin.comparePassword(confirmPassword)) {
+                user.deleted = false;
+                user.deletedBy = null;
+                await user.save();
+            } else {
+                throw new ApiError(403, 'Password is not correct');
             }
+        } catch (err) {
+            throw err;
         }
-    
-        // [POST] /v1/users/:userSlug/force-delete
-        async forceDeleteUser(id, userSlug, formData) {
-            try {
-                const { confirmPassword } = formData;
-                const [user, admin] = await Promise.all([
-                    User.findOne({ slug: userSlug, deleted: true }).exec(),
-                    User.findById(id, 'password').exec(),
-                ]);
-                if (!user) throw new ApiError(404, `User was not found: ${userSlug}`);
-    
-                if (admin && admin.comparePassword(confirmPassword)) {
-                    await Project.updateMany(
-                        { _id: { $in: [...user.projects] } },
-    
-                        { $pull: { leaders: user._id, members: user._id } },
-                    ).exec();
-    
-                    await Timesheet.updateMany(
-                        { project: { $in: [...user.projects] } },
-                        { $pull: { members: user._id } },
-                    ).exec();
-    
-                    await user.deleteOne();
-                } else {
-                    throw new ApiError(403, 'Password is not correct');
-                }
-            } catch (err) {
-                throw err;
+    }
+
+    // [POST] /v1/users/:userSlug/force-delete
+    async forceDeleteUser(id, userSlug, formData) {
+        try {
+            const { confirmPassword } = formData;
+            const [user, admin] = await Promise.all([
+                User.findOne({ slug: userSlug, deleted: true }).exec(),
+                User.findById(id, 'password').exec(),
+            ]);
+            if (!user) throw new ApiError(404, `User was not found: ${userSlug}`);
+
+            if (admin && admin.comparePassword(confirmPassword)) {
+                await Project.updateMany(
+                    { _id: { $in: [...user.projects] } },
+
+                    { $pull: { leaders: user._id, members: user._id } },
+                ).exec();
+
+                await Timesheet.updateMany(
+                    { project: { $in: [...user.projects] } },
+                    { $pull: { members: user._id } },
+                ).exec();
+
+                await user.deleteOne();
+            } else {
+                throw new ApiError(403, 'Password is not correct');
             }
+        } catch (err) {
+            throw err;
         }
+    }
 }
 
 module.exports = new UserService();
