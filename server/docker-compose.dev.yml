@@ -7,7 +7,7 @@ services:
         ports:
             - '27017:27017'
         volumes:
-            - ./mongodata:/data/db
+            - ./dev_data:/mongodata
 
     redis:
         image: redis:7
@@ -16,4 +16,4 @@ services:
         ports:
             - '6379:6379'
         volumes:
-            - ./redisdata:/data
+            - ./dev_data:/redisdata

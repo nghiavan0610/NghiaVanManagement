@@ -14,6 +14,18 @@ class SummaryController {
             next(err);
         }
     }
+
+    // [POST] /v1/projects/:projectSlug/summary/download
+    async downloadSummary(req, res, next) {
+        try {
+            const { projectSlug } = req.params;
+            const authUser = req.user;
+            const workbook = await summaryService.downloadSummary(authUser, projectSlug);
+            workbook.write('workbook.xlsx', res);
+        } catch (err) {
+            next(err);
+        }
+    }
 }
 
 module.exports = new SummaryController();
