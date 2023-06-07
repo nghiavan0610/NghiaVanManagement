@@ -17,6 +17,14 @@ const timesheetDetailSchema = new mongoose.Schema(
             ],
             default: Date.now(),
         },
+        shift: {
+            type: String,
+            enum: {
+                values: ['morning', 'evening', 'night'],
+                message: 'shift {VALUE} is not supported',
+            },
+            default: 'morning',
+        },
         proofs: [
             {
                 proofName: { type: String },
@@ -32,13 +40,14 @@ const timesheetDetailSchema = new mongoose.Schema(
                 isApproved: { type: Boolean, default: false },
             },
         ],
+        leavers: [{ type: mongoose.SchemaTypes.ObjectId, ref: 'User' }],
         comment: { type: String },
     },
     {
         timestamps: true,
     },
 );
-timesheetDetailSchema.index({ timesheet: 1, workDate: 1 });
+timesheetDetailSchema.index({ timesheet: 1, workDate: 1, shift: 1 });
 
 timesheetDetailSchema.plugin(emptyStringToNull);
 

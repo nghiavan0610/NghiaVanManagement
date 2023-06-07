@@ -19,12 +19,15 @@ const timesheetSchema = new mongoose.Schema(
             ],
             default: Date.now(),
         },
-        timesheetDetail: [{ type: mongoose.SchemaTypes.ObjectId, ref: 'TimesheetDetail' }],
+        timesheetDetails: [{ type: mongoose.SchemaTypes.ObjectId, ref: 'TimesheetDetail' }],
+        monthYear: { type: String },
     },
     {
         timestamps: true,
     },
 );
+
+timesheetSchema.index({ project: 1, monthYear: 1 });
 
 timesheetSchema.plugin(emptyStringToNull);
 
