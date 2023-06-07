@@ -47,5 +47,12 @@
         "deleted": false,
         "slug": "su-dung-36kv",
         "__v": 0
+    },
+    {
+        "_id": "6472ece8e81a52c113f6e8cf",
+        "name": "No Value",
+        "__v": 0,
+        "deleted": false,
+        "slug": "no-value"
     }
 ]

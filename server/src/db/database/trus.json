@@ -19,5 +19,12 @@
         "deleted": false,
         "slug": "tru-btlt-8,5m",
         "__v": 0
+    },
+    {
+        "_id": "6472eccce81a52c113f6e872",
+        "name": "No Value",
+        "__v": 0,
+        "deleted": false,
+        "slug": "no-value"
     }
 ]

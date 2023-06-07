@@ -13,7 +13,6 @@
         "slug": "gia-u-bat-rack-(dung-2-nguon-dien)",
         "__v": 0
     },
-
     {
         "_id": "6425988c62fd5fa59b954281",
         "name": "Ống HDPE xoắn 65/50",
@@ -28,7 +27,6 @@
         "slug": "ong-hdpe-xoan-85/65",
         "__v": 0
     },
-
     {
         "_id": "6425988c62fd5fa59b954287",
         "name": "Nút HDPE 85/65",
@@ -36,7 +34,6 @@
         "slug": "nut-hdpe-85/65",
         "__v": 0
     },
-
     {
         "_id": "6425988c62fd5fa59b95428b",
         "name": "Đầu cosse Cu 95mm2",
@@ -65,7 +62,6 @@
         "slug": "kep-ac50",
         "__v": 0
     },
-
     {
         "_id": "6425988c62fd5fa59b954295",
         "name": "Ống nối AC35",
@@ -206,7 +202,6 @@
         "slug": "dau-cosse-cu-25mm2",
         "__v": 0
     },
-
     {
         "_id": "6425988c62fd5fa59b954314",
         "name": "Bộ dây néo MBA (2 bên)",
@@ -221,7 +216,6 @@
         "slug": "bo-day-dan-tram-160kva",
         "__v": 0
     },
-
     {
         "_id": "6425988c62fd5fa59b954326",
         "name": "Thùng composite đựng điện kế 3p",
@@ -249,5 +243,12 @@
         "deleted": false,
         "slug": "chuoi-polymer-+-giap-niu-dung-day-acx50mm2",
         "__v": 0
+    },
+    {
+        "_id": "6472ecede81a52c113f6e8ee",
+        "name": "No Value",
+        "__v": 0,
+        "deleted": false,
+        "slug": "no-value"
     }
 ]

@@ -34,7 +34,6 @@
         "slug": "bo-la-10ka",
         "__v": 0
     },
-
     {
         "_id": "64257a5c420c3ec3d9f19a3a",
         "name": "Máy biến áp 1 pha 15kVA trên trụ",
@@ -90,5 +89,12 @@
         "deleted": false,
         "slug": "bien-dien-ap-(tu)-1p-12000/120v",
         "__v": 0
+    },
+    {
+        "_id": "6472ecf1e81a52c113f6e909",
+        "name": "No Value",
+        "__v": 0,
+        "deleted": false,
+        "slug": "no-value"
     }
 ]

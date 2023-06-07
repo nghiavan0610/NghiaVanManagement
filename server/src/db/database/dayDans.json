@@ -13,7 +13,6 @@
         "slug": "day-tran-ackp-50mm2",
         "__v": 0
     },
-
     {
         "_id": "6425988c62fd5fa59b9541c4",
         "name": "Dây trần ACKP 35mm2 (NC + MTC)",
@@ -28,7 +27,6 @@
         "slug": "day-tran-ackp-50mm2-(nc-+-mtc)",
         "__v": 0
     },
-
     {
         "_id": "6425988c62fd5fa59b9541cc",
         "name": "Lèo dây trần ACKP 50mm2",
@@ -50,7 +48,6 @@
         "slug": "cap-nhom-boc-acx-50/8-24kv",
         "__v": 0
     },
-
     {
         "_id": "6425988c62fd5fa59b9541d5",
         "name": "Cáp ACX 24kV/50mm2 (NC + MTC)",
@@ -58,7 +55,6 @@
         "slug": "cap-acx-24kv/50mm2-(nc-+-mtc)",
         "__v": 0
     },
-
     {
         "_id": "6425988c62fd5fa59b9541db",
         "name": "Lèo cáp nhôm bọc ACX 50/8-24kV",
@@ -101,7 +97,6 @@
         "slug": "cap-av50mm2",
         "__v": 0
     },
-
     {
         "_id": "6425988c62fd5fa59b9541e5",
         "name": "Cáp AV16mm2 (NC + MTC)",
@@ -130,7 +125,6 @@
         "slug": "cap-av50mm2-(nc-+-mtc)",
         "__v": 0
     },
-
     {
         "_id": "6425988c62fd5fa59b9541ed",
         "name": "Lèo cáp AV50mm2",
@@ -166,7 +160,6 @@
         "slug": "cap-cv50mm2",
         "__v": 0
     },
-
     {
         "_id": "6425988c62fd5fa59b9541f6",
         "name": "Cáp CV16mm2 (NC + MTC)",
@@ -195,7 +188,6 @@
         "slug": "cap-cv50mm2-(nc-+-mtc)",
         "__v": 0
     },
-
     {
         "_id": "6425988c62fd5fa59b9541fe",
         "name": "Cáp duplex DuCV 2x10mm2",
@@ -314,5 +306,12 @@
         "deleted": false,
         "slug": "cap-dong-boc-50mm2",
         "__v": 0
+    },
+    {
+        "_id": "6472ecc4e81a52c113f6e865",
+        "name": "No Value",
+        "__v": 0,
+        "deleted": false,
+        "slug": "no-value"
     }
 ]

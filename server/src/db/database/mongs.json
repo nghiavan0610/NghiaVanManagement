@@ -48,7 +48,6 @@
         "slug": "mong-tru-m8-ba",
         "__v": 0
     },
-
     {
         "_id": "641d932c10531208b7057de0",
         "name": "Móng gia cố trụ hạ thế Mac200 trụ 7,5m",
@@ -132,5 +131,12 @@
         "deleted": false,
         "slug": "muong-cap-ngam-ha-the-duoi-nen-xi-mang",
         "__v": 0
+    },
+    {
+        "_id": "6472eca6e81a52c113f6e75c",
+        "name": "No Value",
+        "__v": 0,
+        "deleted": false,
+        "slug": "no-value"
     }
 ]

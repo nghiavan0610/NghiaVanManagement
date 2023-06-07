@@ -40,5 +40,12 @@
         "deleted": false,
         "slug": "bo-da-composite-0,8m-do-la",
         "__v": 0
+    },
+    {
+        "_id": "6472ecd7e81a52c113f6e891",
+        "name": "No Value",
+        "__v": 0,
+        "deleted": false,
+        "slug": "no-value"
     }
 ]

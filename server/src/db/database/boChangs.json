@@ -33,5 +33,12 @@
         "deleted": false,
         "slug": "bo-day-chang-hep-tru-7,5m",
         "__v": 0
+    },
+    {
+        "_id": "6472ecdce81a52c113f6e8a1",
+        "name": "No Value",
+        "__v": 0,
+        "deleted": false,
+        "slug": "no-value"
     }
 ]
