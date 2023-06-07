@@ -19,6 +19,7 @@ class TimesheetController {
     async uploadFile(req, res, next) {
         try {
             const authUser = req.user;
+            const { projectSlug } = req.params;
             const formData = req.body;
             const files = req.files;
 
@@ -26,10 +27,10 @@ class TimesheetController {
                 throw new ApiError(404, 'Please upload your files');
             }
 
-            const timesheetDetail = await timesheetService.uploadFile(authUser, formData, files);
+            const timesheetDetail = await timesheetService.uploadFile(authUser, projectSlug, formData, files);
             res.status(201).json(response({ timesheetDetail }));
         } catch (err) {
-            if (req.files.length === 0) {
+            if (req.files.length !== 0) {
                 for (const file of req.files) {
                     await removeS3(file.key);
                 }

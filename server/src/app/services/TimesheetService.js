@@ -230,12 +230,14 @@ class TimesheetService {
             const { timesheetId } = formData;
             const timesheet = await Timesheet.findById(timesheetId)
                 .populate([
-                    { path: 'manager', select: '_id name' },
-                    { path: 'members', select: '_id name' },
+                    { path: 'project', select: 'name location' },
+                    { path: 'manager members', select: 'name' },
                     { path: 'timesheetDetails' },
                 ])
                 .lean()
                 .exec();
+
+            console.log(timesheet.project.name);
             if (!timesheet) throw new ApiError(404, `Timesheet was not found: ${timesheetId}`);
             if (!timesheet.timesheetDetail === 0)
                 throw new ApiError(404, `Project does not have a timesheet ${timesheet.monthYear}`);
@@ -268,7 +270,12 @@ class TimesheetService {
             ws.cell(startRow - 2, startCol + 16)
                 .string(`BẢNG CHẤM CÔNG THÁNG ${month}/${year}`)
                 .style({ ...titleStyle, font: { ...titleStyle.font, size: 15 } });
-
+            ws.cell(startRow - 5, startCol + 16)
+                .string(`${timesheet.project.name}`)
+                .style({ ...titleStyle, font: { ...titleStyle.font, size: 15 } });
+            ws.cell(startRow - 4, startCol + 16)
+                .string(`${timesheet.project.location}`)
+                .style({ ...titleStyle, font: { ...titleStyle.font, size: 13 } });
             ws.cell(startRow, startCol, startRow + 2, startCol, true)
                 .string('Mã số')
                 .style(titleStyle);
