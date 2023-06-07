@@ -1,5 +1,6 @@
 const summaryService = require('../services/SummaryService');
 const { response } = require('../../helpers/Response');
+const { removeS3 } = require('../../middlewares/S3Middleware');
 
 class SummaryController {
     // [POST] /v1/projects/:projectSlug/summary

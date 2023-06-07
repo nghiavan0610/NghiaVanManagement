@@ -40,9 +40,14 @@ class SummaryService {
     // [POST] /v1/projects/:projectSlug/summary
     async handleSummary(authUser, projectSlug, formData) {
         try {
-            const { isOriginal } = formData;
-            const project = await Project.findOne({ slug: projectSlug }).select('_id manager leaders members').exec();
-            if (!project) throw new ApiError(404, `Project was not found: ${projectSlug}`);
+            const { isOriginal, ...data } = formData;
+
+            let isTrue = isOriginal;
+            if (typeof isOriginal === 'string') {
+                isTrue = isOriginal === 'true';
+            }
+
+            const project = await projectService.getLeanProject(projectSlug);
 
             if (
                 authUser.role !== 'admin' &&
@@ -50,26 +55,32 @@ class SummaryService {
                 !project.leaders.some((leader) => leader.equals(authUser.id)) &&
                 !project.members.some((member) => member.equals(authUser.id))
             ) {
-                throw new ApiError(403, 'You do not have permission to access this project');
+                throw new ApiError(403, 'You do not have permission to edit this project');
             }
 
-            const summary = await Summary.findOneAndUpdate({ project: project._id, isOriginal: isOriginal }, formData, {
+            const summary = await Summary.findOneAndUpdate({ project: project._id, isOriginal: isTrue }, formData, {
                 upsert: true,
                 runValidators: true,
                 new: true,
             }).exec();
 
-            if (isOriginal) {
-                project.originalSummary = summary._id;
+            if (isTrue) {
+                const updatedSummary = await Summary.findOneAndUpdate(
+                    { project: project._id, isOriginal: false },
+                    data,
+                    {
+                        upsert: true,
+                        runValidators: true,
+                        new: true,
+                    },
+                ).exec();
 
-                const updatedSummary = await new Summary(summary.toObject());
-                updatedSummary._id = mongoose.Types.ObjectId();
-                updatedSummary.isOriginal = false;
-                await updatedSummary.save();
-
-                project.updatedSummary = updatedSummary._id;
+                await Project.updateOne(
+                    { _id: project._id },
+                    { originalSummary: summary._id, updatedSummary: updatedSummary._id },
+                );
             }
-            await project.save();
+
             return summary;
         } catch (err) {
             throw err;
@@ -83,8 +94,8 @@ class SummaryService {
                 .populate(populateProject('updatedSummary'))
                 .lean()
                 .exec();
-            if (!project) throw new ApiError(404, `Không tìm thấy dự án: ${projectSlug}`);
-            if (project.deleted) throw new ApiError(406, `Dự án này đã bị vô hiệu hóa`);
+            if (!project) throw new ApiError(404, `Project was not found: ${projectSlug}`);
+            if (project.deleted) throw new ApiError(406, `This project has been disabled!`);
 
             if (
                 authUser.role !== 'admin' &&
@@ -92,7 +103,7 @@ class SummaryService {
                 !project.leaders.some((leader) => leader.equals(authUser.id)) &&
                 !project.members.some((member) => member.equals(authUser.id))
             ) {
-                throw new ApiError(403, 'Bạn không có quyền truy cập vào tổng kê của dự án này');
+                throw new ApiError(403, `You do not have permission to access this project's summary`);
             }
 
             const workbook = new excel.Workbook({
@@ -145,10 +156,6 @@ class SummaryService {
             ws.cell(startRow, startCol + 5, startRow + 2, startCol + 5, true)
                 .string('Hình thức trụ')
                 .style(rotateStyle);
-            // ws.cell(1, 3, 1, 4, true).string('Đường dây').style(style);
-            // ws.cell(2, 3).string('Trung thế').style(style);
-            // ws.cell(2, 4).string('Hạ thế').style(style);
-            // ws.column(startCol + 5).freeze();
 
             let row = startRow + 3;
             let endCol;
@@ -730,7 +737,6 @@ class SummaryService {
                                     }
                                     temp += num;
                                 }
-                                // continue;
                             }
                         }
                     }
