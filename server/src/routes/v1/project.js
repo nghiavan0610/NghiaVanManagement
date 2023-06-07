@@ -17,7 +17,8 @@ router.post(
     timesheetController.uploadFile,
 );
 router.post('/:projectSlug/timesheet/delete-file', authenticateToken, timesheetController.deleteFile);
-router.put('/:projectSlug/timesheet/review', authenticateToken, timesheetController.updateTimesheet);
+router.put('/:projectSlug/timesheet/review', authenticateToken, timesheetController.reviewTimesheet);
+router.put('/:projectSlug/timesheet/leave-members', authenticateToken, timesheetController.leaveMembersTimesheet);
 
 // Summary
 router.post(

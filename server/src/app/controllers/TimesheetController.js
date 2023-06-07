@@ -51,12 +51,25 @@ class TimesheetController {
     }
 
     // [PUT] /v1/projects/:projectSlug/timesheet/review
-    async updateTimesheet(req, res, next) {
+    async reviewTimesheet(req, res, next) {
         try {
             const authUser = req.user;
             const { projectSlug } = req.params;
             const formData = req.body;
-            const timesheetDetail = await timesheetService.updateTimesheet(authUser, projectSlug, formData);
+            const timesheetDetail = await timesheetService.reviewTimesheet(authUser, projectSlug, formData);
+            res.status(201).json(response({ timesheetDetail }));
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    // [PUT] /v1/projects/:projectSlug/timesheet/leave-members
+    async leaveMembersTimesheet(req, res, next) {
+        try {
+            const authUser = req.user;
+            const { projectSlug } = req.params;
+            const formData = req.body;
+            const timesheetDetail = await timesheetService.leaveMembersTimesheet(authUser, projectSlug, formData);
             res.status(201).json(response({ timesheetDetail }));
         } catch (err) {
             next(err);
