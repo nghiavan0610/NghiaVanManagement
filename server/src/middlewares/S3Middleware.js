@@ -31,7 +31,12 @@ const uploadS3 = multer({
     }),
     fileFilter: (req, file, cb) => {
         const acceptedTypes = file.mimetype.split('/');
-        if (acceptedTypes[0] === 'image' || acceptedTypes[1] === 'pdf') {
+        if (
+            acceptedTypes[0] === 'image' ||
+            acceptedTypes[1] === 'pdf' ||
+            acceptedTypes[1] === 'vnd.ms-excel' ||
+            acceptedTypes[1] === 'vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        ) {
             cb(null, true);
         } else {
             cb(new Error('Invalid file type.'));
@@ -52,4 +57,17 @@ const removeS3 = async (key) => {
     }
 };
 
-module.exports = { uploadS3, removeS3 };
+const getS3 = async (key) => {
+    try {
+        const params = {
+            Bucket: config.S3_BUCKET,
+            Key: key,
+        };
+        const data = await s3.getObject(params).promise();
+        return data;
+    } catch (err) {
+        throw new ApiError(403, 'Failed to get file: ' + err.message);
+    }
+};
+
+module.exports = { uploadS3, removeS3, getS3 };

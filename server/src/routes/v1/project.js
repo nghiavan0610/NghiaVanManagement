@@ -20,6 +20,12 @@ router.post('/:projectSlug/timesheet/delete-file', authenticateToken, timesheetC
 router.put('/:projectSlug/timesheet/review', authenticateToken, timesheetController.updateTimesheet);
 
 // Summary
+router.post(
+    '/:projectSlug/summary/upload',
+    authenticateToken,
+    uploadS3.single('excel'),
+    summaryController.uploadSummary,
+);
 router.post('/:projectSlug/summary/download', authenticateToken, summaryController.downloadSummary);
 router.post('/:projectSlug/summary', authenticateToken, summaryController.handleSummary);
 

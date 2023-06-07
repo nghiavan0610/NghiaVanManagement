@@ -8,6 +8,20 @@ const models = require('../../db/models');
 const { getS3 } = require('../../middlewares/S3Middleware');
 const projectService = require('./ProjectService');
 
+// tools
+const countMaterialType = (array, startElement) => {
+    const startIndex = array.findIndex((elem) => elem.v === startElement);
+    let endIndex = array.findIndex((elem, index) => elem.v !== null && index > startIndex);
+
+    if (startIndex === -1) {
+        return -1;
+    }
+    if (endIndex === -1) {
+        endIndex = array.length;
+    }
+    return endIndex - startIndex;
+};
+
 const types = [
     { dayDans: { modelName: 'DayDan', vnName: 'Dây dẫn' } },
     { trus: { modelName: 'Tru', vnName: 'Trụ' } },
@@ -519,6 +533,212 @@ class SummaryService {
             ws.cell(row - 1, endCol).style({ border: { bottom: { style: 'thin', color: 'black' } } });
 
             return workbook;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    // [POST] /v1/projects/:projectSlug/summary/upload
+    async uploadSummary(authUser, projectSlug, formData, file) {
+        try {
+            const { isOriginal } = formData;
+            const excelFilePath = await getS3(file.key);
+
+            const workbook = xlsx.read(excelFilePath.Body);
+            const ws = workbook.Sheets[workbook.SheetNames[0]];
+
+            const range = xlsx.utils.decode_range(ws['!ref']);
+
+            const rows = [];
+            for (let rowNum = range.s.r; rowNum <= range.e.r; ++rowNum) {
+                let row = [];
+                for (let colNum = range.s.c; colNum <= range.e.c; ++colNum) {
+                    let cell = ws[xlsx.utils.encode_cell({ r: rowNum, c: colNum })];
+                    cell !== undefined ? row.push(cell) : row.push({ v: null });
+                }
+                rows.push(row);
+            }
+
+            const startRowIndex = rows.findIndex((row) => row.findIndex((cell) => /^số trụ.*/i.test(cell.v)) !== -1);
+            const startRow = startRowIndex + 1;
+            const isNewStartCol = materialStartCol - 1;
+
+            const isReassembledStartCol = rows[startRow - 1].findIndex((cell) => /^phần.*lắp lại$/i.test(cell.v));
+            const isRecalledStartCol = rows[startRow - 1].findIndex((cell) => /^phần.*thu hồi$/i.test(cell.v));
+
+            const isNewArr = rows[startRow].slice(isNewStartCol, isReassembledStartCol);
+            const isReassembledArr = rows[startRow].slice(isReassembledStartCol, isRecalledStartCol);
+            const isRecalledArr = rows[startRow].slice(isRecalledStartCol, -1);
+
+            const numberOfTitles = {
+                isNew: {},
+                isReassembled: {},
+                isRecalled: {},
+            };
+
+            for (let type of types) {
+                const { vnName } = Object.values(type)[0];
+                const number = countMaterialType(isNewArr, vnName);
+
+                if (!numberOfTitles.isNew[Object.keys(type)[0]] && number !== -1) {
+                    numberOfTitles.isNew[Object.keys(type)[0]] = number;
+                }
+            }
+            for (let type of types) {
+                const { vnName } = Object.values(type)[0];
+                const number = countMaterialType(isReassembledArr, vnName);
+
+                if (!numberOfTitles.isReassembled[Object.keys(type)[0]] && number !== -1) {
+                    numberOfTitles.isReassembled[Object.keys(type)[0]] = number;
+                }
+            }
+            for (let type of types) {
+                const { vnName } = Object.values(type)[0];
+                const number = countMaterialType(isRecalledArr, vnName);
+
+                if (!numberOfTitles.isRecalled[Object.keys(type)[0]] && number !== -1) {
+                    numberOfTitles.isRecalled[Object.keys(type)[0]] = number;
+                }
+            }
+
+            const data = { isOriginal, routes: [] };
+            let currentRoute;
+            let currentStation;
+            let currentPillar;
+            for (let r = startRow + 3 - 1; r < rows.length; r++) {
+                if (/^tuyến.*/i.test(rows[r][0].v)) {
+                    currentRoute = { name: rows[r][0].v, stations: [] };
+                    data.routes.push(currentRoute);
+                    continue;
+                }
+
+                if (/^nhánh.*/i.test(rows[r][0].v)) {
+                    currentStation = { name: rows[r][0].v, pillars: [] };
+                    currentRoute.stations.push(currentStation);
+                    continue;
+                }
+
+                if (!/^cộng|^tk|^cl/i.test(rows[r][0].v)) {
+                    const description =
+                        rows[r][isNewStartCol + isNewArr.length + isReassembledArr.length + isRecalledArr.length].v;
+
+                    currentPillar = {
+                        name: rows[r][0].v,
+                        completion: rows[r][1].v,
+                        distance: rows[r][2].v,
+                        neoDistance: rows[r][4].v,
+                        shape: rows[r][5].v,
+                        description,
+                        dayDans: [],
+                        trus: [],
+                        mongs: [],
+                        das: [],
+                        boChangs: [],
+                        tiepDias: [],
+                        xaSus: [],
+                        phuKiens: [],
+                        thietBis: [],
+                    };
+                    currentStation.pillars.push(currentPillar);
+
+                    for (const title in numberOfTitles) {
+                        let num;
+
+                        if (title === 'isNew') {
+                            let temp = 0;
+
+                            for (const materialType in numberOfTitles[title]) {
+                                const findModel = types.find((type) => type.hasOwnProperty(materialType));
+                                const model = findModel[materialType].modelName;
+
+                                num = numberOfTitles[title][materialType];
+
+                                const noValue = await models[model].findOne({ slug: 'no-value' }, '_id').exec();
+
+                                for (let c = isNewStartCol + temp; c < isNewStartCol + temp + num; c++) {
+                                    const material = await models[model]
+                                        .findOne({ name: rows[startRow + 2 - 1][c].v }, '_id')
+                                        .exec();
+
+                                    const materialId = material ? material._id.toString() : noValue._id.toString();
+
+                                    currentPillar[materialType].push({
+                                        detail: materialId,
+                                        quantity: rows[r][c].v,
+                                        comment: rows[r][c].c ? rows[r][c].c[0].t : null,
+                                    });
+                                }
+                                temp += num;
+                            }
+                        } else if (title === 'isReassembled') {
+                            if (Object.keys(numberOfTitles.isReassembled).length !== 0) {
+                                let temp = 0;
+
+                                for (const materialType in numberOfTitles[title]) {
+                                    const findModel = types.find((type) => type.hasOwnProperty(materialType));
+                                    const model = findModel[materialType].modelName;
+
+                                    num = numberOfTitles[title][materialType];
+
+                                    const noValue = await models[model].findOne({ slug: 'no-value' }, '_id').exec();
+
+                                    for (
+                                        let c = isReassembledStartCol + temp;
+                                        c < isReassembledStartCol + temp + num;
+                                        c++
+                                    ) {
+                                        const material = await models[model]
+                                            .findOne({ name: rows[startRow + 2 - 1][c].v }, '_id')
+                                            .exec();
+
+                                        const materialId = material ? material._id.toString() : noValue._id.toString();
+                                        currentPillar[materialType].push({
+                                            detail: materialId,
+                                            quantity: rows[r][c].v,
+                                            comment: rows[r][c].c ? rows[r][c].c[0].t : null,
+                                            isReassembled: true,
+                                        });
+                                    }
+                                    temp += num;
+                                }
+                            }
+                        } else if (title === 'isRecalled') {
+                            if (Object.keys(numberOfTitles.isRecalled).length !== 0) {
+                                let temp = 0;
+
+                                for (const materialType in numberOfTitles[title]) {
+                                    const findModel = types.find((type) => type.hasOwnProperty(materialType));
+                                    const model = findModel[materialType].modelName;
+
+                                    num = numberOfTitles[title][materialType];
+
+                                    const noValue = await models[model].findOne({ slug: 'no-value' }, '_id').exec();
+
+                                    for (let c = isRecalledStartCol + temp; c < isRecalledStartCol + temp + num; c++) {
+                                        const material = await models[model]
+                                            .findOne({ name: rows[startRow + 2 - 1][c].v }, '_id')
+                                            .exec();
+
+                                        const materialId = material ? material._id.toString() : noValue._id.toString();
+
+                                        currentPillar[materialType].push({
+                                            detail: materialId,
+                                            quantity: rows[r][c].v,
+                                            comment: rows[r][c].c ? rows[r][c].c[0].t : null,
+                                            isRecalled: true,
+                                        });
+                                    }
+                                    temp += num;
+                                }
+                                // continue;
+                            }
+                        }
+                    }
+                }
+            }
+
+            const summary = await this.handleSummary(authUser, projectSlug, data);
+            return summary;
         } catch (err) {
             throw err;
         }

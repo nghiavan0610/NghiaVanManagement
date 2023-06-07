@@ -26,6 +26,25 @@ class SummaryController {
             next(err);
         }
     }
+
+    // [POST] /v1/projects/:projectSlug/summary/upload
+    async uploadSummary(req, res, next) {
+        try {
+            const authUser = req.user;
+            const formData = req.body;
+            const { projectSlug } = req.params;
+
+            const file = req.file;
+            if (!file) throw new ApiError(404, 'Vui lòng tải lên tệp tin của bạn');
+
+            const summary = await summaryService.uploadSummary(authUser, projectSlug, formData, file);
+            res.status(200).json(response({ summary }));
+        } catch (err) {
+            if (req.file) await removeS3(req.file.key);
+
+            next(err);
+        }
+    }
 }
 
 module.exports = new SummaryController();
