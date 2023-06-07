@@ -75,6 +75,18 @@ class TimesheetController {
             next(err);
         }
     }
+
+    // [POST] /v1/projects/:projectSlug/timesheet/download
+    async downloadTimesheet(req, res, next) {
+        try {
+            const authUser = req.user;
+            const formData = req.body;
+            const workbook = await timesheetService.downloadTimesheet(authUser, formData);
+            workbook.write('timesheet.xlsx', res);
+        } catch (err) {
+            next(err);
+        }
+    }
 }
 
 module.exports = new TimesheetController();
