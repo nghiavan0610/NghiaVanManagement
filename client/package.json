@@ -12,15 +12,18 @@
         "format": "npm run prettier:fix && npm run lint:fix"
     },
     "dependencies": {
-        "@chakra-ui/react": "^1.8.9",
+        "@chakra-ui/react": "^2.7.0",
         "@emotion/react": "^11.10.6",
         "@emotion/styled": "^11.10.6",
         "@jomari-wp/react-doc-viewer": "^1.13.3",
         "@reduxjs/toolkit": "^1.8.3",
-        "axios": "^0.27.2",
+        "axios": "^1.4.0",
         "date-fns": "^2.28.0",
         "file-saver": "^2.0.5",
+        "forgetti": "^0.3.0",
         "framer-motion": "^6.5.1",
+        "immer": "^10.0.2",
+        "million": "^2.4.2",
         "react": "^18.2.0",
         "react-detect": "^1.0.12",
         "react-dom": "^18.2.0",
@@ -50,6 +53,7 @@
         "prettier": "^2.7.1",
         "sass": "^1.49.0",
         "tailwindcss": "^3.2.7",
-        "vite": "^2.7.2"
+        "vite": "^4.3.9",
+        "vite-plugin-forgetti": "^0.6.0"
     }
 }
