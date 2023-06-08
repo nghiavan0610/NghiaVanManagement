@@ -4,11 +4,11 @@ const { authenticateToken } = require('../../middlewares/AuthMiddleware');
 const filterModel = require('../../middlewares/FilterMiddleware');
 const materialController = require('../../app/controllers/MaterialController');
 
-router.put('/:materialId/edit', authenticateToken, materialController.editMaterial);
-router.delete('/:materialId/delete', authenticateToken, materialController.deleteMaterial);
-router.post('/create', authenticateToken, materialController.createMaterial);
+router.put('/:materialId', authenticateToken, materialController.editMaterial);
+router.delete('/:materialId', authenticateToken, materialController.deleteMaterial);
+router.post('/create-material', authenticateToken, materialController.createMaterial);
 
 router.get('/:materialSlug', authenticateToken, materialController.getMaterialBySlug);
-router.get('/', authenticateToken, filterModel('Material', false), materialController.getAllMaterials);
+router.get('/', authenticateToken, filterModel('Material', false, false), materialController.getAllMaterials);
 
 module.exports = router;

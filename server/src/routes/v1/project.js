@@ -9,7 +9,6 @@ const { uploadS3 } = require('../../middlewares/S3Middleware');
 const summaryController = require('../../app/controllers/SummaryController');
 
 // Timesheet
-router.get('/:projectSlug/timesheet', authenticateToken, timesheetController.getTimesheet);
 router.post(
     '/:projectSlug/timesheet/upload-file',
     authenticateToken,
@@ -17,9 +16,10 @@ router.post(
     timesheetController.uploadFile,
 );
 router.post('/:projectSlug/timesheet/delete-file', authenticateToken, timesheetController.deleteFile);
+router.post('/:projectSlug/timesheet/download', authenticateToken, timesheetController.downloadTimesheet);
 router.put('/:projectSlug/timesheet/review', authenticateToken, timesheetController.reviewTimesheet);
 router.put('/:projectSlug/timesheet/leave-members', authenticateToken, timesheetController.leaveMembersTimesheet);
-router.post('/:projectSlug/timesheet/download', authenticateToken, timesheetController.downloadTimesheet);
+router.get('/:projectSlug/timesheet', authenticateToken, timesheetController.getTimesheet);
 
 // Summary
 router.post(
@@ -32,14 +32,9 @@ router.post('/:projectSlug/summary/download', authenticateToken, summaryControll
 router.post('/:projectSlug/summary', authenticateToken, summaryController.handleSummary);
 
 // Project
-router.post('/create', authenticateToken, requireRole('admin', 'manager'), projectController.createProject);
-router.put('/:projectSlug/edit', authenticateToken, requireRole('admin', 'manager'), projectController.updateProject);
-router.delete(
-    '/:projectSlug/delete',
-    authenticateToken,
-    requireRole('admin', 'manager'),
-    projectController.deleteProject,
-);
+router.put('/:projectSlug', authenticateToken, requireRole('admin', 'manager'), projectController.updateProject);
+router.delete('/:projectSlug', authenticateToken, requireRole('admin', 'manager'), projectController.deleteProject);
+router.post('/create-project', authenticateToken, requireRole('admin', 'manager'), projectController.createProject);
 
 router.get('/:projectSlug', authenticateToken, projectController.getProjectBySlug);
 router.get('/', authenticateToken, filterModel('Project'), projectController.getAllProjects);
