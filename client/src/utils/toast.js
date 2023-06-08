@@ -1,6 +1,6 @@
-import { createStandaloneToast } from '@chakra-ui/toast';
+import { createStandaloneToast } from '@chakra-ui/react'
 
-const toast = createStandaloneToast();
+const { ToastContainer, toast } = createStandaloneToast()
 
 export const showToast = (
   status,

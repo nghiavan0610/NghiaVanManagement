@@ -16,13 +16,15 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import ErrorMessage from '../../utils/ErrorMessage';
 import Select from 'react-tailwindcss-select';
+import { IoAdd } from 'react-icons/io5';
+import AddNewMaterial from './AddNewMaterial';
 
 /**
  *
  * @children Pass in the button
  */
 
-const AddMaterial = ({ children, matList, currentMatList, onAddedMaterial, onSubmit: parentOnSubmit }) => {
+const AddMaterial = ({ children, matList, currentMatList, onAddedMaterial, matType }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const initialRef = React.useRef();
@@ -35,7 +37,7 @@ const AddMaterial = ({ children, matList, currentMatList, onAddedMaterial, onSub
   } = useForm();
 
   const onSubmit = (data) => {
-    parentOnSubmit(data);
+    // parentOnSubmit(data);
     onClose();
   };
 
@@ -58,9 +60,12 @@ const AddMaterial = ({ children, matList, currentMatList, onAddedMaterial, onSub
     return currentMatList.map((mat) => {
       let name = "";
       for (let i = 0; i < matList?.length; i++) {
-        if (matList[i]._id === mat.split('_')[0]) {
-          if (mat.split('_')[1])
+        const [matId, matStat] = mat.split('_');
+        if (matList[i]._id === matId) {
+          if (matStat === 'isRecalled')
             name = `${matList[i].name} (thu hồi)`;
+          else if (matStat === 'isReassembled')
+            name = `${matList[i].name} (lắp lại)`;
           else
             name = matList[i].name;
           break;
@@ -74,13 +79,17 @@ const AddMaterial = ({ children, matList, currentMatList, onAddedMaterial, onSub
   });
 
   const [addedMatNormal, setAddedMatNormal] = useState(() => addedMat.filter((mat) => !mat.value.split('_')[1]))
-  const [addedMatRecalled, setAddedMatRecalled] = useState(() => addedMat.filter((mat) => mat.value.split('_')[1]))
+  const [addedMatRecalled, setAddedMatRecalled] = useState(() => addedMat.filter((mat) => mat.value.split('_')[1] === 'isRecalled'))
+  const [addedMatReassembled, setAddedMatReassembled] = useState(() => addedMat.filter((mat) => mat.value.split('_')[1] === 'isReassembled'))
 
   const handleChangeNormal = value => {
     setAddedMatNormal(value);
   };
   const handleChangeRecalled = value => {
     setAddedMatRecalled(value);
+  };
+  const handleChangeReassembled = value => {
+    setAddedMatReassembled(value);
   };
 
   return (
@@ -142,6 +151,28 @@ const AddMaterial = ({ children, matList, currentMatList, onAddedMaterial, onSub
               />
               {renderError('materialName_isRecalled')}
             </FormControl>
+
+            <FormControl className='mt-2'>
+              <FormLabel>
+                Danh sách vật tư (lắp lại)
+              </FormLabel>
+              <Select
+                primaryColor={"indigo"}
+                value={addedMatReassembled}
+                isSearchable
+                onChange={(selectedOption) => {
+                  handleChangeReassembled(selectedOption);
+                }}
+                options={matList?.map((mat) => {
+                  return {
+                    value: `${mat._id}_isReassembled`,
+                    label: `${mat.name} (lắp lại)`
+                  }
+                }) || []}
+                isMultiple={true}
+              />
+              {renderError('materialName_isReassembled')}
+            </FormControl>
           </ModalBody>
 
           <ModalFooter>
@@ -149,7 +180,7 @@ const AddMaterial = ({ children, matList, currentMatList, onAddedMaterial, onSub
               Hủy
             </Button>
             <Button background='primary' color='white' type='submit' onClick={() => {
-              let _addedMat = ([...addedMatNormal, ...addedMatRecalled])
+              let _addedMat = ([...addedMatNormal, ...addedMatRecalled, ...addedMatReassembled])
               if (_addedMat != null) {
                 onAddedMaterial(_addedMat.map((m) => {
                   return m.value

@@ -37,7 +37,7 @@ import { FaPlus } from 'react-icons/fa';
  * @children Pass in the button
  */
 
-const AddLocation = ({ type, onAddedLocation, children, setDisableBottomButton, parentIndex, index }) => {
+const AddLocation = ({ type, onAddedLocation, children, disableBottomButtonRef, parentIndex, index }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const initialRef = React.useRef();
@@ -104,14 +104,26 @@ const AddLocation = ({ type, onAddedLocation, children, setDisableBottomButton, 
       >
         <PopoverTrigger>
           <IconButton size='sm'
-            onMouseOver={() => type !== "route" && setDisableBottomButton(true)}
-            onMouseLeave={() => type !== "route" && setDisableBottomButton(false)}
+            onMouseOver={() => {
+              if (type !== 'route')
+                disableBottomButtonRef.current = true
+            }}
+            onMouseLeave={() => {
+              if (type !== 'route')
+                disableBottomButtonRef.current = false
+            }}
             background="#dddddd33" color="white" icon={<FaPlus />} />
         </PopoverTrigger>
         <Portal>
           <PopoverContent
-            onMouseOver={() => type !== "route" && setDisableBottomButton(true)}
-            onMouseLeave={() => type !== "route" && setDisableBottomButton(false)}
+            onMouseOver={() => {
+              if (type !== 'route')
+                disableBottomButtonRef.current = true
+            }}
+            onMouseLeave={() => {
+              if (type !== 'route')
+                disableBottomButtonRef.current = false
+            }}
             as='form' onSubmit={handleSubmit(onSubmit)}
           >
             <PopoverArrow />
@@ -120,7 +132,7 @@ const AddLocation = ({ type, onAddedLocation, children, setDisableBottomButton, 
                 <FormLabel>
                   Tên {title} <span className='text-red-500'>*</span>
                 </FormLabel>
-                <Textarea 
+                <Textarea
                   ref={initialRef}
                   placeholder={`Tên ${title}`}
                   {...register('locationName', { required: true })}

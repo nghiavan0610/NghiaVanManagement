@@ -4,9 +4,10 @@ import logo from '../images/company-logo.svg';
 import UserMenu from './header/UserMenu';
 import { useSelector } from 'react-redux';
 
-import { FaUserFriends, FaUser, FaTools } from 'react-icons/fa';
-import { AiFillProject } from 'react-icons/ai';
+import { FaUserFriends, FaUser, FaTools, FaHammer } from 'react-icons/fa';
+import { AiFillProject, AiFillTool } from 'react-icons/ai';
 import { Flex } from '@chakra-ui/react';
+import { TbTool } from 'react-icons/tb';
 
 function Header() {
   const { role } = useSelector((state) => state.user.auth);
@@ -47,7 +48,7 @@ function Header() {
             <div className='flex gap-2'>
               <PageButton path='/du-an' icon={<AiFillProject />} title='Dự án' />
               <PageButton path='/nguoi-dung' icon={<FaUserFriends />} title='Người dùng' />
-              <PageButton path='/vat-tu' icon={<FaTools />} title='Vật tư' />
+              <PageButton path='/vat-tu' icon={<FaHammer />} title='Vật tư' />
               <PageButton path='/thong-tin' icon={<FaUser />} title='Thông tin tài khoản' />
               <div></div>
             </div>

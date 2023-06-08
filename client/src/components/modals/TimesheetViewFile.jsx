@@ -11,13 +11,15 @@ import TimesheetFileUpload from './TimesheetFileUpload';
 import { MdRule, MdEditNote, MdInsertDriveFile, MdCheck, MdClose } from 'react-icons/md';
 import { IoTrash } from 'react-icons/io5';
 
-const TimesheetViewFile = ({ children, timesheetDetail, slug, workDate, isManager, isLeader, isMember, isAdmin }) => {
+const TimesheetViewFile = ({ children, timesheetDetail, slug, isManager, isLeader, isMember, isAdmin }) => {
     const [selected, setSelected] = useState(null);
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     const dispatch = useDispatch();
     const { isOpen: isOpenPopoverApprove, onOpen: onOpenPopoverApprove, onClose: onClosePopoverApprove } = useDisclosure();
     const { isOpen: isOpenPopoverComment, onOpen: onOpenPopoverComment, onClose: onClosePopoverComment } = useDisclosure();
+
+    const workDate = timesheetDetail.workDate;
 
     const childrenWithProps = React.Children.map(children, (child) => {
         if (React.isValidElement(child)) {
@@ -48,6 +50,7 @@ const TimesheetViewFile = ({ children, timesheetDetail, slug, workDate, isManage
         const data = {
             ...formData,
             timesheetId: timesheetDetail.timesheet,
+            shift: timesheetDetail.shift,
             workDate: workDate
         };
         await dispatch(reviewTimesheet({ data, slug }))
@@ -60,6 +63,7 @@ const TimesheetViewFile = ({ children, timesheetDetail, slug, workDate, isManage
             isApproved: true,
             proofId: selected._id,
             workDate: workDate,
+            shift: timesheetDetail.shift,
             comment: timesheetDetail.comment
         };
         await dispatch(reviewTimesheet({ data, slug }))
@@ -72,6 +76,7 @@ const TimesheetViewFile = ({ children, timesheetDetail, slug, workDate, isManage
             isApproved: false,
             proofId: selected._id,
             workDate: workDate,
+            shift: timesheetDetail.shift,
             comment: timesheetDetail.comment
         };
         await dispatch(reviewTimesheet({ data, slug }))
@@ -83,6 +88,10 @@ const TimesheetViewFile = ({ children, timesheetDetail, slug, workDate, isManage
         hour12: false, hour: "2-digit", minute: "2-digit", second: "2-digit", day: "2-digit", month: "2-digit", year: "numeric",
     });
 
+    const formattedWorkDate = new Date(workDate).toLocaleString("vi-VN", {
+        day: "2-digit", month: "2-digit", year: "numeric",
+    });
+
     return (
         <>
             {/* Button */}
@@ -92,13 +101,14 @@ const TimesheetViewFile = ({ children, timesheetDetail, slug, workDate, isManage
                 {timesheetDetail.proofs?.length > 0 ? <ModalContent maxW='100vw' maxH='95vh'>
                     <ModalHeader className='flex justify-between items-center'>
                         <div className='flex flex-col justify-between -mb-2 align-left'>
+                            <div><span className='font-bold text-lg'>Ngày: </span> <span className='font-normal text-lg'>{`${formattedWorkDate} (ca ${timesheetDetail.shift === 'morning' ? 'sáng' : 'chiều'})`}</span></div>
                             <div><span className='font-bold text-lg'>Ghi chú: </span> <span className='font-normal text-lg'>{`${timesheetDetail?.comment ?? "Không có"}`}</span></div>
                             <div className='-mt-2'>
                                 <span className='font-normal text-xs'>{`Cập nhật lúc ${formattedTimestamp}`}</span>
                             </div>
                         </div>
                         <div className='mt-6 flex'>
-                            <TimesheetFileUpload _workDate={workDate} timesheetId={timesheetDetail.timesheet} slug={slug}>
+                            <TimesheetFileUpload _workDate={workDate} _shift={timesheetDetail.shift} timesheetId={timesheetDetail.timesheet} slug={slug}>
                                 <Button
                                     className='mr-2'
                                     leftIcon={<MdInsertDriveFile />}
@@ -236,6 +246,8 @@ const TimesheetViewFile = ({ children, timesheetDetail, slug, workDate, isManage
                 </ModalContent> : <ModalContent>
                     <ModalHeader className='flex justify-between items-center'>
                         <div className='flex flex-col justify-between -mb-2 align-left'>
+
+                            <div><span className='font-bold text-lg'>Ngày: </span> <span className='font-normal text-lg'>{`${formattedWorkDate} (ca ${timesheetDetail.shift === 'morning' ? 'sáng' : 'chiều'})`}</span></div>
                             <div><span className='font-bold text-lg'>Ghi chú: </span> <span className='font-normal text-lg'>{`${timesheetDetail?.comment ?? "Không có"}`}</span></div>
                             <div className='-mt-2'>
                                 <span className='font-normal text-xs'>{`Cập nhật lúc ${formattedTimestamp}`}</span>
@@ -280,7 +292,7 @@ const TimesheetViewFile = ({ children, timesheetDetail, slug, workDate, isManage
                                 </PopoverFooter>
                             </PopoverContent>
                         </Popover>
-                        <TimesheetFileUpload _workDate={workDate} timesheetId={timesheetDetail.timesheet} slug={slug}>
+                        <TimesheetFileUpload _workDate={workDate} _shift={timesheetDetail.shift} timesheetId={timesheetDetail.timesheet} slug={slug}>
                             <Button
                                 className='ml-auto'
                                 leftIcon={<MdInsertDriveFile />}

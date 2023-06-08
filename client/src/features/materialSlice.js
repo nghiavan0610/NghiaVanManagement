@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { axios } from '../utils/axios';
+import { axios_instance } from '../utils/axios';
 import { showToast } from '../utils/toast';
 
 const initialState = {
@@ -10,7 +10,7 @@ const initialState = {
 
 const getMaterial = async (materialType) => {
     let url = `/materials?materialType=${materialType}&search=`;
-    const { data } = await axios(url)
+    const { data } = await axios_instance(url)
 
     return data.data[materialType];
 };
@@ -47,7 +47,7 @@ export const addMaterial = createAsyncThunk(
     async (formData, thunkAPI) => {
         try {
             const matType = formData.materialType
-            await axios.post(`/materials/create`, formData);
+            await axios_instance.post(`/materials/create`, formData);
             const data = await getMaterial(matType)
             return { matType, data }
         } catch (error) {
@@ -62,7 +62,7 @@ export const editMaterial = createAsyncThunk(
     async ({ matId, formData }, thunkAPI) => {
         try {
             const matType = formData.materialType
-            await axios.put(`/materials/${matId}/edit`, formData);
+            await axios_instance.put(`/materials/${matId}`, formData);
             const data = await getMaterial(matType)
             return { matType, data }
         } catch (error) {
@@ -77,7 +77,7 @@ export const removeMaterial = createAsyncThunk(
     async ({ matId, formData }, thunkAPI) => {
         try {
             const matType = formData.materialType
-            await axios.delete(`/materials/${matId}/delete`, { data: formData });
+            await axios_instance.delete(`/materials/${matId}`, { data: formData });
             const data = await getMaterial(matType)
             return { matType, data }
         } catch (error) {

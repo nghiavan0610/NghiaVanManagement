@@ -25,10 +25,28 @@ function TotalsPanel({ detail, isManager, isLeader, isMember }) {
   }, [detail.updatedSummary]);
 
   const addSample = () => {
+    // let _data = {
+    //   "isOriginal": true,
+    //   "routes": []
+    // };
     let _data = {
       "isOriginal": true,
-      "routes": []
-    };
+      "routes": [
+        {
+          "name": "Tuyến: A",
+          "stations": [
+            {
+              "name": " Nhánh: a",
+              "pillars": [
+                {
+                  "name": "1"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
     setData(_data);
   };
 

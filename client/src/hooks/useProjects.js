@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { Link, Navigate } from 'react-router-dom';
-import { axios } from '../utils/axios';
+import { axios_instance } from '../utils/axios';
 import { showToast } from '../utils/toast';
 
 const getProjects = ({ queryKey }) => {
@@ -14,7 +14,7 @@ const getProjects = ({ queryKey }) => {
   else
     url = '/users/my-projects'
 
-  return axios(url);
+  return axios_instance(url);
 };
 
 export const useProjects = (keyword) => {
@@ -32,7 +32,7 @@ export const useProjects = (keyword) => {
 export const useAddProject = () => {
   const queryClient = useQueryClient();
 
-  return useMutation('add-project', (data) => axios.post('/projects/create', data), {
+  return useMutation('add-project', (data) => axios_instance.post('/projects/create-project', data), {
     onSuccess: () => {
       showToast('success', 'Đã thêm dự án');
       queryClient.invalidateQueries(['projects']);

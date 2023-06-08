@@ -35,7 +35,7 @@ import ErrorMessage from '../../utils/ErrorMessage';
  * @children Pass in the button
  */
 
-const EditLocation = ({ type, name, onChangedLocation, setDisableBottomButton, onDeletedLocation, children, onSubmit: parentOnSubmit, isOpen = false, onClose }) => {
+const EditLocation = ({ type, name, onChangedLocation, disableBottomButtonRef, onDeletedLocation, children, onSubmit: parentOnSubmit, isOpen = false, onClose }) => {
     const { _, onOpen, __ } = useDisclosure();
     const initialRef = React.useRef();
     const finalRef = React.useRef();
@@ -93,8 +93,14 @@ const EditLocation = ({ type, name, onChangedLocation, setDisableBottomButton, o
                 <PopoverTrigger><div></div></PopoverTrigger>
                 <Portal>
                     <PopoverContent as='form' onSubmit={handleSubmit(onSubmit)}
-                        onMouseOver={() => type !== "pillar" && setDisableBottomButton(true)}
-                        onMouseLeave={() => type !== "pillar" && setDisableBottomButton(false)}
+                        onMouseOver={() => {
+                            // if (type !== 'route')
+                                disableBottomButtonRef.current = true
+                        }}
+                        onMouseLeave={() => {
+                            // if (type !== 'route')
+                                disableBottomButtonRef.current = false
+                        }}
                     >
                         <PopoverArrow />
                         <PopoverBody>

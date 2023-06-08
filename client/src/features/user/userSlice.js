@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import Cookies from 'universal-cookie';
-import { axios } from '../../utils/axios';
+import { axios_instance } from '../../utils/axios';
 import { showToast } from '../../utils/toast';
 
 const initialState = {
@@ -12,7 +12,7 @@ const initialState = {
 
 export const login = createAsyncThunk('login', async (formData, thunkAPI) => {
   try {
-    const { data } = await axios.post('/auth/signin', formData);
+    const { data } = await axios_instance.post('/auth/signin', formData);
     return data;
   } catch (error) {
     console.dir(error);
@@ -24,7 +24,7 @@ export const getMe = createAsyncThunk('getMe', async (_, thunkAPI) => {
   try {
     const cookies = new Cookies();
     const slug = cookies.get('user-slug');
-    const { data } = await axios(`/users/${slug}`);
+    const { data } = await axios_instance(`/users/${slug}`);
     return data;
   } catch (error) {
     return thunkAPI.rejectWithValue({ error: error.response.data.error });
@@ -35,7 +35,7 @@ export const getUsers = createAsyncThunk(
   'getUsers',
   async (thunkAPI) => {
     try {
-      const { data } = await axios(`users?search=&job_title=&page=&limit=9999`);
+      const { data } = await axios_instance(`users?search=&job_title=&page=&limit=9999`);
       return data.data.users;
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.response.data.error });
@@ -45,7 +45,7 @@ export const getUsers = createAsyncThunk(
 
 export const getUser = createAsyncThunk('getUser', async (slug, thunkAPI) => {
   try {
-    const { data } = await axios(`users/${slug}`);
+    const { data } = await axios_instance(`users/${slug}`);
     return data.data;
   } catch (error) {
     return thunkAPI.rejectWithValue({ error: error.response.data.error });
@@ -56,7 +56,7 @@ export const createUser = createAsyncThunk(
   'createUser',
   async (formData, thunkAPI) => {
     try {
-      const { data } = await axios.post(`users/create`, formData);
+      const { data } = await axios_instance.post(`users/create-user`, formData);
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.response.data.message });
@@ -68,7 +68,7 @@ export const updateUser = createAsyncThunk(
   'updateUser',
   async (formData, thunkAPI) => {
     try {
-      const { data } = await axios.put(`users/${formData.slug}/edit-account`, formData);
+      const { data } = await axios_instance.put(`users/${formData.slug}/edit-account`, formData);
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.response.data.message });
@@ -80,7 +80,7 @@ export const updateUserSecurity = createAsyncThunk(
   'updateUserSecurity',
   async ({ self, slug, formData }, thunkAPI) => {
     try {
-      const { data } = await axios.put(`users/${slug}/edit-security`, formData);
+      const { data } = await axios_instance.put(`users/${slug}/edit-security`, formData);
       return { data, self };
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.response.data.message });
@@ -92,7 +92,7 @@ export const deleteUser = createAsyncThunk(
   'deleteUser',
   async ({ slug, password }, thunkAPI) => {
     try {
-      await axios.post(`users/${slug}/delete`, { data: { 'confirmPassword': password } });
+      await axios_instance.post(`users/${slug}/delete`, { data: { 'confirmPassword': password } });
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.response.data.message });
     }
@@ -103,7 +103,7 @@ export const forceDeleteUser = createAsyncThunk(
   'forceDeleteUser',
   async ({ slug, password }, thunkAPI) => {
     try {
-      await axios.post(`users/${slug}/force-delete`, { data: { 'confirmPassword': password } });
+      await axios_instance.post(`users/${slug}/force-delete`, { data: { 'confirmPassword': password } });
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.response.data.message });
     }
@@ -114,8 +114,8 @@ export const restoreUser = createAsyncThunk(
   'restoreUser',
   async ({ slug, password }, thunkAPI) => {
     try {
-      await axios.patch(`/users/${slug}/restore`, { 'confirmPassword': password });
-      const { data } = await axios(`users?search=&job_title=&page=&limit=9999`);
+      await axios_instance.patch(`/users/${slug}/restore`, { 'confirmPassword': password });
+      const { data } = await axios_instance(`users?search=&job_title=&page=&limit=9999`);
       return data.data.users;
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.response.data.message });

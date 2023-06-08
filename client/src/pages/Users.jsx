@@ -167,7 +167,7 @@ const Users = () => {
                         </div>
                         <Popover>
                           <PopoverTrigger>
-                            <IconButton variant='outline' border={false} _hover={{}} className='ml-2 -mt-0.5' icon={filteredJobs.sort().toString() === defaultJobs.map((job) => job._id).sort().toString() ? <MdFilterAltOff /> : <MdFilterAlt />}></IconButton>
+                            <IconButton variant='outline' border={false} _hover={{}} className='ml-2 -mt-0.5 text-white' icon={filteredJobs.sort().toString() === defaultJobs.map((job) => job._id).sort().toString() ? <MdFilterAltOff /> : <MdFilterAlt />}></IconButton>
                           </PopoverTrigger>
                           <Portal>
                             <PopoverContent className='w-auto'>
@@ -197,7 +197,7 @@ const Users = () => {
                         </div>
                         <Popover>
                           <PopoverTrigger>
-                            <IconButton variant='outline' border={false} _hover={{}} className='ml-2 -mt-0.5' icon={filteredRole.sort().toString() === defaultRoles.sort().toString() ? <MdFilterAltOff /> : <MdFilterAlt />}></IconButton>
+                            <IconButton variant='outline' border={false} _hover={{}} className='ml-2 -mt-0.5 text-white' icon={filteredRole.sort().toString() === defaultRoles.sort().toString() ? <MdFilterAltOff /> : <MdFilterAlt />}></IconButton>
                           </PopoverTrigger>
                           <Portal>
                             <PopoverContent className='w-auto'>
@@ -224,7 +224,7 @@ const Users = () => {
                       <div className='w-[84px] mx-auto'>Trạng thái
                         <Popover>
                           <PopoverTrigger>
-                            <IconButton variant='outline' border={false} _hover={{}} className='ml-2 -mt-0.5' icon={filteredStatus.sort().toString() === defaultStatus.sort().toString() ? <MdFilterAltOff /> : <MdFilterAlt />}></IconButton>
+                            <IconButton variant='outline' border={false} _hover={{}} className='ml-2 -mt-0.5 text-white' icon={filteredStatus.sort().toString() === defaultStatus.sort().toString() ? <MdFilterAltOff /> : <MdFilterAlt />}></IconButton>
                           </PopoverTrigger>
                           <Portal>
                             <PopoverContent className='w-auto'>

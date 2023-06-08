@@ -20,22 +20,11 @@ import {
   Th,
   Thead,
   Tr,
-  useDisclosure,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverBody,
-  PopoverArrow,
-  IconButton,
   Badge,
-  FormControl,
-  FormLabel,
-  ModalCloseButton,
 } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import React, { useState } from 'react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
-import { CgCloseO } from 'react-icons/cg';
 import { FaTrash } from 'react-icons/fa';
 import { IoAdd } from 'react-icons/io5';
 import { MdModeEdit } from 'react-icons/md';
@@ -51,7 +40,6 @@ import {
 import { showToast } from '../../utils/toast';
 import AddProject from '../modals/AddProject';
 import EmployeeModal from '../modals/Employee';
-import { Input } from 'postcss';
 import DeleteProject from '../modals/DeleteProject';
 
 function InfoPanel({ detail }) {
@@ -60,7 +48,7 @@ function InfoPanel({ detail }) {
   const queryClient = useQueryClient();
   const { role, _id } = useSelector((state) => state.user.auth);
 
-  const { location, startedAt, description, name, code, leaders, manager, members, slug, isDone } = detail;
+  const { location, startedAt, description, name, code, leaders, manager, members, slug, isDone, progress } = detail;
 
   const delProject = async () => {
     await dispatch(deleteProject(slug));
@@ -222,13 +210,19 @@ function InfoPanel({ detail }) {
             <strong>Mô tả: </strong>{' '}
             {description}
           </p>
-          <p className='mb-3'>
+          <p className='mb-3 flex items-center gap-2'>
             <strong>Trạng thái: </strong>{' '}
-            <Badge className='rounded-md'
-              colorScheme={isDone ? 'green' : 'orange'}
-            >
-              {isDone ? "Đã hoàn thành" : "Đang thi công"}
-            </Badge>
+            {
+              isDone ?
+                <Badge className='rounded-md' colorScheme='green'>{"Đã hoàn thành"}</Badge>
+                :
+                <>
+                  <div className={`relative w-[100px] h-[10px] bg-black/20 rounded-xl `}>
+                    <div className={`absolute w-[${parseInt(progress)}px] h-[10px] bg-teal-500 rounded-xl `}></div>
+                  </div>
+                  {progress}%
+                </>
+            }
           </p>
         </Box>
 

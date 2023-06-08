@@ -32,9 +32,9 @@ router.post('/:projectSlug/summary/download', authenticateToken, summaryControll
 router.post('/:projectSlug/summary', authenticateToken, summaryController.handleSummary);
 
 // Project
+router.post('/create-project', authenticateToken, requireRole('admin', 'manager'), projectController.createProject);
 router.put('/:projectSlug', authenticateToken, requireRole('admin', 'manager'), projectController.updateProject);
 router.delete('/:projectSlug', authenticateToken, requireRole('admin', 'manager'), projectController.deleteProject);
-router.post('/create-project', authenticateToken, requireRole('admin', 'manager'), projectController.createProject);
 
 router.get('/:projectSlug', authenticateToken, projectController.getProjectBySlug);
 router.get('/', authenticateToken, filterModel('Project'), projectController.getAllProjects);

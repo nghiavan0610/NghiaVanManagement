@@ -1,10 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { axios } from '../utils/axios';
+import { axios_instance } from '../utils/axios';
 import { showToast } from '../utils/toast';
 
 const getJobs = () => {
   let url = `/jobs`;
-  return axios(url);
+  return axios_instance(url);
 };
 
 export const useJobs = () => {

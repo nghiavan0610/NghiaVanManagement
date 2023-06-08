@@ -1,31 +1,70 @@
-
-import React, { useState } from 'react';
 import {
   Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
   FormControl,
   FormLabel,
   Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   useDisclosure,
-  Flex,
-  Box,
-  Select
+  Select,
 } from '@chakra-ui/react';
-import Datepicker from '../../partials/actions/Datepicker';
-import ErrorMessage from '../../utils/ErrorMessage';
+import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { useDispatch } from "react-redux";
-import { addMaterial, editMaterial, removeMaterial } from '../../features/materialSlice';
+import ErrorMessage from '../../utils/ErrorMessage';
+import { IoAdd } from 'react-icons/io5';
+import MaterialView from './MaterialView';
+import Materials from '../../pages/Materials';
+import { useDispatch } from 'react-redux';
+import { addMaterial } from '../../features/materialSlice';
 
-const MaterialView = ({ children, matId, matType, matName, matTypes, isAdd = false, isAdmin }) => {
+const matTypes = [
+  {
+    id: "DayDan",
+    text: "Dây dẫn"
+  },
+  {
+    id: "Tru",
+    text: "Trụ"
+  },
+  {
+    id: "Mong",
+    text: "Móng"
+  },
+  {
+    id: "Da",
+    text: "Đà"
+  },
+  {
+    id: "XaSu",
+    text: "Xà sứ"
+  },
+  {
+    id: "BoChang",
+    text: "Bộ chằng"
+  },
+  {
+    id: "TiepDia",
+    text: "Tiếp địa"
+  },
+  {
+    id: "PhuKien",
+    text: "Phụ kiện"
+  },
+  {
+    id: "ThietBi",
+    text: "Thiết bị"
+  }
+]
+
+const AddNewMaterial = ({ children, matType = undefined }) => {
   const dispatch = useDispatch();
 
+  // matType = matType.charAt(0).toUpperCase() + matType.substring(1,matType.length-1);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     handleSubmit,
@@ -38,13 +77,10 @@ const MaterialView = ({ children, matId, matType, matName, matTypes, isAdd = fal
 
   const childrenWithProps = React.Children.map(children, (child) => {
     if (React.isValidElement(child)) {
-      return React.cloneElement(child, {
-        onClick: () => {
-          if (isAdmin) onOpen()
-          setValue('name', matName);
-          setValue('materialType', matType);
-        }
-      });
+      return React.cloneElement(child, { onClick: () => {
+        onOpen();
+        setValue('materialType', matType);
+      } });
     }
     return child;
   });
@@ -57,19 +93,12 @@ const MaterialView = ({ children, matId, matType, matName, matTypes, isAdd = fal
   };
 
   const onSubmit = async (formData) => {
-    await dispatch(isAdd ? addMaterial(formData) : editMaterial({ matId, formData }));
-    handleClose();
-  };
-
-  const removeMat = async (formData) => {
-    await dispatch(removeMaterial({ matId, formData }));
+    await dispatch(addMaterial(formData));
     handleClose();
   };
 
   const handleClose = () => {
-    isAdd && reset({
-      name: ""
-    });
+    reset({ name: "" })
     onClose();
   };
 
@@ -77,18 +106,21 @@ const MaterialView = ({ children, matId, matType, matName, matTypes, isAdd = fal
     <>
       {/* Button */}
       {childrenWithProps}
-      <Modal isOpen={isOpen} onClose={handleClose}>
+
+      <Modal
+        isOpen={isOpen}
+        onClose={handleClose}
+      >
         <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>{`${isAdd ? "Thêm" : "Chỉnh sửa"} vật tư`}</ModalHeader>
+        <ModalContent as='form'>
+          <ModalHeader textAlign='center'>Quản lí vật tư</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <FormControl isRequired>
-              <FormLabel>Tên vật tư</FormLabel>
+              <FormLabel>Tên vật tư mới</FormLabel>
               <Input
                 id='name'
                 name='name'
-                // defaultValue={matName}
                 placeholder={`Tên vật tư`}
                 {...register('name', { required: true })}
               />
@@ -101,15 +133,13 @@ const MaterialView = ({ children, matId, matType, matName, matTypes, isAdd = fal
               <Controller
                 name='materialType'
                 control={control}
-                // defaultValue={matType}
                 rules={{
                   required: true,
                 }}
                 render={({ field }) => (
-                  <Select {...field} isDisabled={!isAdd}>
+                  <Select {...field} placeholder='Chọn loại vật tư'>
                     {
                       matTypes.map((materialType) => {
-                        console.log(materialType)
                         return <option value={materialType.id}>{materialType.text}</option>
                       })
                     }
@@ -120,17 +150,10 @@ const MaterialView = ({ children, matId, matType, matName, matTypes, isAdd = fal
             </FormControl>
           </ModalBody>
           <ModalFooter>
-            {!isAdd &&
-              <Button className='mr-2' onClick={handleSubmit(removeMat)}>
-                Xóa
-              </Button>
-            }
             <Button className='mr-2' onClick={handleClose}>
               Hủy
             </Button>
-            <Button colorScheme="red" onClick={handleSubmit(onSubmit)}>
-              {isAdd ? "Thêm" : "Chỉnh sửa"}
-            </Button>
+            <Button colorScheme="red" onClick={handleSubmit(onSubmit)}>Thêm</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
@@ -138,4 +161,4 @@ const MaterialView = ({ children, matId, matType, matName, matTypes, isAdd = fal
   );
 };
 
-export default MaterialView;
+export default AddNewMaterial;

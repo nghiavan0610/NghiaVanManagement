@@ -1,15 +1,12 @@
-import * as Axios from 'axios';
+import axios from 'axios';
 import Cookies from 'universal-cookie';
 
-const BASEURL = 'https://api.testhungnguyen.site/v1';
-// const BASEURL = 'http://localhost:8002/v1';
-
-export const axios = Axios.create({
-    baseURL: BASEURL,
+export const axios_instance = axios.create({
+    baseURL: process.env.NODE_ENV === 'production' ? 'https://api.testhungnguyen.site/v1' : 'http://localhost:8002/v1',
 });
-export const axiosRefreshToken = axios.create();
+export const axiosRefreshToken = axios_instance.create();
 
-axios.interceptors.request.use(
+axios_instance.interceptors.request.use(
     (config) => {
         const cookies = new Cookies();
 
@@ -36,11 +33,12 @@ axios.interceptors.request.use(
     },
 );
 
-axios.interceptors.response.use(
+axios_instance.interceptors.response.use(
     (response) => response,
     async (error) => {
         const cookies = new Cookies();
         const refreshToken = cookies.get('refreshToken');
+
         const config = error?.config;
 
         if (error?.response?.status === 401 && !config?.sent) {
@@ -64,10 +62,10 @@ axios.interceptors.response.use(
                 };
             }
 
-            return axios(config);
+            return axios_instance(config);
         }
         return Promise.reject(error);
     },
 );
 
-export const axiosPrivate = axios;
+export const axiosPrivate = axios_instance;

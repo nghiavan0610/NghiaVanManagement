@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { axios } from '../../utils/axios';
+import { axios_instance } from '../../utils/axios';
 import { showToast } from '../../utils/toast';
 
 const initialState = {
@@ -12,7 +12,7 @@ export const getProjects = createAsyncThunk(
   'getProjects',
   async (_, thunkAPI) => {
     try {
-      const { data } = await axios('/users/my-projects');
+      const { data } = await axios_instance('/users/my-projects');
       return data.data;
     } catch (error) {
       console.dir(error);
@@ -26,7 +26,7 @@ export const getAllProjects = createAsyncThunk(
   'getAllProjects',
   async (_, thunkAPI) => {
     try {
-      const { data } = await axios(`/projects?search=&page=&limit=9999`);
+      const { data } = await axios_instance(`/projects?search=&page=&limit=9999`);
 
       return data.data.projects;
     } catch (error) {
@@ -41,7 +41,7 @@ export const getProject = createAsyncThunk(
   'getProject',
   async (slug, thunkAPI) => {
     try {
-      const { data } = await axios(`/projects/${slug}`);
+      const { data } = await axios_instance(`/projects/${slug}`);
       return data.data;
     } catch (error) {
       console.dir(error);
@@ -55,7 +55,7 @@ export const getTimesheet = createAsyncThunk(
   'getTimesheet',
   async (slug, thunkAPI) => {
     try {
-      const { data } = await axios(`/projects/${slug}/timesheet`);
+      const { data } = await axios_instance(`/projects/${slug}/timesheet`);
       return data.data;
     } catch (error) {
       console.dir(error);
@@ -69,7 +69,7 @@ export const addProject = createAsyncThunk(
   'addProject',
   async (formData, thunkAPI) => {
     try {
-      const { data } = await axios.post(`/projects/create`, formData);
+      const { data } = await axios_instance.post(`/projects/create-project`, formData);
       return data.data;
     } catch (error) {
       console.dir(error);
@@ -83,7 +83,7 @@ export const deleteProject = createAsyncThunk(
   'deleteProject',
   async (slug, thunkAPI) => {
     try {
-      const { data } = await axios.delete(`projects/${slug}/delete`);
+      const { data } = await axios_instance.delete(`projects/${slug}`);
       return slug;
     } catch (error) {
       console.dir(error);
@@ -100,8 +100,8 @@ export const updateProject = createAsyncThunk(
       formData.managerId = oldData.manager._id;
       formData.leadersId = oldData.leaders.map((leader) => leader._id)
       formData.membersId = oldData.members.map((member) => member._id)
-      const response = await axios.put(`projects/${slug}/edit`, formData);
-      const { data } = await axios.get(`projects/${response.data.data.updatedProject.slug}`);
+      const response = await axios_instance.put(`projects/${slug}`, formData);
+      const { data } = await axios_instance.get(`projects/${response.data.data.updatedProject.slug}`);
       return data.data;
     } catch (error) {
       console.dir(error);
@@ -117,11 +117,11 @@ export const addMember = createAsyncThunk(
     let roleId = formData.role.value
     try {
       preUpdateData[`${roleId}Id`].push(formData.userId.value)
-      await axios.put(`projects/${preUpdateData.slug}/edit`, preUpdateData);
+      await axios_instance.put(`projects/${preUpdateData.slug}`, preUpdateData);
 
       await getTimesheet();
 
-      const { data } = await axios.get(`projects/${preUpdateData.slug}`);
+      const { data } = await axios_instance.get(`projects/${preUpdateData.slug}`);
       return { data, roleId };
     } catch (error) {
       console.dir(error);
@@ -135,8 +135,24 @@ export const addSummary = createAsyncThunk(
   'addSummary',
   async ({ _data: data, slug }, thunkAPI) => {
     try {
-      await axios.post(`/projects/${slug}/summary`, data);
-      const _data = await axios.get(`projects/${slug}`);
+      await axios_instance.post(`/projects/${slug}/summary`, data);
+      const _data = await axios_instance.get(`projects/${slug}`);
+      return _data.data.data;
+    } catch (error) {
+      console.dir(error);
+      return thunkAPI.rejectWithValue({ error: error.response.data.error });
+    }
+  },
+);
+
+export const uploadExcel = createAsyncThunk(
+  'uploadExcel',
+  async ({ data, slug }, thunkAPI) => {
+    try {
+      await axios_instance.post(`/projects/${slug}/summary/upload`, data,
+        { headers: { 'Content-Type': 'multipart/form-data' } }
+      );
+      const _data = await axios_instance(`projects/${slug}`);
       return _data.data.data;
     } catch (error) {
       console.dir(error);
@@ -149,10 +165,10 @@ export const uploadTimesheet = createAsyncThunk(
   'uploadTimesheet',
   async ({ data, slug }, thunkAPI) => {
     try {
-      await axios.post(`/projects/${slug}/timesheet/upload-file`, data,
+      await axios_instance.post(`/projects/${slug}/timesheet/upload-file`, data,
         { headers: { 'Content-Type': 'multipart/form-data' } }
       );
-      const _data = await axios(`/projects/${slug}/timesheet`);
+      const _data = await axios_instance(`/projects/${slug}/timesheet`);
       return _data.data.data;
     } catch (error) {
       console.dir(error);
@@ -166,8 +182,8 @@ export const reviewTimesheet = createAsyncThunk(
   'reviewTimesheet',
   async ({ data, slug }, thunkAPI) => {
     try {
-      await axios.put(`/projects/${slug}/timesheet/review`, data);
-      const _data = await axios(`/projects/${slug}/timesheet`);
+      await axios_instance.put(`/projects/${slug}/timesheet/review`, data);
+      const _data = await axios_instance(`/projects/${slug}/timesheet`);
       return _data.data.data;
     } catch (error) {
       console.dir(error);
@@ -181,8 +197,8 @@ export const removeFileFromTimesheet = createAsyncThunk(
   'removeFileFromTimesheet',
   async ({ data, slug }, thunkAPI) => {
     try {
-      await axios.delete(`/projects/${slug}/timesheet/delete-file`, { data: data });
-      const _data = await axios(`/projects/${slug}/timesheet`);
+      await axios_instance.post(`/projects/${slug}/timesheet/delete-file`, { data: data });
+      const _data = await axios_instance(`/projects/${slug}/timesheet`);
       return _data.data.data;
     } catch (error) {
       console.dir(error);
@@ -198,9 +214,9 @@ export const deleteMember = createAsyncThunk(
     try {
       let memIndex = preUpdateData[`${roleId}Id`].indexOf(member._id)
       preUpdateData[`${roleId}Id`].splice(memIndex, 1)
-      await axios.put(`projects/${preUpdateData.slug}/edit`, preUpdateData);
+      await axios_instance.put(`projects/${preUpdateData.slug}`, preUpdateData);
 
-      const { data } = await axios.get(`projects/${preUpdateData.slug}`);
+      const { data } = await axios_instance.get(`projects/${preUpdateData.slug}`);
       return { data, roleId };
     } catch (error) {
       console.dir(error);
@@ -227,9 +243,9 @@ export const changeMemberRole = createAsyncThunk(
         preUpdateData[`${toRoleId}Id`].push(member._id);
       }
 
-      await axios.put(`projects/${preUpdateData.slug}/edit`, preUpdateData);
+      await axios_instance.put(`projects/${preUpdateData.slug}`, preUpdateData);
 
-      const { data } = await axios.get(`projects/${preUpdateData.slug}`);
+      const { data } = await axios_instance.get(`projects/${preUpdateData.slug}`);
       return { data, roleId };
     } catch (error) {
       console.dir(error);
@@ -250,7 +266,7 @@ export const projectSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(addProject.fulfilled, (state, { payload }) => {
       state.projects.push(payload.newProject);
-      showToast('success', 'Thêm dự án thành công!');
+      showToast('success', 'Tạo dự án thành công!');
     });
     builder.addCase(addProject.rejected, (_, { payload }) => {
       console.log(payload);
@@ -300,7 +316,7 @@ export const projectSlice = createSlice({
     });
 
     builder.addCase(getTimesheet.fulfilled, (state, { payload }) => {
-      state.timesheet = payload.project.timesheet;
+      state.timesheet = payload.project.timesheets;
     });
     builder.addCase(getTimesheet.rejected, (_, { payload }) => {
       console.log(payload);
@@ -329,8 +345,18 @@ export const projectSlice = createSlice({
       showToast('error', 'Lỗi khi lưu tổng kê!');
     });
 
+    builder.addCase(uploadExcel.fulfilled, (state, { payload }) => {
+      state.detail = payload.project;
+      showToast('success', 'Tải tệp Excel thành công!');
+    });
+
+    builder.addCase(uploadExcel.rejected, (_, { payload }) => {
+      console.log(payload);
+      showToast('error', 'Lỗi khi tải tệp!');
+    });
+
     builder.addCase(uploadTimesheet.fulfilled, (state, { payload }) => {
-      state.timesheet = payload.project.timesheet;
+      state.timesheet = payload.project.timesheets;
       showToast('success', 'Tải tệp thành công!');
     });
 
@@ -340,7 +366,7 @@ export const projectSlice = createSlice({
     });
 
     builder.addCase(reviewTimesheet.fulfilled, (state, { payload }) => {
-      state.timesheet = payload.project.timesheet;
+      state.timesheet = payload.project.timesheets;
       showToast('success', 'Cập nhật thành công!');
     });
 
@@ -350,7 +376,7 @@ export const projectSlice = createSlice({
     });
 
     builder.addCase(removeFileFromTimesheet.fulfilled, (state, { payload }) => {
-      state.timesheet = payload.project.timesheet;
+      state.timesheet = payload.project.timesheets;
       showToast('success', 'Xóa tệp thành công!');
     });
 

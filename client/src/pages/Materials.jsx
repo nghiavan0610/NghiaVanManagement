@@ -16,47 +16,46 @@ import MaterialView from '../components/modals/MaterialView';
 import Layout from '../components/Layout';
 import Spinner from '../components/Spinner';
 
+const materialTypes = [
+  {
+    id: "DayDan",
+    text: "Dây dẫn"
+  },
+  {
+    id: "Tru",
+    text: "Trụ"
+  },
+  {
+    id: "Mong",
+    text: "Móng"
+  },
+  {
+    id: "Da",
+    text: "Đà"
+  },
+  {
+    id: "XaSu",
+    text: "Xà sứ"
+  },
+  {
+    id: "BoChang",
+    text: "Bộ chằng"
+  },
+  {
+    id: "TiepDia",
+    text: "Tiếp địa"
+  },
+  {
+    id: "PhuKien",
+    text: "Phụ kiện"
+  },
+  {
+    id: "ThietBi",
+    text: "Thiết bị"
+  }
+]
+
 const Materials = () => {
-
-  const materialTypes = [
-    {
-      id: "DayDan",
-      text: "Dây dẫn"
-    },
-    {
-      id: "Tru",
-      text: "Trụ"
-    },
-    {
-      id: "Mong",
-      text: "Móng"
-    },
-    {
-      id: "Da",
-      text: "Đà"
-    },
-    {
-      id: "XaSu",
-      text: "Xà sứ"
-    },
-    {
-      id: "BoChang",
-      text: "Bó chằng"
-    },
-    {
-      id: "TiepDia",
-      text: "Tiếp địa"
-    },
-    {
-      id: "PhuKien",
-      text: "Phụ kiện"
-    },
-    {
-      id: "ThietBi",
-      text: "Thiết bị"
-    }
-  ]
-
   const { materials, isLoading } = useSelector((state) => state.material);
   const { role } = useSelector((state) => state.user.auth);
   const dispatch = useDispatch();

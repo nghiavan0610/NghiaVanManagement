@@ -15,6 +15,9 @@ import {
     useDisclosure,
     Flex,
     Box,
+    Stack,
+    Radio,
+    RadioGroup,
 } from '@chakra-ui/react';
 import Datepicker from '../../partials/actions/Datepicker';
 import ErrorMessage from '../../utils/ErrorMessage';
@@ -51,8 +54,11 @@ const AddCommentForTimesheet = ({ children, timesheetId, slug }) => {
     };
 
     const onSubmit = async (formData) => {
+        const timezoneOffset = new Date().getTimezoneOffset() * 60000;
+        const workDate = new Date(new Date(formData.workDate).getTime() - timezoneOffset)
         const data = {
             ...formData,
+            workDate: workDate.toISOString(),
             timesheetId: timesheetId,
             isApproved: false,
             proofId: ""
@@ -89,24 +95,49 @@ const AddCommentForTimesheet = ({ children, timesheetId, slug }) => {
                             />
                             {renderError('comment')}
                         </FormControl>
-                        <FormControl mt={4} isRequired>
-                            <FormLabel>Ngày</FormLabel>
-                            <Controller
-                                name='workDate'
-                                control={control}
-                                defaultValue={new Date().setHours(0,0,0,0)}
-                                rules={{
-                                    required: true,
-                                }}
-                                render={({ field }) => (
-                                    <Datepicker
-                                        defaultDate={new Date().setHours(0,0,0,0)}
-                                        value = {field.value}
-                                        onChange={field.onChange}
-                                    />
-                                )}
-                            />
-                        </FormControl>
+                        <Flex className='gap-4'>
+                            <FormControl mt={4} isRequired className='w-4/6'>
+                                <FormLabel>Ngày</FormLabel>
+                                <Controller
+                                    name='workDate'
+                                    control={control}
+                                    defaultValue={new Date().setHours(0, 0, 0, 0)}
+                                    rules={{
+                                        required: true,
+                                    }}
+                                    render={({ field }) => (
+                                        <Datepicker
+                                            defaultDate={new Date().setHours(0, 0, 0, 0)}
+                                            value={field.value}
+                                            onChange={field.onChange}
+                                        />
+                                    )}
+                                />
+                            </FormControl>
+                            <FormControl mt={4} isRequired className='w-2/6'>
+                                <FormLabel>Ca</FormLabel>
+                                <Controller
+                                    name='shift'
+                                    control={control}
+                                    rules={{
+                                        required: true,
+                                    }}
+                                    render={({ field }) => (
+                                        <RadioGroup value={field.value} onChange={field.onChange}>
+                                            <Stack direction='column' spacing='0px'>
+                                                <Radio value='morning'>Sáng</Radio>
+                                                <Radio value='evening'>Chiều</Radio>
+                                            </Stack>
+                                        </RadioGroup>
+                                    )}
+                                    {...register('shift', {
+                                        required: true
+                                    })}
+                                />
+                                {renderError('shift')}
+                            </FormControl>
+                        </Flex>
+
                     </ModalBody>
                     <ModalFooter>
                         <Button className='mr-2' onClick={handleClose}>

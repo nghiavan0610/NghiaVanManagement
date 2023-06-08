@@ -23,7 +23,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { uploadTimesheet } from '../../features/project/projectSlice';
 import { useDispatch } from "react-redux";
 import { showToast } from '../../utils/toast';
-import { axios } from '../../utils/axios';
+import { axios_instance } from '../../utils/axios';
 import { saveAs } from 'file-saver';
 
 const ExportWordModal = ({ children, data }) => {
@@ -158,7 +158,7 @@ const ExportWordModal = ({ children, data }) => {
                             },
                         };
 
-                        axios
+                        axios_instance
                             .post(`/activities/export`, send_data, {
                                 responseType: "arraybuffer",
                             })

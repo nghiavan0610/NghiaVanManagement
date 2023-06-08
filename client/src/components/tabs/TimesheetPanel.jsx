@@ -6,6 +6,7 @@ import { MdToday, MdEditNote, MdInsertDriveFile, MdOutlineInsertDriveFile, MdOut
 import TimesheetFileUpload from "../modals/TimesheetFileUpload";
 import TimesheetViewFile from "../modals/TimesheetViewFile";
 import AddCommentForTimesheet from "../modals/AddCommentForTimesheet";
+import { axios_instance } from "../../utils/axios";
 
 function TimesheetPanel({ timesheet, slug, isManager, isLeader, isMember, isAdmin }) {
   let currentDate = new Date();
@@ -63,17 +64,40 @@ function TimesheetPanel({ timesheet, slug, isManager, isLeader, isMember, isAdmi
         </Button>
       </div>
       <div>
-        {(isManager || isLeader || isAdmin) && 
-          <AddCommentForTimesheet timesheetId={timesheet._id} slug={slug}>
-          <Button
-            className='ml-auto mr-2'
-            leftIcon={<MdEditNote color='#fff' />}
-            background='primary'
-            color='white'
-          >
-            Thêm / sửa ghi chú
-          </Button>
-        </AddCommentForTimesheet>
+        {(isManager || isLeader || isAdmin) &&
+          <>
+            <Button
+              className='ml-auto mr-2'
+              leftIcon={<MdEditNote />}
+              onClick={() => {
+                const monthYear = `${currentYear}-${(currentMonth + 1).toString().padStart(2, '0')}`
+                const timesheetId = timesheet.find((ts) => ts.monthYear === monthYear)._id;
+                axios_instance
+                  .post(`/projects/${slug}/timesheet/download`, { timesheetId: timesheetId }, {
+                    responseType: "arraybuffer",
+                  })
+                  .then(function (response) {
+                    const url = new Blob([response.data], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+                    saveAs(url, `ChamCong_${monthYear}.xlsx`);
+                  })
+                  .catch(function (error) {
+                    console.log(error);
+                  });
+              }}
+            >
+              Tải bảng chấm công
+            </Button>
+            <AddCommentForTimesheet timesheetId={timesheet._id} slug={slug}>
+              <Button
+                className='ml-auto mr-2'
+                leftIcon={<MdEditNote color='#fff' />}
+                background='primary'
+                color='white'
+              >
+                Thêm / sửa ghi chú
+              </Button>
+            </AddCommentForTimesheet>
+          </>
         }
         <TimesheetFileUpload timesheetId={timesheet._id} slug={slug}>
           <Button
@@ -121,8 +145,8 @@ function TimesheetPanel({ timesheet, slug, isManager, isLeader, isMember, isAdmi
                   </div>
                   <div className="overflow-y-auto gap-1 flex flex-col absolute inset-x-0 bottom-0 px-1 h-[80px]">
                     {timesheet &&
-                      timesheet.timesheetDetail.map((d) => {
-                        const workDate = new Date(d.workDate)
+                      timesheet.find((ts) => ts.monthYear === `${currentYear}-${(currentMonth + 1).toString().padStart(2, '0')}`)?.timesheetDetails.map((d) => {
+                        const workDate = new Date(d.workDate.replace(/-/g, '\/').replace(/T.+/, ''))
                         const date = new Date(currentYear, currentMonth, _day)
                         if ((d?.comment || d.proofs.length > 0))
                           if (workDate.getFullYear() === date.getFullYear() && workDate.getMonth() === date.getMonth() && workDate.getDate() === date.getDate()) {
@@ -132,7 +156,6 @@ function TimesheetPanel({ timesheet, slug, isManager, isLeader, isMember, isAdmi
                                   className={`w-full border-2 ${d.proofs && (d.proofs.filter((proof) => !proof.isApproved).length > 0 || d.proofs.length === 0) ? "border-orange-300" : "border-green-300"} inset-x-0 rounded-md px-1 font-semibold`}
                                 >
                                   {
-                                    /* {`${workDate.getHours()}:${String(workDate.getMinutes()).padStart(2, "0")}`} */
                                     (d?.comment && d.proofs.length > 0) ?
                                       <>
                                         <div className="flex items-center gap-2" >
@@ -156,16 +179,6 @@ function TimesheetPanel({ timesheet, slug, isManager, isLeader, isMember, isAdmi
                                         </div>
                                   }
                                 </button>
-                                {/* {d?.comment && <Badge
-                                bgColor="orange.300"
-                                borderRadius="full"
-                                size="sm"
-                                position="absolute"
-                                left="10px"
-                                w="8px"
-                                h="8px"
-                                top="9px"
-                              ></Badge>} */}
                               </TimesheetViewFile>
                             </div>
                           }

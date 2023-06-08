@@ -19,8 +19,14 @@ import React, { useState, useRef, useLayoutEffect } from "react";
 import { useForm } from 'react-hook-form';
 
 import ErrorMessage from '../../utils/ErrorMessage';
+import { memo } from 'react';
 
-function ValueBox(props) {
+
+const ValueBox = memo((props) => {
+  const { onOpen, onClose, isOpen } = useDisclosure();
+  const initialRef = React.useRef();
+  const finalRef = React.useRef();
+
   const [editing, setEditing] = useState(false);
   const [value, setValue] = useState(props.value);
   const [canEdit, setCanEdit] = useState(props.canEdit)
@@ -53,10 +59,6 @@ function ValueBox(props) {
       event.target.blur();
     }
   }
-
-  const { onOpen, onClose, isOpen } = useDisclosure();
-  const initialRef = React.useRef();
-  const finalRef = React.useRef();
 
   const {
     register,
@@ -172,6 +174,6 @@ function ValueBox(props) {
       </Popover>
     }
   }
-}
+});
 
 export default ValueBox;
