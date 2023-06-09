@@ -127,7 +127,6 @@ class CtaService {
                                 }
                                 originalPillar = newPillar;
                             }
-
                             exportPillar.name = updatedPillar.name;
                             exportPillar.distance = updatedPillar.distance;
                             exportPillar.lowLine = updatedPillar.lowLine;
