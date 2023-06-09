@@ -16,8 +16,19 @@
             "641d6cc8557176ab0c282129"
         ],
         "startedAt": "2023-04-05T17:00:00.000Z",
-        "timesheetDetails": ["645b6657cbd67622a4699b69"],
-        "monthYear": "2023-05",
-        "__v": 0
+        "timesheetDetails": [
+            "64836d2b77facc6c41a6860e",
+            "64836d4c77facc6c41a6862d",
+            "64836d9377facc6c41a68664",
+            "64836da2f00a5576060b4494",
+            "64836dca77facc6c41a686b6",
+            "64836dd577facc6c41a686cb",
+            "64836de077facc6c41a686de",
+            "64836e2777facc6c41a68719",
+            "64836e3077facc6c41a6872c",
+            "64836e3877facc6c41a6873d",
+            "64836e4177facc6c41a68750"
+        ],
+        "monthYear": "2023-06"
     }
 ]
