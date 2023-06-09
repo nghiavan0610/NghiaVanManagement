@@ -2,6 +2,7 @@
 import { Box, Button, Flex, Icon, Popover, PopoverTrigger, PopoverContent, PopoverBody, PopoverArrow, IconButton, Badge, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 
 import React, { useEffect, useMemo, useState } from "react";
+import { v4 as uuidv4 } from 'uuid';
 import { HiOutlineChevronDown, HiOutlineChevronLeft, HiOutlineChevronRight, HiOutlineChevronUp, } from "react-icons/hi";
 import { AiFillSetting, AiFillTool } from "react-icons/ai";
 import AddMaterial from "./modals/AddMaterial";
@@ -21,7 +22,7 @@ import { axios_instance } from "../utils/axios";
 import { useCallback } from "react";
 import { useRef } from "react";
 import ExcelFileUpload from "./modals/ExcelFileUpload";
-import AddNewMaterial from "./modals/AddNewMaterial";
+import { showToast } from "../utils/toast";
 
 const matTextList = ["dayDans", "trus", "mongs", "das", "xaSus", "boChangs", "tiepDias", "phuKiens", "thietBis",];
 const matNameList = ["Dây dẫn", "Trụ", "Móng", "Đà", "Xà sứ", "Bộ chằng", "Tiếp địa", "Phụ kiện", "Thiết bị",];
@@ -149,22 +150,6 @@ function Table({ _orig, _data, slug, allMaterials }) {
     });
     return arr;
   });
-  const [routeToggles, setRouteToggles] = useState(() => {
-    let _routeToggles = {};
-    data.routes.map((route, routeIndex) => {
-      _routeToggles[`toggle${routeIndex}`] = false;
-    });
-    return _routeToggles;
-  });
-  const [stationToggles, setStationToggles] = useState(() => {
-    let _stationToggles = {};
-    data.routes.map((route, routeIndex) => {
-      route.stations.map((station, stationIndex) => {
-        _stationToggles[`toggle${routeIndex}-${stationIndex}`] = false;
-      });
-    });
-    return _stationToggles;
-  });
 
   const [editing, setEditing] = useState(data.isOriginal);
   function setState(func) {
@@ -172,18 +157,22 @@ function Table({ _orig, _data, slug, allMaterials }) {
     func;
   }
 
-  const { DayDan: dayDanList, Tru: truList, Mong: mongList, Da: daList, XaSu: xaSuList, BoChang: boChangList, TiepDia: tiepDiaList, PhuKien: phuKienList, ThietBi: thietBiList } = allMaterials;
-  const matListMap = { dayDans: dayDanList, trus: truList, mongs: mongList, das: daList, xaSus: xaSuList, boChangs: boChangList, tiepDias: tiepDiaList, phuKiens: phuKienList, thietBis: thietBiList };
+  const matListMap = { ...allMaterials };
 
-  function preparePost(data) {
+  function preparePost(_data) {
+    let data = { ..._data }
     data.routes.forEach((route) => {
+      if (route.isNew) delete route._id
       route.stations.forEach((station) => {
+        if (station.isNew) delete station._id
         station.pillars.forEach((pillar) => {
+          if (pillar.isNew) delete pillar._id
           matTextList.forEach((matText) => {
             materials[matText].forEach((mat) => {
-              console.log(pillar[matText]);
               const [matID, matStat] = mat.split('_');
-              if (pillar[matText].length === 0) {
+              if (!pillar[matText])
+                pillar[matText] = []
+              if (pillar[matText]?.length === 0) {
                 pillar[matText].push({
                   detail: {
                     _id: matID,
@@ -193,8 +182,9 @@ function Table({ _orig, _data, slug, allMaterials }) {
                   isReassembled: matStat === 'isReassembled',
                 });
               } else {
-                let matDetail = pillar[matText].find((_mat) => _mat.detail._id == matID);
+                let matDetail = pillar[matText].find((_mat) => _mat.detail._id === mat);
                 if (matDetail) {
+                  matDetail.detail._id = matID;
                   matDetail.isRecalled = matStat === 'isRecalled';
                   matDetail.isReassembled = matStat === 'isReassembled';
                 } else {
@@ -260,7 +250,7 @@ function Table({ _orig, _data, slug, allMaterials }) {
       <>
         <Box
           as="th"
-          className={`vertical primary text-white`}
+          className={`vertical primary text-white cursor-pointer`}
           onClick={() => {
             if (!disableBottomButtonRef.current) {
               setHeadingToggles((prevToggles) => ({
@@ -274,7 +264,7 @@ function Table({ _orig, _data, slug, allMaterials }) {
             <div className="flex flex-col-reverse items-center">
               {editing && (
                 <AddMaterial
-                  matList={matList}
+                  // matList={matList}
                   currentMatList={_data}
                   onAddedMaterial={handleAddedMaterial}
                   matType={matText}
@@ -320,329 +310,102 @@ function Table({ _orig, _data, slug, allMaterials }) {
     );
   });
 
-
-  const handleAddedLocation = useCallback((addedLocation, type, parentIndex, index) => {
-    let newData = { ...data };
-
-    switch (type) {
-      case "route": {
-        let toggleLength = Object.keys(routeToggles).length;
-        let toggle = { ...routeToggles };
-        let addedLocations = addedLocation.split("\n").filter(Boolean);
-
-        addedLocations.forEach((location) => {
-          newData.routes.push({ name: "Tuyến: " + location.trim(), stations: [] });
-          toggle[`toggle${toggleLength}`] = true;
-          toggleLength++;
-        });
-
-        setRouteToggles(toggle);
-        break;
-      }
-      case "station": {
-        let toggleLength = 0;
-        let toggle = { ...stationToggles };
-        for (const key in stationToggles) {
-          if (key.startsWith(`toggle${index}`)) {
-            toggleLength++;
-          }
-        }
-        let addedLocations = addedLocation.split("\n").filter(Boolean);
-
-        addedLocations.forEach((location) => {
-          newData.routes[index].stations.push({
-            name: "Nhánh: " + location.trim(),
-            pillars: [],
-          });
-          toggle[`toggle${index}-${toggleLength}`] = true;
-          toggleLength++;
-        });
-
-        setStationToggles(toggle);
-        break;
-      }
-      case "pillar": {
-        let addedLocations = addedLocation.split("\n").filter(Boolean);
-
-        addedLocations.forEach((location) => {
-          newData.routes[parentIndex].stations[index].pillars.push({
-            name: location.trim(),
-          });
-        });
-        break;
-      }
-      default:
-        break;
-    }
-    setData(newData);
-  }, []);
-
-  const RouteTr = React.memo(({ index, children }) => {
-    const disableBottomButtonRef = useRef(false);
-    const [showAddMaterial, setShowAddMaterial] = useState(false);
-
-    function handleChangedRoute(changedRoute) {
-      let newData = { ...data };
-      newData.routes[index].name = `${!changedRoute.toLowerCase().startsWith('tuyến:') ? "Tuyến:" : ""} ${changedRoute}`;
-      setData(newData);
-    }
-
-    function handleDeletedRoute() {
-      let newData = { ...data };
-      newData.routes.splice(index, 1);
-      setData(newData);
-    }
-
+  const renderRotatedParentTh = (key, matText, matList, data) => {
     return (
-      <>
-        <Box
-          className={"text-white text-center"}
-          as={"tr"}
-          onClick={() => {
-            if (!disableBottomButtonRef.current)
-              setRouteToggles({
-                ...routeToggles,
-                [`toggle${index}`]: !routeToggles[`toggle${index}`],
-              });
-          }}
-        >
-          <td className="primary">
-            <Box
-              className="flex justify-between items-center p-2"
-              onContextMenu={() => editing && setShowAddMaterial(true)}
-            >
-              <div className="mx-auto">{children}</div>
-              <div className="flex items-center">
-                <Icon
-                  className="ml-2.5 mr-2.5"
-                  as={
-                    routeToggles[`toggle${index}`]
-                      ? HiOutlineChevronUp
-                      : HiOutlineChevronDown
-                  }
-                ></Icon>
-                {editing && (
-                  <AddLocation
-                    type={"station"}
-                    onAddedLocation={handleAddedLocation}
-                    disableBottomButtonRef={disableBottomButtonRef}
-                    index={index}
-                  />
-                )}
-                <EditLocation
-                  isOpen={showAddMaterial}
-                  type={"route"}
-                  name={children}
-                  disableBottomButtonRef={disableBottomButtonRef}
-                  onChangedLocation={handleChangedRoute}
-                  onDeletedLocation={handleDeletedRoute}
-                  onClose={() => setShowAddMaterial(false)}
-                />
-              </div>
-            </Box>
-          </td>
-        </Box>
-        {routeToggles[`toggle${index}`] && (
-          <>
-            {data.routes[index].stations.map((station, stationIndex) => {
-              return <StationTr parentIndex={index} index={stationIndex}>{station.name}</StationTr>;
-            })}
-            <SumDoneTr index={index} />
-          </>
-        )}
-      </>
+      <RotatedParentTh key={key} matText={matText} matList={matList} _data={data}>
+        {matNameList[key]}
+      </RotatedParentTh>
     );
-  });
+  };
 
-  const StationTr = React.memo(({ parentIndex, index, children }) => {
-    const disableBottomButtonRef = useRef(false);
-    const [showAddMaterial, setShowAddMaterial] = useState(false);
+  const PillarTr = React.memo(({ station }) => {
+    const handlePillarClick = useCallback((pillar) => {
+      if (!editing) {
+        matTextList.forEach((matText) => {
+          pillar[matText].forEach((mat) => {
+            if (exportMode && mat.locked && mat.isDone)
+              mat.export = !mat.export;
+            else if (!exportMode && !mat.locked && mat.quantity > 0)
+              mat.isDone = !mat.isDone;
+          })
+        })
+        setState();
+      }
+    }, [editing, matTextList, station, exportMode]);
 
-    function handleChangedStation(changedStation) {
-      let newData = { ...data };
-      newData.routes[parentIndex].stations[index].name = `${!changedStation.toLowerCase().startsWith('nhánh:') ? "Nhánh:" : ""} ${changedStation}`;
-      setData(newData);
-    }
-
-    function handleDeletedStation() {
-      let newData = { ...data };
-      newData.routes[parentIndex].stations.splice(index, 1);
-      setData(newData);
-    }
-
-    return (
-      <>
-        <Box
-          className={"text-white text-center"}
-          as={"tr"}
-          onClick={() => {
-            if (!disableBottomButtonRef.current)
-              setStationToggles({
-                ...stationToggles,
-                [`toggle${parentIndex}-${index}`]:
-                  !stationToggles[`toggle${parentIndex}-${index}`],
-              });
-          }}
-        >
-          <td className="bg-white">
-            <Box
-              className="flex bg-[#7c8592] -mt-[1px] -mb-[1px] -mr-[1px] ml-5 justify-between items-center p-2"
-              onContextMenu={() => editing && setShowAddMaterial(true)}
-            >
-              <div className="mx-auto">{children}</div>
-              <div className="flex items-center">
-                <Icon
-                  className="ml-2.5 mr-2.5"
-                  as={
-                    stationToggles[`toggle${parentIndex}-${index}`]
-                      ? HiOutlineChevronUp
-                      : HiOutlineChevronDown
-                  }
-                ></Icon>
-                {editing && (
-                  <AddLocation
-                    type={"pillar"}
-                    onAddedLocation={handleAddedLocation}
-                    disableBottomButtonRef={disableBottomButtonRef}
-                    parentIndex={parentIndex}
-                    index={index}
-                  ></AddLocation>
-                )}
-                <EditLocation
-                  isOpen={showAddMaterial}
-                  type={"station"}
-                  name={children}
-                  onChangedLocation={handleChangedStation}
-                  disableBottomButtonRef={disableBottomButtonRef}
-                  onDeletedLocation={handleDeletedStation}
-                  onClose={() => setShowAddMaterial(false)}
-                />
-              </div>
-            </Box>
-          </td>
-        </Box>
-        {stationToggles[`toggle${parentIndex}-${index}`] &&
-          <PillarTr parentIndex={parentIndex} index={index} />
-        }
-      </>
-    );
-  });
-
-  const PillarTr = React.memo(({ parentIndex, index }) => {
-    return data.routes[parentIndex].stations[index].pillars.map((pillar, pillarIndex) => {
-      const [_showAddMaterial, _setShowAddMaterial] = useState(false);
-      const handleChangedPillar = useCallback((changedPillar) => {
-        let newData = { ...data };
-        newData.routes[parentIndex].stations[index].pillars[pillarIndex].name = changedPillar;
-        setData(newData);
-      }, [data, parentIndex, index, pillarIndex]);
-
-      const handleDeletedPillar = useCallback(() => {
-        let newData = { ...data };
-        newData.routes[parentIndex].stations[index].pillars.splice(pillarIndex, 1);
-        setData(newData);
-      }, [data, parentIndex, index, pillarIndex]);
-
+    return station.pillars.map((pillar, pillarIndex) => {
       return (
-        <>
-          <tr>
-            <td className="bg-white">
-              <Flex className="flex align-right">
-                <div
-                  className="bg-[#c8ccd1] flex-1 -mt-[1px] -mb-[1px] -mr-[1px] ml-10 text-black p-2 text-center"
-                  onClick={() => {
-                    if (!editing) {
-                      matTextList.map((matText) => {
-                        pillar[matText].map((mat) => {
-                          if (exportMode && mat.locked && mat.isDone)
-                            setState(mat.export = !mat.export);
-                          else if (!exportMode && !mat.locked)
-                            mat.isDone = !mat.isDone;
-
-                        })
-                      })
-                      setState();
-                    }
-                  }}
-                  onContextMenu={() =>
-                    editing && _setShowAddMaterial(true)
-                  }
-                >
-                  {pillar.name}
-                </div>
-                <EditLocation
-                  isOpen={_showAddMaterial}
-                  type={"pillar"}
-                  name={pillar.name}
-                  onChangedLocation={handleChangedPillar}
-                  onDeletedLocation={handleDeletedPillar}
-                  onClose={() => _setShowAddMaterial(false)}
-                />
-              </Flex>
-            </td>
-            <td>
-              <ValueBox
-                canEdit={editing}
-                value={pillar.distance}
-                onValueChange={(newValue) =>
-                  setState((pillar.distance = newValue))
-                }
-              />
-            </td>
-            <td>
-              <ValueBox
-                canEdit={editing}
-                value={pillar.middleLine}
-                onValueChange={(newValue) =>
-                  setState((pillar.middleLine = newValue))
-                }
-              />
-            </td>
-            <td>
-              <ValueBox
-                canEdit={editing}
-                value={pillar.lowLine}
-                onValueChange={(newValue) =>
-                  setState((pillar.lowLine = newValue))
-                }
-              />
-            </td>
-            {matTextList.map((matText) => {
-              return <ValueTd matText={matText} pillarMaterials={pillar} />;
-            })}
-          </tr>
-        </>
+        <tr>
+          <td className="bg-white">
+            <Flex className="flex align-right">
+              <div
+                className="bg-[#c8ccd1] flex-1 -mt-[1px] -mb-[1px] -mr-[1px] text-black p-2 text-center cursor-pointer"
+                onClick={() => handlePillarClick(pillar)}
+              >
+                {pillar.name}
+              </div>
+            </Flex>
+          </td>
+          <td>
+            <ValueBox
+              canEdit={editing}
+              value={pillar.distance}
+              onValueChange={(newValue) =>
+                setState((pillar.distance = newValue))
+              }
+            />
+          </td>
+          <td>
+            <ValueBox
+              canEdit={editing}
+              value={pillar.middleLine}
+              onValueChange={(newValue) =>
+                setState((pillar.middleLine = newValue))
+              }
+            />
+          </td>
+          <td>
+            <ValueBox
+              canEdit={editing}
+              value={pillar.lowLine}
+              onValueChange={(newValue) =>
+                setState((pillar.lowLine = newValue))
+              }
+            />
+          </td>
+          {matTextList.map((matText) => {
+            return <ValueTd matText={matText} pillarMaterials={pillar} />;
+          })}
+        </tr >
       );
     })
   })
 
-  const SumDoneTr = React.memo(({ index }) => {
+  const SumDoneTr = React.memo(({ station }) => {
     const sumArr = { distance: 0, middleLine: 0, lowLine: 0, };
 
-    data.routes[index].stations.forEach((station) => {
-      station.pillars.forEach((pillar) => {
-        sumArr.distance += pillar?.distance || 0;
-        sumArr.middleLine += pillar?.middleLine || 0;
-        sumArr.lowLine += pillar?.lowLine || 0;
+    station.pillars.forEach((pillar) => {
+      sumArr.distance += pillar?.distance || 0;
+      sumArr.middleLine += pillar?.middleLine || 0;
+      sumArr.lowLine += pillar?.lowLine || 0;
 
-        matTextList.forEach((matText) => {
-          if (sumArr[matText] === undefined) sumArr[matText] = {};
-          if (pillar[matText] !== undefined) {
-            pillar[matText].forEach((mat) => {
-              if (mat.detail !== null) {
-                if (sumArr[matText][mat.detail._id] === undefined) {
-                  sumArr[matText][mat.detail._id] = {
-                    sum: mat.quantity,
-                    done: mat.quantity * mat.isDone
-                  }
-                } else {
-                  sumArr[matText][mat.detail._id].sum += mat.quantity;
-                  sumArr[matText][mat.detail._id].done += mat.quantity * mat.isDone;
+      matTextList.forEach((matText) => {
+        if (sumArr[matText] === undefined) sumArr[matText] = {};
+        if (pillar[matText] !== undefined) {
+          pillar[matText].forEach((mat) => {
+            if (mat.detail !== null) {
+              if (sumArr[matText][mat.detail._id] === undefined) {
+                sumArr[matText][mat.detail._id] = {
+                  sum: mat.quantity,
+                  done: mat.quantity * mat.isDone
                 }
+              } else {
+                sumArr[matText][mat.detail._id].sum += mat.quantity;
+                sumArr[matText][mat.detail._id].done += mat.quantity * mat.isDone;
               }
-            });
-          }
-        });
+            }
+          });
+        }
       });
     });
 
@@ -676,8 +439,8 @@ function Table({ _orig, _data, slug, allMaterials }) {
         <td className={"bg-[#ffcb8b]"}><ValueBox canEdit={false} value={sumArr.lowLine} /></td>
         {SumVB}
       </tr>
-      <tr>
-        <td className={`bg-[#6dcacf] font-bold text-black p-2 text-center`}>Đã xong</td>
+      <tr className="bg-[#6dcacf]">
+        <td className={`font-bold text-black p-2 text-center`}>Đã xong</td>
         <td /><td /><td />
         {DoneVB}
       </tr>
@@ -689,18 +452,50 @@ function Table({ _orig, _data, slug, allMaterials }) {
     const mats = pillarMaterials[matText];
 
     const handleValueChange = useCallback(
-      (matchedMat, newValue) => {
-        matchedMat.quantity = newValue;
+      (matID, newValue) => {
+        pillarMaterials[matText] = [];
+        setState(
+          pillarMaterials[matText].push({
+            detail: {
+              _id: matID,
+            },
+            quantity: newValue,
+            comment: "",
+          })
+        );
       },
-      []
+      [matText, pillarMaterials, setState]
     );
 
     const handleValueAndCommentSubmit = useCallback(
-      (matchedMat, quantity, comment) => {
-        matchedMat.quantity = quantity;
-        matchedMat.comment = comment;
+      (matID, { quantity, comment }) => {
+        pillarMaterials[matText] = [];
+        setState(
+          pillarMaterials[matText].push({
+            detail: {
+              _id: matID,
+            },
+            quantity: quantity,
+            comment: comment,
+          })
+        );
       },
-      []
+      [matText, pillarMaterials]
+    );
+
+    const handleClick = useCallback(
+      (matchedMat) => {
+        if (!matchedMat.locked && !editing && !exportMode && matchedMat.quantity !== null) {
+          matchedMat.isDone = !matchedMat.isDone;
+          setState();
+        }
+
+        if (exportMode && matchedMat.locked && matchedMat.isDone) {
+          matchedMat.export = !matchedMat.export;
+          setState();
+        }
+      },
+      [editing, exportMode]
     );
 
     return (
@@ -709,6 +504,7 @@ function Table({ _orig, _data, slug, allMaterials }) {
         {headingToggles[`toggle${matText}`] &&
           materialIDs.map((matID) => {
             if (!mats) {
+              // No any material in category
               return (
                 <td key={matID}>
                   <ValueBox
@@ -716,50 +512,24 @@ function Table({ _orig, _data, slug, allMaterials }) {
                     needComment={!data.isOriginal}
                     canEdit={editing}
                     value={""}
-                    onValueChange={(newValue) => {
-                      pillarMaterials[matText] = [];
-                      setState(
-                        pillarMaterials[matText].push({
-                          detail: {
-                            _id: matID,
-                          },
-                          quantity: newValue,
-                          comment: "",
-                        })
-                      );
-                    }}
-                    onValueAndCommentSubmit={({ quantity, comment }) => {
-                      pillarMaterials[matText] = [];
-                      setState(
-                        pillarMaterials[matText].push({
-                          detail: {
-                            _id: matID,
-                          },
-                          quantity: quantity,
-                          comment: comment,
-                        })
-                      );
-                    }}
+                    onValueChange={(newValue) => handleValueChange(matID, newValue)}
+                    onValueAndCommentSubmit={({ quantity, comment }) =>
+                      handleValueAndCommentSubmit(matID, { quantity, comment })
+                    }
                   />
                 </td>
               );
             }
 
-            let value = undefined;
             const matchedMat = mats.find((mat) => mat.detail !== null && matID === mat.detail._id);
             if (matchedMat) {
-              return value = (
+              // Have quantity
+              return (
                 <td
                   key={matID}
                   style={{ position: "relative" }}
                   className={matchedMat.isDone && (matchedMat.locked ? "bg-[#4BE383]/75" : "bg-orange-300")}
-                  onClick={() => {
-                    if (!matchedMat.locked && !editing && !exportMode && matchedMat.quantity !== null)
-                      setState((matchedMat.isDone = !matchedMat.isDone));
-
-                    if (exportMode && matchedMat.locked && matchedMat.isDone)
-                      setState(matchedMat.export = !matchedMat.export);
-                  }}
+                  onClick={() => handleClick(matchedMat)}
                 >
                   <ValueBox
                     origValue={matchedMat.comment !== "" && findParent(orig.routes, matchedMat._id)}
@@ -767,12 +537,17 @@ function Table({ _orig, _data, slug, allMaterials }) {
                     needComment={!data.isOriginal}
                     canEdit={editing}
                     value={matchedMat.quantity}
-                    onValueChange={(newValue) => handleValueChange(matchedMat, newValue)}
-                    onValueAndCommentSubmit={({ quantity, comment }) =>
-                      handleValueAndCommentSubmit(matchedMat, quantity, comment)
-                    }
+                    onValueChange={(newValue) => {
+                      matchedMat.quantity = newValue;
+                      setState();
+                    }}
+                    onValueAndCommentSubmit={({ quantity, comment }) => {
+                      matchedMat.quantity = quantity;
+                      matchedMat.comment = comment;
+                      setState();
+                    }}
                   />
-                  {(matchedMat.comment !== "" && matchedMat.comment !== null) && (
+                  {matchedMat.comment !== "" && matchedMat.comment !== null && (
                     <Badge
                       bgColor="orange.300"
                       borderRadius="full"
@@ -785,7 +560,7 @@ function Table({ _orig, _data, slug, allMaterials }) {
                     ></Badge>
                   )}
 
-                  {(exportMode && matchedMat.export) &&
+                  {exportMode && matchedMat.export && (
                     <Badge
                       bgColor="transparent"
                       borderRadius="full"
@@ -795,48 +570,34 @@ function Table({ _orig, _data, slug, allMaterials }) {
                       left="-8px"
                       w="8px"
                       h="8px"
-                    ><RxCheck color="#4a5567" size={20} /></Badge>
-                  }
+                    >
+                      <RxCheck color="#4a5567" size={20} />
+                    </Badge>
+                  )}
                 </td>
               );
             }
 
-            return <td key={matID}>
-              <ValueBox
-                comment={""}
-                needComment={!data.isOriginal}
-                canEdit={editing && canEdit}
-                value={""}
-                onValueChange={(newValue) => {
-                  setState(
-                    pillarMaterials[matText].push({
-                      detail: {
-                        _id: matID,
-                      },
-                      quantity: newValue,
-                      comment: "",
-                    })
-                  );
-                }}
-                onValueAndCommentSubmit={({ quantity, comment }) => {
-                  setState(
-                    pillarMaterials[matText].push({
-                      detail: {
-                        _id: matID,
-                      },
-                      quantity: quantity,
-                      comment: comment,
-                    })
-                  );
-                }}
-              />
-            </td>;
+            // No material
+            return (
+              <td key={matID}>
+                <ValueBox
+                  comment={""}
+                  needComment={!data.isOriginal}
+                  canEdit={editing && canEdit}
+                  value={""}
+                  onValueChange={(newValue) => handleValueChange(matID, newValue)}
+                  onValueAndCommentSubmit={({ quantity, comment }) =>
+                    handleValueAndCommentSubmit(matID, { quantity, comment })
+                  }
+                />
+              </td>
+            );
           })}
       </>
     );
-  }, (oldProp, newProp) => {
-
   });
+
 
   const Th = React.memo(({ children }) => {
     return (
@@ -869,34 +630,25 @@ function Table({ _orig, _data, slug, allMaterials }) {
       .then(function (response) {
         const url = new Blob([response.data], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
         saveAs(url, `TongKe.xlsx`);
+        showToast('success', "Tổng kê đã được tải xuống!")
       })
       .catch(function (error) {
+        showToast('error', "Lỗi khi tải tổng kê!")
         console.log(error);
       });
   }
 
   const [saveDisabled, setSaveDisabled] = useState(false)
 
-
-  const TopBar = React.memo(() => {
-    return <Flex className="flex justify-between items-center mb-3 z-50">
-      <div>
-        <p className="font-bold text-md mt-2"> Tổng kê </p>
-        <p className="text-xs mb-3">
-          {editing
-            ? "(chế độ chỉnh sửa)"
-            : exportMode ? "(chế độ xuất biên bản)" : `Cập nhật lần cuối vào ${formattedTimestamp}.`}
-        </p>
+  const TopBar = React.memo(({ editing, exportMode, formattedTimestamp }) => {
+    return <Flex className="flex justify-end items-center z-50 gap-3 mb-3 -mt-14">
+      <div className="text-xs text-right mt-1">
+        {editing
+          ? "(chế độ chỉnh sửa)"
+          : exportMode ? "(chế độ xuất biên bản)" : `Cập nhật lần cuối vào ${formattedTimestamp}.`}
       </div>
       {!exportMode ?
         <div className="flex gap-2">
-          {editing &&
-            <AddNewMaterial>
-              <Button leftIcon={<FaHammer />}>
-                Thêm vật tư mới
-              </Button>
-            </AddNewMaterial>
-          }
           {editing && data.isOriginal === false && (
             <Popover placement="left">
               {({ isOpen, onClose }) => (
@@ -945,7 +697,7 @@ function Table({ _orig, _data, slug, allMaterials }) {
             {({ isOpen, onClose }) => (
               <>
                 <PopoverTrigger>
-                  <Button background={"#FF645B"} color={"#FFFFFF"} leftIcon={<FaSave />} isDisabled={saveDisabled}>
+                  <Button colorScheme="red" color={"#FFFFFF"} leftIcon={<FaSave />} isDisabled={saveDisabled}>
                     {"Lưu"}
                   </Button>
                 </PopoverTrigger>
@@ -1003,117 +755,218 @@ function Table({ _orig, _data, slug, allMaterials }) {
               </>
             )}
           </Popover>
-          <ExportWordModal data={preparePost(data)}>
+          <ExportWordModal data={data} preparePost={preparePost}>
             <Button className="ml-2" background={"#FF645B"} color={"#FFFFFF"} leftIcon={<FaFileExport />}>
               {"Xuất biên bản"}
             </Button>
           </ExportWordModal>
-        </div>}
+        </div>
+      }
     </Flex>
   });
 
-  const expandAll = useCallback(() => {
-    setRouteToggles(
-      Object.fromEntries(
-        Object.keys(routeToggles).map((key) => [
-          key,
-          true,
-        ])
-      )
-    );
-    setStationToggles(
-      Object.fromEntries(
-        Object.keys(stationToggles).map((key) => [
-          key,
-          true,
-        ])
-      )
-    );
-  }, [[routeToggles, setRouteToggles, stationToggles, setStationToggles]])
+  const [selectedRoute, setSelectedRoute] = useState(undefined)
+  const [selectedStation, setSelectedStation] = useState(undefined)
 
-  const collapseAll = useCallback(() => {
-    setRouteToggles(
-      Object.fromEntries(
-        Object.keys(routeToggles).map((key) => [
-          key,
-          false,
-        ])
-      )
+  const handleAddedLocation = useCallback(
+    (addedLocation, routeId = undefined, stationId = undefined) => {
+      const newData = { ...data };
+      const addedLocations = addedLocation.split("\n").filter(Boolean);
+      const routesLookup = {};
+      const stationsLookup = {};
+
+      if (!routeId && !stationId) {
+        addedLocations.forEach((location) => {
+          const routeId = uuidv4();
+          newData.routes.push({
+            name: "Tuyến: " + location.trim(),
+            stations: [],
+            _id: routeId,
+            isNew: true
+          });
+          routesLookup[routeId] = newData.routes[newData.routes.length - 1];
+        });
+      } else if (routeId && !stationId) {
+        const route = routesLookup[routeId] || newData.routes.find((r) => r._id === routeId);
+        console.log(route)
+        addedLocations.forEach((location) => {
+          const stationId = uuidv4();
+          route.stations.push({
+            name: "Nhánh: " + location.trim(),
+            pillars: [],
+            _id: stationId,
+            isNew: true
+          });
+          stationsLookup[stationId] = route.stations[route.stations.length - 1];
+        });
+      } else if (routeId && stationId) {
+        const route = routesLookup[routeId] || newData.routes.find((r) => r._id === routeId);
+        const station = stationsLookup[stationId] || route.stations.find((s) => s._id === stationId);
+        addedLocations.forEach((location) => {
+          station.pillars.push({
+            name: location.trim(),
+            _id: uuidv4(),
+            isNew: true
+          });
+        });
+      }
+      setData(newData);
+    },
+    [data]
+  )
+
+  const ValueTable = (() => {
+    const route = data.routes.find((route) => route._id === selectedRoute)
+    const station = route ? route.stations.find((station) => station._id === selectedStation) : undefined
+
+    return <table className="big-table">
+      <tr>
+        <th className="text-white primary w-48">
+          <div className="w-48">
+            {" "}
+            <div className="absolute right-0 bottom-0 ml-2 mr-2 mb-2">
+              <Flex className="flex justify-between">
+                {(route && station && editing) &&
+                  <AddLocation onAddedLocation={handleAddedLocation} routeId={route._id} stationId={station._id} />
+                }
+              </Flex>
+            </div>
+          </div>
+          <main className="text-lg">SỐ TRỤ</main>
+        </th>
+        <RotatedTh className="text-white primary">Khoảng cách</RotatedTh>
+        <RotatedTh className="text-white primary">Trung thế</RotatedTh>
+        <RotatedTh className="text-white primary">Hạ thế</RotatedTh>
+
+        {matTextList.map((matText, index) => {
+          const matList = matListMap[matText];
+          return renderRotatedParentTh(index, matText, matList, materials[matText]);
+        })}
+
+      </tr>
+      {
+        !(selectedStation === '' || !route) && <>
+          <PillarTr station={station} />
+          <SumDoneTr station={station} />
+        </>
+      }
+    </table >
+  })
+
+  const LeftBar = React.memo(() => {
+    const handleChangedLocation = useCallback(
+      (changedRoute, routeId = undefined, stationId = undefined, pillarId = undefined) => {
+        setData((prevData) => {
+          const newData = { ...prevData };
+          if (routeId && !stationId) {
+            // Change route
+            newData.routes.find((route) => route._id === routeId).name = `${!changedRoute.toLowerCase().startsWith('tuyến:') ? "Tuyến:" : ""} ${changedRoute}`;
+          } else if (routeId && stationId && !pillarId) {
+            // Change station
+            newData.routes.find((route) => route._id === routeId).stations.find((station) => station._id === stationId).name = `${!changedRoute.toLowerCase().startsWith('nhánh:') ? "Nhánh:" : ""} ${changedRoute}`;
+          } else if (routeId && stationId && pillarId) {
+            // Change pillar
+            newData.routes.find((route) => route._id === routeId).stations.find((station) => station._id === stationId).pillars.find((pillar) => pillar._id === pillarId).name = `${!changedRoute.toLowerCase().startsWith('nhánh:') ? "Nhánh:" : ""} ${changedRoute}`;
+          }
+          return newData;
+        });
+      },
+      []
     );
-    setStationToggles(
-      Object.fromEntries(
-        Object.keys(stationToggles).map((key) => [
-          key,
-          false,
-        ])
-      )
+
+    const handleDeletedRoute = useCallback(
+      (routeId = undefined, stationId = undefined, pillarId = undefined) => {
+        setData((prevData) => {
+          const newData = { ...prevData };
+          if (routeId && !stationId) {
+            // Delete route
+            newData.routes = newData.routes.filter((route) => route._id !== routeId);
+          } else if (routeId && stationId) {
+            const route = newData.routes.find((route) => route._id === routeId);
+            if (!pillarId) {
+              // Delete station
+              route.stations = route.stations.filter((station) => station._id !== stationId);
+            } else {
+              // Delete pillar
+              let pillars = route.stations.find((station) => station._id === stationId).pillars;
+              pillars = pillars.filter((pillar) => pillar._id !== pillarId);
+            }
+          }
+          return newData;
+        });
+      },
+      []
     );
-  }, [[routeToggles, setRouteToggles, stationToggles, setStationToggles]])
+
+    return <nav class="mt-1 order-first overflow-y-auto"
+      style={{ width: '20vw', height: '82vh' }}>
+      <div className='overflow-auto flex flex-col rounded-lg mr-3 px-1.5 bg-black/[.025]'
+        style={{ height: `${editing ? "77vh" : "82vh"}` }}>
+        {
+          data.routes.map((route) => {
+            return (
+              <div>
+                <Box
+                  className={`min-h-[45px] relative flex items-center group min-h-[30px] cursor-default mt-2 bg-[#4a5567] text-white rounded-t-lg pl-2 px-1`}
+                >
+                  <div className='my-auto mr-5'>{route.name}</div>
+                  {editing &&
+                    <div className="absolute right-0">
+                      <EditLocation name={route.name} onChangedLocation={handleChangedLocation} onDeletedLocation={handleDeletedRoute} routeId={route._id} />
+                      <AddLocation onAddedLocation={handleAddedLocation} routeId={route._id} />
+                    </div>
+                  }
+                </Box>
+
+                <div
+                  className="bg-black/[.05] rounded-b-lg flex flex-col"
+                >
+                  {route.stations.map((station) => {
+                    return <Box
+                      className={`px-1 relative flex items-center hover:bg-black/[.05] ${selectedStation === station._id ? "font-bold" : ""} border-t-2 border-black/[.15] cursor-pointer`}
+                    >
+                      <div className="flex w-full justify-between">
+                        <div className="my-auto w-full"
+                          onClick={() => {
+                            setSelectedRoute(route._id)
+                            setSelectedStation(station._id)
+                          }}>{station.name}</div>
+
+                        {editing &&
+                          <div className=""><EditLocation name={station.name} onChangedLocation={handleChangedLocation} onDeletedLocation={handleDeletedRoute} routeId={route._id} stationId={station._id} /></div>
+                        }
+                      </div>
+                    </Box>
+                  })}
+                </div>
+              </div>
+            )
+          })
+        }
+      </div >
+      {editing &&
+        <div className="w-full mt-2 mx-auto flex items-center justify-center">
+          <AddLocation onAddedLocation={handleAddedLocation} />
+        </div>
+      }
+    </nav >
+  });
 
   return (
     <>
-      <TopBar />
-      <div style={{ overflowX: "auto" }} className="table-wrapper">
-        {/* First Row */}
-
-        <table className="big-table">
-          <tr>
-            <th className="text-white primary w-64">
-              <div className="w-64">
-                {" "}
-                <div className="absolute inset-x-0 bottom-0 ml-2 mr-2 mb-2">
-                  <Flex className="flex justify-between">
-                    <div className="flex gap-1.5">
-                      <IconButton
-                        size="sm"
-                        background="#dddddd33"
-                        color="white"
-                        icon={<FaExpandArrowsAlt />}
-                        onClick={() => expandAll()}
-                      />
-                      <IconButton
-                        size="sm"
-                        background="#dddddd33"
-                        color="white"
-                        icon={<FaCompressArrowsAlt />}
-                        onClick={() => collapseAll()}
-                      />
-                    </div>
-                    {editing && (
-                      <AddLocation
-                        type={"route"}
-                        onAddedLocation={handleAddedLocation}
-                      >
-                        {" "}
-                      </AddLocation>
-                    )}
-                  </Flex>
-                </div>
-              </div>
-              <main className="text-lg">SỐ TRỤ</main>
-            </th>
-            <RotatedTh className="text-white primary">Khoảng cách</RotatedTh>
-            <RotatedTh className="text-white primary">Trung thế</RotatedTh>
-            <RotatedTh className="text-white primary">Hạ thế</RotatedTh>
-
-            {matTextList.map((matText, index) => {
-              const matList = matListMap[matText];
-              return (
-                <RotatedParentTh key={index} matText={matText} matList={matList} _data={materials[matText]}>
-                  {matNameList[index]}
-                </RotatedParentTh>
-              );
-            })}
-          </tr>
-
-          {/* Row */}
-          {data.routes.map((route, routeIndex) => {
-            return <RouteTr key={routeIndex} index={routeIndex} _data={route}>{route.name}</RouteTr>;
-          })}
-        </table>
-      </div>
+      <TopBar editing={editing} exportMode={exportMode} formattedTimestamp={formattedTimestamp} />
+      <div class="flex-1 flex flex-row overflow-y-hidden">
+        <LeftBar />
+        <Flex className='mt-1 flex flex-col gap-3' style={{ width: '78vw', height: '82vh' }}>
+          <main class="overflow-y-auto flex-1 rounded-lg">
+            <div className='rounded-lg'>
+              <ValueTable />
+            </div>
+          </main>
+        </Flex>
+      </div >
     </>
-  );
+  )
 }
 
 export default Table;

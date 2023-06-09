@@ -30,6 +30,16 @@ $heading-heigth: 180px;
   border-collapse: separate;
   border-spacing: 0;
 
+  // This two are for two last sticky trs
+  tr:nth-last-child(1) {
+    bottom: 0;
+    position: sticky;
+  }
+  tr:nth-last-child(2) {
+    bottom: 44px; /* Adjust the value as needed */
+    position: sticky;
+  }
+
   td:not(:first-child) {
     @apply border-2 border-white;
     @apply text-xs md:text-sm;
@@ -68,8 +78,8 @@ $heading-heigth: 180px;
     }
 
     td {
-      &:first-child {
-        position: sticky;
+      &:first-child:not(:nth-last-child(-n+2)) {
+        // position: sticky;
         z-index: 1;
         left: 0;
       }

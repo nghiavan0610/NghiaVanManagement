@@ -37,7 +37,7 @@ import { FaPlus } from 'react-icons/fa';
  * @children Pass in the button
  */
 
-const AddLocation = ({ type, onAddedLocation, children, disableBottomButtonRef, parentIndex, index }) => {
+const AddLocation = ({ onAddedLocation, routeId = undefined, stationId = undefined }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const initialRef = React.useRef();
@@ -51,7 +51,7 @@ const AddLocation = ({ type, onAddedLocation, children, disableBottomButtonRef, 
   } = useForm();
 
   const onSubmit = (data) => {
-    onAddedLocation(data.locationName, type, parentIndex, index);
+    onAddedLocation(data.locationName, routeId, stationId);
     reset(); // Reset form values
     onClose();
   };
@@ -62,13 +62,6 @@ const AddLocation = ({ type, onAddedLocation, children, disableBottomButtonRef, 
     onClose();
   };
 
-  const childrenWithProps = React.Children.map(children, (child) => {
-    if (React.isValidElement(child)) {
-      return React.cloneElement(child, { onClick: onOpen });
-    }
-    return child;
-  });
-
   const renderError = (name, type = 'required') => {
     if (name in errors && errors[name].type === type) {
       return <ErrorMessage />;
@@ -78,23 +71,16 @@ const AddLocation = ({ type, onAddedLocation, children, disableBottomButtonRef, 
   };
 
   let title = "";
-  switch (type) {
-    case "route":
-      title = "tuyến"
-      break;
-    case "station":
-      title = "trạm"
-      break;
-    case "pillar":
-      title = "trụ"
-      break;
+  if (!routeId && !stationId) {                                        // Add routes
+    title = 'tuyến'
+  } else if (routeId && !stationId) {                                 // Add stations
+    title = 'nhánh'
+  } else if (routeId && stationId) {                                  // Add pillars
+    title = 'trụ'
   }
 
   return (
     <>
-      {/* Button */}
-      {childrenWithProps}
-
       <Popover placement="right"
         initialFocusRef={initialRef}
         finalFocusRef={finalRef}
@@ -103,27 +89,16 @@ const AddLocation = ({ type, onAddedLocation, children, disableBottomButtonRef, 
         onClose={handleClose}
       >
         <PopoverTrigger>
-          <IconButton size='sm'
-            onMouseOver={() => {
-              if (type !== 'route')
-                disableBottomButtonRef.current = true
-            }}
-            onMouseLeave={() => {
-              if (type !== 'route')
-                disableBottomButtonRef.current = false
-            }}
-            background="#dddddd33" color="white" icon={<FaPlus />} />
+          {
+            (!routeId && !stationId) ?
+              <Button className="w-full mr-2 mx-auto" leftIcon={<FaPlus />}>Thêm tuyến</Button>
+              :
+              <IconButton className='m-1.5' size='sm'
+                background="#dddddd33" color={((routeId && stationId) || (!routeId && !stationId)) && "white"} icon={<FaPlus />} />
+          }
         </PopoverTrigger>
         <Portal>
           <PopoverContent
-            onMouseOver={() => {
-              if (type !== 'route')
-                disableBottomButtonRef.current = true
-            }}
-            onMouseLeave={() => {
-              if (type !== 'route')
-                disableBottomButtonRef.current = false
-            }}
             as='form' onSubmit={handleSubmit(onSubmit)}
           >
             <PopoverArrow />
@@ -157,4 +132,4 @@ const AddLocation = ({ type, onAddedLocation, children, disableBottomButtonRef, 
   );
 };
 
-export default AddLocation;
+export default React.memo(AddLocation);

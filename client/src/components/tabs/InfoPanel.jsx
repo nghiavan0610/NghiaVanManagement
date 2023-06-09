@@ -21,6 +21,8 @@ import {
   Thead,
   Tr,
   Badge,
+  IconButton,
+  Progress,
 } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import React, { useState } from 'react';
@@ -41,6 +43,7 @@ import { showToast } from '../../utils/toast';
 import AddProject from '../modals/AddProject';
 import EmployeeModal from '../modals/Employee';
 import DeleteProject from '../modals/DeleteProject';
+import { HiOutlineChevronDown } from 'react-icons/hi';
 
 function InfoPanel({ detail }) {
   const dispatch = useDispatch();
@@ -159,8 +162,8 @@ function InfoPanel({ detail }) {
 
   const renderEmployeesTable = () => {
     return (
-      <>
-        <TableContainer marginTop={6}>
+      <div className='overflow-auto mt-2' style={{ height: `60vh` }}>
+        <TableContainer>
           <Table size='sm' variant='striped'>
             <Thead>
               <Tr>
@@ -182,7 +185,7 @@ function InfoPanel({ detail }) {
             </Tbody>
           </Table>
         </TableContainer>
-      </>
+      </div>
     );
   };
 
@@ -210,7 +213,7 @@ function InfoPanel({ detail }) {
             <strong>Mô tả: </strong>{' '}
             {description}
           </p>
-          <p className='mb-3 flex items-center gap-2'>
+          {/* <p className='mb-3 flex items-center gap-2'>
             <strong>Trạng thái: </strong>{' '}
             {
               isDone ?
@@ -223,27 +226,40 @@ function InfoPanel({ detail }) {
                   {progress}%
                 </>
             }
-          </p>
+          </p> */}
         </Box>
 
-        {(manager?._id === _id || role === "admin") && <Menu>
-          <MenuButton>
-            <BsThreeDotsVertical />
-          </MenuButton>
-          <MenuList>
-            <AddProject project={detail}>
-              <MenuItem icon={<MdModeEdit />}>Sửa thông tin dự án</MenuItem>
-            </AddProject>
-            <DeleteProject slug={slug} origCode={code}>
-              <MenuItem
-                icon={<FaTrash />}
-                color='red.500'
-              >
-                Xóa dự án
-              </MenuItem>
-            </DeleteProject>
-          </MenuList>
-        </Menu>}
+        <div className='flex gap-6 -mt-14'>
+          <div className='flex items-center gap-2'>
+            {isDone ?
+              <Badge className='rounded-md' colorScheme='green'>{"Đã hoàn thành"}</Badge>
+              :
+              <>
+                <Progress className='w-[200px] rounded-xl' hasStripe isAnimated value={progress} /> {progress}%
+              </>}
+          </div>
+
+          {(manager?._id === _id || role === "admin") && <Menu>
+            <MenuButton>
+              <MenuButton as={Button} rightIcon={<HiOutlineChevronDown />}>
+                Tùy chọn
+              </MenuButton>
+            </MenuButton>
+            <MenuList>
+              <AddProject project={detail}>
+                <MenuItem icon={<MdModeEdit />}>Sửa thông tin dự án</MenuItem>
+              </AddProject>
+              <DeleteProject slug={slug} origCode={code}>
+                <MenuItem
+                  icon={<FaTrash />}
+                  color='red.500'
+                >
+                  Xóa dự án
+                </MenuItem>
+              </DeleteProject>
+            </MenuList>
+          </Menu>}
+        </div>
       </div>
 
       <div className='flex justify-between items-center'>

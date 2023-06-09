@@ -53,7 +53,7 @@ const AddCommentForTimesheet = ({ children, timesheetId, slug }) => {
         return null;
     };
 
-    const onSubmit = async (formData) => {
+    const onSubmit = (formData) => {
         const timezoneOffset = new Date().getTimezoneOffset() * 60000;
         const workDate = new Date(new Date(formData.workDate).getTime() - timezoneOffset)
         const data = {
@@ -64,7 +64,7 @@ const AddCommentForTimesheet = ({ children, timesheetId, slug }) => {
             proofId: ""
         }
 
-        await dispatch(reviewTimesheet({ data, slug }));
+        dispatch(reviewTimesheet({ data, slug }));
         handleClose();
     };
 
@@ -95,49 +95,47 @@ const AddCommentForTimesheet = ({ children, timesheetId, slug }) => {
                             />
                             {renderError('comment')}
                         </FormControl>
-                        <Flex className='gap-4'>
-                            <FormControl mt={4} isRequired className='w-4/6'>
-                                <FormLabel>Ngày</FormLabel>
-                                <Controller
-                                    name='workDate'
-                                    control={control}
-                                    defaultValue={new Date().setHours(0, 0, 0, 0)}
-                                    rules={{
-                                        required: true,
-                                    }}
-                                    render={({ field }) => (
-                                        <Datepicker
-                                            defaultDate={new Date().setHours(0, 0, 0, 0)}
-                                            value={field.value}
-                                            onChange={field.onChange}
-                                        />
-                                    )}
-                                />
-                            </FormControl>
-                            <FormControl mt={4} isRequired className='w-2/6'>
-                                <FormLabel>Ca</FormLabel>
-                                <Controller
-                                    name='shift'
-                                    control={control}
-                                    rules={{
-                                        required: true,
-                                    }}
-                                    render={({ field }) => (
-                                        <RadioGroup value={field.value} onChange={field.onChange}>
-                                            <Stack direction='column' spacing='0px'>
-                                                <Radio value='morning'>Sáng</Radio>
-                                                <Radio value='evening'>Chiều</Radio>
-                                            </Stack>
-                                        </RadioGroup>
-                                    )}
-                                    {...register('shift', {
-                                        required: true
-                                    })}
-                                />
-                                {renderError('shift')}
-                            </FormControl>
-                        </Flex>
-
+                        <FormControl mt={4} isRequired>
+                            <FormLabel>Ngày</FormLabel>
+                            <Controller
+                                name='workDate'
+                                control={control}
+                                defaultValue={new Date().setHours(0, 0, 0, 0)}
+                                rules={{
+                                    required: true,
+                                }}
+                                render={({ field }) => (
+                                    <Datepicker
+                                        defaultDate={new Date().setHours(0, 0, 0, 0)}
+                                        value={field.value}
+                                        onChange={field.onChange}
+                                    />
+                                )}
+                            />
+                        </FormControl>
+                        <FormControl mt={4} isRequired className='w-4/6'>
+                            <FormLabel>Ca</FormLabel>
+                            <Controller
+                                name='shift'
+                                control={control}
+                                rules={{
+                                    required: true,
+                                }}
+                                render={({ field }) => (
+                                    <RadioGroup value={field.value} onChange={field.onChange}>
+                                        <Stack direction='row' className='justify-between'>
+                                            <Radio value='morning'>Sáng</Radio>
+                                            <Radio value='evening'>Chiều</Radio>
+                                            <Radio value='night'>Tối</Radio>
+                                        </Stack>
+                                    </RadioGroup>
+                                )}
+                                {...register('shift', {
+                                    required: true
+                                })}
+                            />
+                            {renderError('shift')}
+                        </FormControl>
                     </ModalBody>
                     <ModalFooter>
                         <Button className='mr-2' onClick={handleClose}>

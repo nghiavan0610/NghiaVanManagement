@@ -1,33 +1,32 @@
 import {
-    Button,
-    FormControl,
-    FormLabel,
-    Input,
-    Modal,
-    ModalBody,
-    ModalCloseButton,
-    ModalContent,
-    ModalFooter,
-    ModalHeader,
-    ModalOverlay,
-    Popover,
-    PopoverTrigger,
-    PopoverContent,
-    PopoverHeader,
-    PopoverBody,
-    PopoverFooter,
-    PopoverArrow,
-    PopoverCloseButton,
-    PopoverAnchor,
-    Portal,
-    ButtonGroup,
-    useDisclosure,
-    IconButton,
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  PopoverFooter,
+  PopoverArrow,
+  PopoverCloseButton,
+  PopoverAnchor,
+  Portal,
+  ButtonGroup,
+  useDisclosure,
+  IconButton,
 } from '@chakra-ui/react';
-import { data } from 'autoprefixer';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { FaEdit } from 'react-icons/fa';
+import { IoMdSettings } from 'react-icons/io';
 import ErrorMessage from '../../utils/ErrorMessage';
 
 /**
@@ -35,109 +34,93 @@ import ErrorMessage from '../../utils/ErrorMessage';
  * @children Pass in the button
  */
 
-const EditLocation = ({ type, name, onChangedLocation, disableBottomButtonRef, onDeletedLocation, children, onSubmit: parentOnSubmit, isOpen = false, onClose }) => {
-    const { _, onOpen, __ } = useDisclosure();
-    const initialRef = React.useRef();
-    const finalRef = React.useRef();
+const EditLocation = ({ name, onChangedLocation, onDeletedLocation, routeId = undefined, stationId = undefined, pillarId = undefined }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
 
-    const onSubmit = (data) => {
-        onChangedLocation(data.locationName)
-        onClose();
-    };
+  const onSubmit = (data) => {
+    onChangedLocation(data.locationName, routeId, stationId, pillarId)
+    reset(); // Reset form values
+    onClose();
+  };
 
-    const childrenWithProps = React.Children.map(children, (child) => {
-        if (React.isValidElement(child)) {
-            return React.cloneElement(child, { onClick: onOpen });
-        }
-        return child;
-    });
+  // Call reset on modal close
+  const handleClose = () => {
+    reset(); // Reset form values
+    onClose();
+  };
 
-    const renderError = (name, type = 'required') => {
-        if (name in errors && errors[name].type === type) {
-            return <ErrorMessage />;
-        }
-
-        return null;
-    };
-
-    let title = "";
-    switch (type) {
-        case "route":
-            title = "tuyến"
-            break;
-        case "station":
-            title = "trạm"
-            break;
-        case "pillar":
-            title = "trụ"
-            break;
+  const renderError = (name, type = 'required') => {
+    if (name in errors && errors[name].type === type) {
+      return <ErrorMessage />;
     }
+    return null;
+  };
 
-    return (
-        <>
-            {/* Button */}
-            {childrenWithProps}
+  let title = "";
+  if (!routeId && !stationId) {                                        // Add routes
+    title = 'tuyến'
+  } else if (routeId && !stationId) {                                 // Add stations
+    title = 'nhánh'
+  } else if (routeId && stationId) {                                  // Add pillars
+    title = 'trụ'
+  }
 
-            <Popover placement="right"
-                initialFocusRef={initialRef}
-                finalFocusRef={finalRef}
-                isOpen={isOpen}
-                onClose={onClose}
-            >
-                <PopoverTrigger><div></div></PopoverTrigger>
-                <Portal>
-                    <PopoverContent as='form' onSubmit={handleSubmit(onSubmit)}
-                        onMouseOver={() => {
-                            // if (type !== 'route')
-                                disableBottomButtonRef.current = true
-                        }}
-                        onMouseLeave={() => {
-                            // if (type !== 'route')
-                                disableBottomButtonRef.current = false
-                        }}
-                    >
-                        <PopoverArrow />
-                        <PopoverBody>
-                            <FormControl>
-                                <FormLabel>
-                                    Tên {title} <span className='text-red-500'>*</span>
-                                </FormLabel>
-                                <Input
-                                    ref={initialRef}
-                                    defaultValue={name}
-                                    placeholder={`Tên ${title}`}
-                                    {...register('locationName', { required: true })}
-                                />
-                                {renderError('locationName')}
-                            </FormControl>
-                        </PopoverBody>
-                        <PopoverFooter display='flex' justifyContent='flex-end'>
-                            <ButtonGroup size='sm'>
-                                <Button onClick={() => {
-                                    onDeletedLocation()
-                                    onClose()
-                                }} mr={3} background='primary' color='white'>
-                                    Xóa {title}
-                                </Button>
-                                <Button onClick={onClose} mr={3}>
-                                    Hủy
-                                </Button>
-                                <Button background={"#0000FF"} color='white' type='submit'>
-                                    Cập nhật
-                                </Button>
-                            </ButtonGroup>
-                        </PopoverFooter>
-                    </PopoverContent>
-                </Portal>
-            </Popover>
-        </>
-    );
+  return (
+    <>
+      <Popover placement="right"
+        isOpen={isOpen}
+        onOpen={onOpen}
+        onClose={handleClose}
+      >
+        <PopoverTrigger>
+          <IconButton className='m-1.5' size='sm'
+            background="#dddddd33" color={(routeId && !stationId) && "white"} icon={<IoMdSettings />} />
+        </PopoverTrigger>
+        <Portal>
+          <PopoverContent as='form' onSubmit={handleSubmit(onSubmit)}
+          >
+            <PopoverArrow />
+            <PopoverBody>
+              <FormControl>
+                <FormLabel>
+                  Tên {title} <span className='text-red-500'>*</span>
+                </FormLabel>
+                <Input
+                  defaultValue={name}
+                  placeholder={`Tên ${title}`}
+                  {...register('locationName', { required: true })}
+                />
+                {renderError('locationName')}
+              </FormControl>
+            </PopoverBody>
+            <PopoverFooter display='flex' justifyContent='flex-end'>
+              <ButtonGroup size='sm'>
+                <Button onClick={() => {
+                  onDeletedLocation(routeId, stationId, pillarId);
+                  onClose()
+                }} mr={3} background='primary' color='white'>
+                  Xóa {title}
+                </Button>
+                <Button onClick={onClose} mr={3}>
+                  Hủy
+                </Button>
+                <Button background={"#0000FF"} color='white' type='submit'>
+                  Cập nhật
+                </Button>
+              </ButtonGroup>
+            </PopoverFooter>
+          </PopoverContent>
+        </Portal>
+      </Popover>
+    </>
+  );
 };
 
 export default EditLocation;

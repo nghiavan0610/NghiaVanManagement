@@ -1,4 +1,10 @@
 import {
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
+  Box,
   Button,
   FormControl,
   FormLabel,
@@ -12,20 +18,30 @@ import {
   ModalOverlay,
   useDisclosure,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import ErrorMessage from '../../utils/ErrorMessage';
 import Select from 'react-tailwindcss-select';
-import { IoAdd } from 'react-icons/io5';
-import AddNewMaterial from './AddNewMaterial';
+import { useDispatch, useSelector } from 'react-redux';
+import { getOneMaterialType } from '../../features/materialSlice';
+import { FaPlus } from 'react-icons/fa';
+import { axios_instance } from '../../utils/axios';
+import { showToast } from '../../utils/toast';
 
 /**
  *
  * @children Pass in the button
  */
 
-const AddMaterial = ({ children, matList, currentMatList, onAddedMaterial, matType }) => {
+const AddMaterial = ({ children, currentMatList, onAddedMaterial, matType }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { materials, isLoading } = useSelector((state) => state.material);
+  const [matList, setMatList] = useState(materials[matType])
+
+  const [newMatAdded, setNewMatAdded] = useState(false)
+  const [newMat, setNewMat] = useState('')
+
+  const dispatch = useDispatch();
 
   const initialRef = React.useRef();
   const finalRef = React.useRef();
@@ -37,7 +53,6 @@ const AddMaterial = ({ children, matList, currentMatList, onAddedMaterial, matTy
   } = useForm();
 
   const onSubmit = (data) => {
-    // parentOnSubmit(data);
     onClose();
   };
 
@@ -52,30 +67,26 @@ const AddMaterial = ({ children, matList, currentMatList, onAddedMaterial, matTy
     if (name in errors && errors[name].type === type) {
       return <ErrorMessage />;
     }
-
     return null;
   };
 
   const [addedMat, setAddedMat] = useState(() => {
     return currentMatList.map((mat) => {
-      let name = "";
-      for (let i = 0; i < matList?.length; i++) {
-        const [matId, matStat] = mat.split('_');
-        if (matList[i]._id === matId) {
-          if (matStat === 'isRecalled')
-            name = `${matList[i].name} (thu hồi)`;
-          else if (matStat === 'isReassembled')
-            name = `${matList[i].name} (lắp lại)`;
-          else
-            name = matList[i].name;
-          break;
-        }
+      const [matId, matStat] = mat.split('_');
+      const matchingMat = matList.find((m) => m._id === matId);
+
+      let name = matchingMat ? matchingMat.name : '';
+      if (matStat === 'isRecalled') {
+        name += ' (thu hồi)';
+      } else if (matStat === 'isReassembled') {
+        name += ' (lắp lại)';
       }
+
       return {
         value: mat,
         label: name
-      }
-    })
+      };
+    });
   });
 
   const [addedMatNormal, setAddedMatNormal] = useState(() => addedMat.filter((mat) => !mat.value.split('_')[1]))
@@ -105,7 +116,7 @@ const AddMaterial = ({ children, matList, currentMatList, onAddedMaterial, matTy
       >
         <ModalOverlay />
         <ModalContent as='form' onSubmit={handleSubmit(onSubmit)}>
-          <ModalHeader textAlign='center'>Thêm danh sách vật tư</ModalHeader>
+          <ModalHeader textAlign='center'>Chỉnh sửa danh sách vật tư</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
             <FormControl>
@@ -175,6 +186,56 @@ const AddMaterial = ({ children, matList, currentMatList, onAddedMaterial, matTy
             </FormControl>
           </ModalBody>
 
+          <Accordion allowToggle p={'4'}>
+            <AccordionItem>
+              <h2>
+                <AccordionButton>
+                  <Box as="span" flex='1' textAlign='left'>
+                    Thêm vật tư
+                  </Box>
+                  <AccordionIcon />
+                </AccordionButton>
+              </h2>
+              <AccordionPanel pb={4}>
+                <div className='flex items-center gap-2'>
+                  <FormControl isRequired>
+                    <Input
+                      placeholder={`Tên vật tư`}
+                      value={newMat}
+                      onChange={(event) => setNewMat(event.target.value)}
+                    />
+                  </FormControl>
+                  <Button
+                    leftIcon={<FaPlus />}
+                    onClick={async () => {
+                      if (newMat.trim() === '') {
+                        showToast('error', "Tên vật tư không được để trống.")
+                        return;
+                      }
+                      setNewMatAdded(true);
+                      const _matType = matType.slice(0, -1).charAt(0).toUpperCase() + matType.slice(0, -1).substring(1);
+                      await axios_instance
+                        .post(`/materials/create-material`, {
+                          materialType: _matType,
+                          name: newMat
+                        })
+                        .then(function (response) {
+                          setMatList([...matList, response.data.data[_matType]]);
+                          showToast('success', "Đã thêm vật tư.")
+                        })
+                        .catch(function (error) {
+                          console.log(error);
+                          showToast('error', "Lỗi khi thêm vật tư.")
+                        });
+                    }}
+                  >
+                    Thêm
+                  </Button>
+                </div>
+              </AccordionPanel>
+            </AccordionItem>
+          </Accordion>
+
           <ModalFooter>
             <Button onClick={onClose} mr={3}>
               Hủy
@@ -188,6 +249,8 @@ const AddMaterial = ({ children, matList, currentMatList, onAddedMaterial, matTy
               } else {
                 onAddedMaterial([])
               }
+              if (newMatAdded)
+                dispatch(getOneMaterialType(matType));
               onClose();
             }}>
               Cập nhật

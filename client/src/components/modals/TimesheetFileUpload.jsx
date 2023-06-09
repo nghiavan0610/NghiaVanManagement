@@ -90,7 +90,7 @@ const TimesheetFileUpload = ({ children, slug, _workDate = undefined, _shift = u
           <ModalCloseButton />
           <ModalBody>
             <FormControl isRequired>
-              <FormLabel htmlFor='proof'>Tệp đính kèm</FormLabel>
+              <FormLabel htmlFor='proof'>Tệp (.pdf, .jpg, .jpeg, .png ; tối đa 10 tệp)</FormLabel>
               <label htmlFor='proof'>
                 <Flex
                   alignItems='center'
@@ -137,8 +137,8 @@ const TimesheetFileUpload = ({ children, slug, _workDate = undefined, _shift = u
               />
               {renderError('proof')}
             </FormControl>
-            {!_workDate && <Flex className='gap-4'>
-              <FormControl mt={4} isRequired className={'w-4/6'}>
+            {!_workDate && <>
+              <FormControl mt={4} isRequired>
                 <FormLabel>Ngày</FormLabel>
                 <Controller
                   name='workDate'
@@ -156,7 +156,8 @@ const TimesheetFileUpload = ({ children, slug, _workDate = undefined, _shift = u
                   )}
                 />
               </FormControl>
-              <FormControl mt={4} isRequired className={'w-2/6'}>
+
+              <FormControl mt={4} isRequired className={'w-4/6'}>
                 <FormLabel>Ca</FormLabel>
                 <Controller
                   name='shift'
@@ -167,9 +168,10 @@ const TimesheetFileUpload = ({ children, slug, _workDate = undefined, _shift = u
                   }}
                   render={({ field }) => (
                     !_workDate && <RadioGroup value={field.value} onChange={field.onChange}>
-                      <Stack direction='column' spacing='0px'>
+                      <Stack direction='row' className='justify-between'>
                         <Radio value='morning'>Sáng</Radio>
                         <Radio value='evening'>Chiều</Radio>
+                        <Radio value='night'>Tối</Radio>
                       </Stack>
                     </RadioGroup>
                   )}
@@ -179,7 +181,7 @@ const TimesheetFileUpload = ({ children, slug, _workDate = undefined, _shift = u
                 />
                 {renderError('shift')}
               </FormControl>
-            </Flex>}
+            </>}
           </ModalBody>
           <ModalFooter>
             <Button className='mr-2' onClick={handleClose} isDisabled={isDisabled}>

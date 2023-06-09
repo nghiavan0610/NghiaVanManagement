@@ -109,7 +109,6 @@ const MaterialView = ({ children, matId, matType, matName, matTypes, isAdd = fal
                   <Select {...field} isDisabled={!isAdd}>
                     {
                       matTypes.map((materialType) => {
-                        console.log(materialType)
                         return <option value={materialType.id}>{materialType.text}</option>
                       })
                     }

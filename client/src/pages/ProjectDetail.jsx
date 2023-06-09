@@ -1,4 +1,4 @@
-import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
+import { Tab, TabIndicator, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -9,9 +9,9 @@ import TimesheetPanel from '../components/tabs/TimesheetPanel';
 import TotalsPanel from '../components/tabs/TotalsPanel';
 import { getProject, getTimesheet } from '../features/project/projectSlice';
 import { getUsers } from '../features/user/userSlice';
-import note from "../images/add-notes.svg";
+import solution from "../images/solution.svg";
 
-function ProjectDetail() {
+const ProjectDetail = () => {
   const dispatch = useDispatch();
   const { detail, timesheet } = useSelector((state) => state.project);
   const { role, _id } = useSelector((state) => state.user.auth);
@@ -42,45 +42,55 @@ function ProjectDetail() {
 
   return (
     <Layout>
-      <div className='w-full bg-white shadow-lg p-4'>
-        <Tabs>
-          <TabList>
-            {tabs.map((tab, i) => (
-              <Tab
-                _focus={{ boxShadow: '0 0 0 0 transparent' }}
-                _selected={{ borderColor: 'red.500' }}
-                key={i}
-              >
-                <h1 className='text-lg font-semibold text-gray-700 whitespace-nowrap'>
-                  {tab}
-                </h1>
-              </Tab>
-            ))}
-          </TabList>
+      <div className='w-full bg-white shadow-lg p-2'>
+        {
+          detail?.slug === slug ?
+            <Tabs variant="unstyled">
+              <TabList>
+                {tabs.map((tab, i) => (
+                  <Tab
+                    _focus={{ boxShadow: '0 0 0 0 transparent' }}
+                    _selected={{ borderColor: 'red.500' }}
+                    key={i}
+                  >
+                    <h1 className='text-lg font-semibold text-gray-700 whitespace-nowrap'>
+                      {tab}
+                    </h1>
+                  </Tab>
+                ))}
+              </TabList>
+              <TabIndicator
+                mt="-1.5px"
+                height="2px"
+                bg="red.500"
+                borderRadius="1px"
+              />
+              <TabPanels>
+                {/* Thông tin */}
+                <TabPanel>
+                  {detail ? <InfoPanel {...{ detail }} /> : <Spinner />}
+                </TabPanel>
 
-          <TabPanels>
-            {/* Thông tin */}
-            <TabPanel>
-              {detail ? <InfoPanel {...{ detail }} /> : <Spinner />}
-            </TabPanel>
+                {/* Tổng kê */}
+                <TabPanel>
+                  {detail ? <TotalsPanel {...{ detail, isManager, isLeader, isMember, isAdmin }} /> : <Spinner />}
+                </TabPanel>
 
-            {/* Tổng kê */}
-            <TabPanel>
-              {detail ? <TotalsPanel {...{ detail, isManager, isLeader, isMember, isAdmin }} /> : <Spinner />}
-            </TabPanel>
+                {/* Biên bản */}
+                <TabPanel>
+                  {timesheet ?
+                    <TimesheetPanel {...{ timesheet, slug, role, isManager, isLeader, isMember, isAdmin }} /> :
+                    <div className="py-8 flex flex-col justify-center items-center">
+                      <img src={solution} alt="solution" className="w-5/12 h-56" />
+                      <p className="mt-10 text-xl font-semibold">Chưa có dữ liệu</p>
+                      <p className="font-sm">Vui lòng thêm thành viên để tiếp tục.</p>
+                    </div>}
+                </TabPanel>
+              </TabPanels>
 
-            {/* Biên bản */}
-            <TabPanel>
-              {timesheet ?
-                <TimesheetPanel {...{ timesheet, slug, role, isManager, isLeader, isMember, isAdmin }} /> :
-                <div className="py-8 flex flex-col justify-center items-center">
-                  <img src={note} alt="note" className="w-5/12 h-56" />
-                  <p className="mt-10 text-xl font-semibold">Chưa có dữ liệu</p>
-                  <p className="font-sm">Vui lòng thêm thành viên để tiếp tục.</p>
-                </div>}
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
+            </Tabs>
+            : <Spinner />
+        }
       </div>
     </Layout>
   );

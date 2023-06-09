@@ -22,43 +22,54 @@ import ErrorMessage from '../../utils/ErrorMessage';
 import { memo } from 'react';
 
 
+
 const ValueBox = memo((props) => {
   const { onOpen, onClose, isOpen } = useDisclosure();
-  const initialRef = React.useRef();
-  const finalRef = React.useRef();
+  const initialRef = useRef();
+  const finalRef = useRef();
+
+  const {
+    value: propValue,
+    canEdit: propCanEdit,
+    comment: propComment,
+    needComment: propNeedComment,
+    origValue,
+    onValueChange,
+    onValueAndCommentSubmit,
+  } = props;
 
   const [editing, setEditing] = useState(false);
-  const [value, setValue] = useState(props.value);
-  const [canEdit, setCanEdit] = useState(props.canEdit)
-  const [comment, setComment] = useState(props.comment)
-  const [needComment, setNeedComment] = useState(props.needComment)
-  const origValue = props?.origValue
+  const [value, setValue] = useState(propValue);
+  const [canEdit, setCanEdit] = useState(propCanEdit);
+  const [comment, setComment] = useState(propComment);
+  const [needComment, setNeedComment] = useState(propNeedComment);
+
   const inputRef = useRef(null);
 
   useLayoutEffect(() => {
     if (editing && inputRef.current) {
-      inputRef.current.style.width = (inputRef.current.value.length + 3) + "ch";
+      inputRef.current.style.width = `${inputRef.current.value.length + 3}ch`;
     }
   }, [editing, value]);
 
-  function handleClick() {
+  const handleClick = () => {
     canEdit && setEditing(true);
-  }
+  };
 
-  function handleBlur() {
+  const handleBlur = () => {
     setEditing(false);
-    props.onValueChange(value);
-  }
+    onValueChange(value);
+  };
 
-  function handleChange(event) {
+  const handleChange = (event) => {
     setValue(parseFloat(event.target.value) || null);
-  }
+  };
 
-  function handleKeyDown(event) {
+  const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       event.target.blur();
     }
-  }
+  };
 
   const {
     register,
@@ -68,10 +79,10 @@ const ValueBox = memo((props) => {
   } = useForm();
 
   const onSubmit = (data) => {
-    data.quantity = parseFloat(data.quantity) || null
-    setValue(data.quantity)
-    setComment(data.comment)
-    props.onValueAndCommentSubmit(data)
+    data.quantity = parseFloat(data.quantity) || null;
+    setValue(data.quantity);
+    setComment(data.comment);
+    onValueAndCommentSubmit(data);
     onClose();
   };
 
@@ -84,7 +95,6 @@ const ValueBox = memo((props) => {
     if (name in errors && errors[name].type === type) {
       return <ErrorMessage />;
     }
-
     return null;
   };
 
@@ -101,79 +111,82 @@ const ValueBox = memo((props) => {
         ref={inputRef}
       />
     );
-  } else {
-    if (!editing) {
-      return (
-        <Tooltip label={comment &&
-          <Stack>
-            <div>Ghi chú: {comment}</div>
-            <div>Giá trị gốc: {origValue?.quantity ?? 0}</div>
-          </Stack>}>
-          <div className="p-2 text-center cursor-default" onClick={handleClick}>
-            {value}
-          </div>
-        </Tooltip>
-      );
-    }
-    else {
-      return <Popover
-        isOpen={isOpen}
-        onOpen={onOpen}
-        onClose={handleClose}
-      >
-        <Tooltip label={comment} placement='top'>
-          {/* additional element */}
-          <Box>
-            <PopoverTrigger>
-              <div className="p-2 text-center cursor-default" onClick={handleClick} >
-                {value}
-              </div>
-            </PopoverTrigger>
-          </Box>
-        </Tooltip>
-
-        <PopoverContent as='form' onSubmit={handleSubmit(onSubmit)}>
-          <PopoverArrow />
-          <PopoverBody>
-            <FormControl className='text-[#4a5567]'>
-              <FormLabel>
-                Giá trị <span className='text-red-500'>*</span>
-              </FormLabel>
-              <Input
-                ref={initialRef}
-                defaultValue={value}
-                placeholder={`Giá trị`}
-                {...register('quantity', { required: true })}
-              />
-              {renderError('quantity')}
-            </FormControl>
-            <FormControl className='text-[#4a5567]'>
-              <FormLabel>
-                Ghi chú <span className='text-red-500'>*</span>
-              </FormLabel>
-              <Input
-                ref={initialRef}
-                defaultValue={comment}
-                placeholder={`Ghi chú`}
-                {...register('comment', { required: true })}
-              />
-              {renderError('comment')}
-            </FormControl>
-            <PopoverFooter display='flex' justifyContent='flex-end'>
-              <ButtonGroup size='sm'>
-                <Button onClick={handleClose} mr={3}>
-                  Hủy
-                </Button>
-                <Button background='primary' color='white' type='submit'>
-                  OK
-                </Button>
-              </ButtonGroup>
-            </PopoverFooter>
-          </PopoverBody>
-        </PopoverContent>
-      </Popover>
-    }
   }
+
+  if (!editing) {
+    return (
+      <Tooltip
+        label={
+          comment && (
+            <Stack>
+              <div>Ghi chú: {comment}</div>
+              <div>Giá trị gốc: {origValue?.quantity ?? 0}</div>
+            </Stack>
+          )
+        }
+      >
+        <div className={`p-2 text-center ${value && "cursor-pointer"}`} onClick={handleClick}>
+          {value && Math.round(value * 100) / 100}
+        </div>
+      </Tooltip>
+    );
+  }
+
+  return (
+    <Popover isOpen={isOpen} onOpen={onOpen} onClose={handleClose}>
+      <Tooltip label={comment} placement="top">
+        {/* additional element */}
+        <Box>
+          <PopoverTrigger>
+            <div className="p-2 text-center cursor-default" onClick={handleClick}>
+              {value}
+            </div>
+          </PopoverTrigger>
+        </Box>
+      </Tooltip>
+
+      <PopoverContent as="form" onSubmit={handleSubmit(onSubmit)}>
+        <PopoverArrow />
+        <PopoverBody>
+          <FormControl className="text-[#4a5567]">
+            <FormLabel>
+              Giá trị <span className="text-red-500">*</span>
+            </FormLabel>
+            <Input
+              ref={initialRef}
+              defaultValue={value}
+              placeholder="Giá trị"
+              {...register("quantity", { required: true })}
+            />
+            {renderError("quantity")}
+          </FormControl>
+          <FormControl className="text-[#4a5567]">
+            <FormLabel>
+              Ghi chú <span className="text-red-500">*</span>
+            </FormLabel>
+            <Input
+              ref={finalRef}
+              defaultValue={comment}
+              placeholder="Ghi chú"
+              {...register("comment", { required: true })}
+            />
+            {renderError("comment")}
+          </FormControl>
+          <PopoverFooter display="flex" justifyContent="flex-end">
+            <ButtonGroup size="sm">
+              <Button onClick={handleClose} mr={3}>
+                Hủy
+              </Button>
+              <Button background="primary" color="white" type="submit">
+                OK
+              </Button>
+            </ButtonGroup>
+          </PopoverFooter>
+        </PopoverBody>
+      </PopoverContent>
+    </Popover>
+  );
 });
+
 
 export default ValueBox;

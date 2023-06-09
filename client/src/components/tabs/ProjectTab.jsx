@@ -96,38 +96,36 @@ function ProjectTab({ _projects, isAll = false, role }) {
   }
 
   return (
-    <div className='w-full bg-white shadow-lg p-4'>
-      <div className='mb-4'>
-        <div className='flex justify-between'>
-          <InputGroup className='w-72'>
-            <InputLeftElement
-              pointerEvents='none'
-              children={<AiOutlineSearch color='gray.300' />}
-              fontSize='xl'
-            />
-            <Input value={search} placeholder='Nhập từ khóa' onChange={(event) => {
-              setSearch(event.target.value);
-            }} />
-          </InputGroup>
-          {(role === 'admin' || role === 'manager') &&
-            <div className='flex gap-5'>
-              <AddProject>
-                <Button
-                  className='ml-auto'
-                  leftIcon={<IoAdd color='#fff' />}
-                  background='primary'
-                  color='white'
-                >
-                  Tạo dự án
-                </Button>
-              </AddProject>
-            </div>
-          }
-        </div>
+    <div className='w-full bg-white' style={{ height: '88vh' }}>
+      <div className='mb-4 -mt-14 flex justify-end gap-2'>
+        <InputGroup className='w-72'>
+          <InputLeftElement
+            pointerEvents='none'
+            children={<AiOutlineSearch color='gray.300' />}
+            fontSize='xl'
+          />
+          <Input value={search} placeholder='Nhập từ khóa' onChange={(event) => {
+            setSearch(event.target.value);
+          }} />
+        </InputGroup>
+        {(role === 'admin' || role === 'manager') &&
+          <div className='flex gap-5'>
+            <AddProject>
+              <Button
+                className='ml-auto'
+                leftIcon={<IoAdd color='#fff' />}
+                background='primary'
+                color='white'
+              >
+                Tạo dự án
+              </Button>
+            </AddProject>
+          </div>
+        }
       </div>
 
       {(
-        <div className='overflow-auto' style={{ height: "70vh" }}>
+        <div className='overflow-auto' style={{ height: "80vh" }}>
           <table class="table-auto w-full dataTable">
             <thead className='sticky top-0'>
               <tr>
@@ -224,9 +222,9 @@ function ProjectTab({ _projects, isAll = false, role }) {
 
       )}
       {search === "" && <small className='mt-4 inline-block'>
-        Tổng cộng có {projects.length} dự án
+        Tổng cộng có {projects.length} dự án.
       </small>}
-    </div >);
+    </div>);
 }
 
 export default ProjectTab

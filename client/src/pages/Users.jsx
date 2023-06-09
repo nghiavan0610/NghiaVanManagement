@@ -116,27 +116,22 @@ const Users = () => {
 
   return (
     <Layout>
-      <div className='w-full bg-white shadow-lg p-4'>
+      <div className='w-full bg-white shadow-lg p-4' style={{ height: '87vh' }}>
         <h3 className='h3'>Người dùng</h3>
-        <hr className='mb-6' />
-        <div className='flex mb-8'>
-          <div className='w-60'>
-            <InputGroup>
-              <InputLeftElement
-                pointerEvents='none'
-                children={<AiOutlineSearch color='gray.300' />}
-                fontSize='xl'
-              />
-              <Input value={search} placeholder='Tìm kiếm' onChange={(event) => {
-                setSearch(event.target.value);
-              }} />
-            </InputGroup>
-          </div>
-
+        <div className='flex justify-end mb-4 gap-2 -mt-9'>
+          <InputGroup className='w-72'>
+            <InputLeftElement
+              pointerEvents='none'
+              children={<AiOutlineSearch color='gray.300' />}
+              fontSize='xl'
+            />
+            <Input value={search} placeholder='Tìm kiếm' onChange={(event) => {
+              setSearch(event.target.value);
+            }} />
+          </InputGroup>
           {role === 'admin' &&
             <AddAcount>
               <Button
-                className='ml-auto'
                 leftIcon={<IoAdd color='#fff' />}
                 background='primary'
                 color='white'
@@ -151,7 +146,7 @@ const Users = () => {
           <Spinner />
         ) : (
           <>
-            <TableContainer height='70vh'>
+            <TableContainer height='100vh'>
               <Table size='sm' variant='striped'>
                 <Thead>
                   <Tr textTransform='lowercase'>
@@ -285,8 +280,13 @@ const Users = () => {
                 </Tbody>
               </Table>
             </TableContainer>
+
+            {search === "" && <small className='mt-4 inline-block'>
+              Tổng cộng có {users.length} người dùng.
+            </small>}
           </>
         )}
+
       </div>
     </Layout >
   );

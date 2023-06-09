@@ -12,7 +12,7 @@ const Layout = ({ children }) => {
         <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
         <main>
-          <div className='px-2 py-2 w-full max-w-9xl mx-auto'>
+          <div className='px-2 py-2 w-full mx-auto'>
             {children}
           </div>
         </main>

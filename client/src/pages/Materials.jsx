@@ -18,39 +18,39 @@ import Spinner from '../components/Spinner';
 
 const materialTypes = [
   {
-    id: "DayDan",
+    id: "dayDans",
     text: "Dây dẫn"
   },
   {
-    id: "Tru",
+    id: "trus",
     text: "Trụ"
   },
   {
-    id: "Mong",
+    id: "mongs",
     text: "Móng"
   },
   {
-    id: "Da",
+    id: "das",
     text: "Đà"
   },
   {
-    id: "XaSu",
+    id: "xaSus",
     text: "Xà sứ"
   },
   {
-    id: "BoChang",
+    id: "boChangs",
     text: "Bộ chằng"
   },
   {
-    id: "TiepDia",
+    id: "tiepDias",
     text: "Tiếp địa"
   },
   {
-    id: "PhuKien",
+    id: "phuKiens",
     text: "Phụ kiện"
   },
   {
-    id: "ThietBi",
+    id: "thietBis",
     text: "Thiết bị"
   }
 ]
@@ -67,7 +67,8 @@ const Materials = () => {
   const [order, setOrder] = useState('asc')
 
   useEffect(() => {
-    dispatch(getMaterials());
+    if (materials.length === 0)
+      dispatch(getMaterials());
   }, []);
 
   useEffect(() => {
@@ -108,7 +109,7 @@ const Materials = () => {
       <div className='w-full bg-white shadow-lg p-4'>
         <h3 className='h3'>Tất cả vật tư</h3>
         <hr className='mb-6' />
-        {isLoading ? <Spinner /> : <div class="flex-1 flex flex-row overflow-y-hidden mt-3">
+        {materials.length === 0 ? <Spinner /> : <div class="flex-1 flex flex-row overflow-y-hidden mt-3">
           <nav class="mt-1 order-first overflow-y-auto"
             style={{ width: '20vw', height: '80vh' }}>
             <div className='overflow-auto flex flex-col rounded-lg mr-3 px-1.5 bg-black/[.025]'

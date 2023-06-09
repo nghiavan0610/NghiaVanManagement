@@ -6,18 +6,19 @@ import note from "../../images/add-notes.svg";
 import Table from "../Table";
 import { getMaterials } from "../../features/materialSlice";
 import Spinner from "../Spinner";
-
+import { v4 as uuidv4 } from 'uuid';
 
 function TotalsPanel({ detail, isManager, isLeader, isMember }) {
 
   const [data, setData] = useState(detail.updatedSummary);
   const { role, _id } = useSelector((state) => state.user.auth);
   const { materials, isLoading } = useSelector((state) => state.material);
-  
+
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getMaterials());
+    if (materials.length === 0)
+      dispatch(getMaterials());
   }, []);
 
   useEffect(() => {
@@ -34,12 +35,18 @@ function TotalsPanel({ detail, isManager, isLeader, isMember }) {
       "routes": [
         {
           "name": "Tuyến: A",
+          "_id": uuidv4(),
+          "isNew": true,
           "stations": [
             {
               "name": " Nhánh: a",
+              "_id": uuidv4(),
+              "isNew": true,
               "pillars": [
                 {
-                  "name": "1"
+                  "name": "1",
+                  "_id": uuidv4(),
+                  "isNew": true,
                 }
               ]
             }
@@ -53,7 +60,7 @@ function TotalsPanel({ detail, isManager, isLeader, isMember }) {
   return (
     <>
       {data ? (
-        isLoading ? <Spinner /> :
+        materials.length === 0 ? <Spinner /> :
           <Table _orig={detail.originalSummary} _data={data} slug={detail.slug} allMaterials={materials} />
       ) : (
         <div className="py-8 flex flex-col justify-center items-center">

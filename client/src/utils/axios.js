@@ -7,65 +7,61 @@ export const axios_instance = axios.create({
 export const axiosRefreshToken = axios_instance.create();
 
 axios_instance.interceptors.request.use(
-    (config) => {
-        const cookies = new Cookies();
+  (config) => {
+    const cookies = new Cookies();
 
-        console.log(`%cMaking request to /${config.url}`, 'color: #73a9ff');
+    console.log(`%cMaking request to /${config.url}`, 'color: #73a9ff');
 
-        if (config.url === '/' || config.url.indexOf('/auth/refresh-token') >= 0) {
-            return config;
-        }
+    if (config.url === '/' || config.url.indexOf('/auth/refresh-token') >= 0) {
+      return config;
+    }
 
-        const token = cookies.get('accessToken');
+    const token = cookies.get('accessToken');
 
-        return {
-            ...config,
-            headers: {
-                ...config.headers,
-                Authorization: `Bearer ${token}`,
-                Accept: 'application/json',
-            },
-        };
-    },
-    (error) => {
-        console.log(error);
-        return Promise.reject(error);
-    },
+    return {
+      ...config,
+      headers: {
+        ...config.headers,
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+      },
+    };
+  },
+  (error) => {
+    console.log(error);
+    return Promise.reject(error);
+  },
 );
 
 axios_instance.interceptors.response.use(
-    (response) => response,
-    async (error) => {
-        const cookies = new Cookies();
-        const refreshToken = cookies.get('refreshToken');
+  (response) => response,
+  async (error) => {
+    const cookies = new Cookies();
+    const refreshToken = cookies.get('refreshToken');
 
-        const config = error?.config;
+    const config = error?.config;
 
-        if (error?.response?.status === 401 && !config?.sent) {
-            config.sent = true;
+    if (error?.response?.status === 401 && !config?.sent) {
+      config.sent = true;
 
-            const { data } = await axiosRefreshToken.post(
-                '/auth/refresh-token',
-                {},
-                {
-                    headers: {
-                        Authorization: `Bearer ${refreshToken}`,
-                    },
-                },
-            );
-
-            if (data?.data.accessToken) {
-                cookies.set('accessToken', data.data.accessToken, { path: '/' });
-                config.headers = {
-                    ...config.headers,
-                    Authorization: `Bearer ${data.data.accessToken}`,
-                };
-            }
-
-            return axios_instance(config);
+      const { data } = await axiosRefreshToken.post("/auth/refresh-token", {}, {
+        headers: {
+          Authorization: `Bearer ${refreshToken}`,
         }
-        return Promise.reject(error);
-    },
+      });
+
+      if (data?.data.accessToken) {
+        cookies.set('accessToken', data.data.accessToken, { path: '/' });
+        config.headers = {
+          ...config.headers,
+          Authorization: `Bearer ${data.data.accessToken}`,
+        };
+      }
+
+      return axios_instance(config);
+    }
+    return Promise.reject(error);
+  }
 );
 
 export const axiosPrivate = axios_instance;

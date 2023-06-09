@@ -3,7 +3,8 @@ import {
   Tabs,
   Tab,
   TabPanels,
-  TabPanel
+  TabPanel,
+  TabIndicator
 } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
@@ -41,7 +42,7 @@ function Projects() {
     <Layout>
       {
         <div className='w-full bg-white shadow-lg p-2'>
-          <Tabs>
+          <Tabs variant="unstyled">
             <TabList>
               {tabs.map((tab, i) => (
                 <Tab
@@ -55,6 +56,13 @@ function Projects() {
                 </Tab>
               ))}
             </TabList>
+
+            <TabIndicator
+              mt="-1.5px"
+              height="2px"
+              bg="red.500"
+              borderRadius="1px"
+            />
 
             <TabPanels>
               {/* Dự án của tôi */}

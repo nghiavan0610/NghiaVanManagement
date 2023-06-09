@@ -1,12 +1,13 @@
-import { Badge, Box, Button, ButtonGroup, Flex, FormControl, FormLabel, IconButton, Input, Popover, PopoverArrow, PopoverBody, PopoverContent, PopoverFooter, PopoverTrigger, Table, Td, Tooltip, Tr, useDisclosure } from "@chakra-ui/react";
+import { Badge, Box, Button, ButtonGroup, Divider, Flex, FormControl, FormLabel, IconButton, Input, Popover, PopoverArrow, PopoverBody, PopoverContent, PopoverFooter, PopoverTrigger, Table, Td, Tooltip, Tr, useDisclosure } from "@chakra-ui/react";
 import React, { useState } from "react";
 import '../../css/additional-styles/timesheet.scss'
-import { FaChevronLeft, FaChevronRight, FaRegStickyNote } from 'react-icons/fa'
+import { FaChevronLeft, FaChevronRight, FaDownload, FaRegStickyNote } from 'react-icons/fa'
 import { MdToday, MdEditNote, MdInsertDriveFile, MdOutlineInsertDriveFile, MdOutlineNotes } from 'react-icons/md';
 import TimesheetFileUpload from "../modals/TimesheetFileUpload";
 import TimesheetViewFile from "../modals/TimesheetViewFile";
 import AddCommentForTimesheet from "../modals/AddCommentForTimesheet";
 import { axios_instance } from "../../utils/axios";
+import { showToast } from "../../utils/toast";
 
 function TimesheetPanel({ timesheet, slug, isManager, isLeader, isMember, isAdmin }) {
   let currentDate = new Date();
@@ -23,37 +24,14 @@ function TimesheetPanel({ timesheet, slug, isManager, isLeader, isMember, isAdmi
   let endOfCurrentMonth = new Date(currentYear, currentMonth + 1, 0);
   let endOfNextMonth = new Date(currentYear, currentMonth + 2, 0);
 
-  const finalRef = React.useRef(null)
-
   function isToday(day, month, year) {
     return day === currentDay && month === currentDate.getMonth() && year === currentDate.getFullYear()
   }
 
   return <>
-    <div className="flex justify-between items-center mb-3">
-      <div className="flex gap-24 items-center">
-        <IconButton icon={<FaChevronLeft />} onClick={() => {
-          if (currentMonth > 0)
-            setCurrentMonth(currentMonth - 1)
-          else {
-            setCurrentMonth(11)
-            setCurrentYear(currentYear - 1)
-          }
-        }}></IconButton>
-        <div className="flex flex-col items-center">
-          <p className="font-bold text-md mt-2">{`Tháng ${currentMonth + 1}`}</p>
-          <p className="text-md text-sm">{`Năm ${currentYear}`}</p>
-        </div>
-        <IconButton icon={<FaChevronRight />} onClick={() => {
-          if (currentMonth < 11)
-            setCurrentMonth(currentMonth + 1)
-          else {
-            setCurrentMonth(0)
-            setCurrentYear(currentYear + 1)
-          }
-        }}></IconButton>
+    <div className="flex justify-end gap-2 items-center mb-3 -mt-14">
+      <div className="flex items-center gap-2 ">
         <Button
-          className='-ml-20'
           leftIcon={<MdToday />}
           onClick={() => {
             setCurrentMonth(currentDate.getMonth());
@@ -62,16 +40,39 @@ function TimesheetPanel({ timesheet, slug, isManager, isLeader, isMember, isAdmi
         >
           Hôm nay
         </Button>
+        <div className="flex gap-8 items-center">
+          <IconButton icon={<FaChevronLeft />} onClick={() => {
+            if (currentMonth > 0)
+              setCurrentMonth(currentMonth - 1)
+            else {
+              setCurrentMonth(11)
+              setCurrentYear(currentYear - 1)
+            }
+          }}></IconButton>
+          <div className="flex flex-col items-center">
+            <p className="font-bold text-md mt-2">{`Tháng ${currentMonth + 1}`}</p>
+            <p className="text-md text-sm -mt-1">{`Năm ${currentYear}`}</p>
+          </div>
+          <IconButton icon={<FaChevronRight />} onClick={() => {
+            if (currentMonth < 11)
+              setCurrentMonth(currentMonth + 1)
+            else {
+              setCurrentMonth(0)
+              setCurrentYear(currentYear + 1)
+            }
+          }}></IconButton>
+        </div>
       </div>
+      <Divider orientation='vertical' h='10' />
       <div>
         {(isManager || isLeader || isAdmin) &&
           <>
             <Button
               className='ml-auto mr-2'
-              leftIcon={<MdEditNote />}
+              leftIcon={<FaDownload />}
               onClick={() => {
                 const monthYear = `${currentYear}-${(currentMonth + 1).toString().padStart(2, '0')}`
-                const timesheetId = timesheet.find((ts) => ts.monthYear === monthYear)._id;
+                const timesheetId = timesheet.find((ts) => ts.monthYear === monthYear)?._id;
                 axios_instance
                   .post(`/projects/${slug}/timesheet/download`, { timesheetId: timesheetId }, {
                     responseType: "arraybuffer",
@@ -79,14 +80,14 @@ function TimesheetPanel({ timesheet, slug, isManager, isLeader, isMember, isAdmi
                   .then(function (response) {
                     const url = new Blob([response.data], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
                     saveAs(url, `ChamCong_${monthYear}.xlsx`);
+                    showToast('success', "Bảng chấm công đã được tải xuống!")
                   })
                   .catch(function (error) {
+                    showToast('error', "Lỗi khi tải bảng chấm công!")
                     console.log(error);
                   });
               }}
-            >
-              Tải bảng chấm công
-            </Button>
+            >Tải bảng chấm công</Button>
             <AddCommentForTimesheet timesheetId={timesheet._id} slug={slug}>
               <Button
                 className='ml-auto mr-2'
@@ -137,53 +138,63 @@ function TimesheetPanel({ timesheet, slug, isManager, isLeader, isMember, isAdmi
                 </Td>
               } else if (7 * week + day >= mondayOffset && 7 * week + day < endOfCurrentMonth.getDate() + mondayOffset) {
                 const _day = 7 * week + day - mondayOffset + 1
-                return <Td className="h-[110px]">
+                const currentMonthYear = `${currentYear}-${(currentMonth + 1).toString().padStart(2, '0')}`;
+                const currentMonthTimesheet = timesheet.find((ts) => ts.monthYear === currentMonthYear);
+
+                const shiftCount = currentMonthTimesheet?.timesheetDetails.reduce((count, d) => {
+                  const workDate = new Date(d.workDate.replace(/-/g, '/').replace(/T.+/, ''));
+                  if (workDate.getDate() === _day) {
+                    count++;
+                  }
+                  return count;
+                }, 0);
+
+                return <Td className="h-[120px]">
                   <div className="flex absolute top-0.5 right-0.5">
                     <div class={`m-3 flex h-6 w-6 mx-auto my-auto items-center justify-center ${isToday(_day, currentMonth, currentYear) && "rounded-full bg-orange-500 font-semibold text-white"}`}>
                       <p>{_day}</p>
                     </div>
                   </div>
-                  <div className="overflow-y-auto gap-1 flex flex-col absolute inset-x-0 bottom-0 px-1 h-[80px]">
+                  <div className="flex flex-row overflow-y-auto gap-1 absolute inset-x-0 bottom-0 px-1 h-[90px]">
                     {timesheet &&
-                      timesheet.find((ts) => ts.monthYear === `${currentYear}-${(currentMonth + 1).toString().padStart(2, '0')}`)?.timesheetDetails.map((d) => {
-                        const workDate = new Date(d.workDate.replace(/-/g, '\/').replace(/T.+/, ''))
-                        const date = new Date(currentYear, currentMonth, _day)
-                        if ((d?.comment || d.proofs.length > 0))
-                          if (workDate.getFullYear() === date.getFullYear() && workDate.getMonth() === date.getMonth() && workDate.getDate() === date.getDate()) {
-                            return <div className="relative">
-                              <TimesheetViewFile timesheetDetail={d} slug={slug} workDate={workDate} isManager={isManager} isLeader={isLeader} isMember={isMember}>
-                                <button
-                                  className={`w-full border-2 ${d.proofs && (d.proofs.filter((proof) => !proof.isApproved).length > 0 || d.proofs.length === 0) ? "border-orange-300" : "border-green-300"} inset-x-0 rounded-md px-1 font-semibold`}
-                                >
-                                  {
-                                    (d?.comment && d.proofs.length > 0) ?
-                                      <>
-                                        <div className="flex items-center gap-2" >
+                      currentMonthTimesheet?.timesheetDetails.map((d) => {
+                        const workDate = new Date(d.workDate.replace(/-/g, '/').replace(/T.+/, ''));
+                        const date = new Date(currentYear, currentMonth, _day);
+                        const members = currentMonthTimesheet.members;
+
+                        if (d?.comment || d.proofs.length > 0) {
+                          if (workDate.getDate() === date.getDate()) {
+                            const borderClass = d.proofs && (d.proofs.filter((proof) => !proof.isApproved).length > 0 || d.proofs.length === 0)
+                              ? "border-orange-300"
+                              : "border-green-300";
+
+                            return (
+                              <div className={`relative`} style={{width: `${1/(shiftCount <= 2 ? 2 : 3) * 100}%`}}>
+                                <TimesheetViewFile timesheetDetail={d} slug={slug} workDate={workDate} members={members} isManager={isManager} isLeader={isLeader} isMember={isMember} isAdmin={isAdmin}>
+                                  <button className={`w-full border-3 ${borderClass} inset-x-0 rounded-md px-1 font-semibold`}>
+                                    <>
+                                      {`Ca ${d.shift === 'morning' ? 'sáng' : d.shift === 'evening' ? 'chiều' : 'tối'}`}
+                                      <Divider className="border-[#334155]" />
+                                      {d?.comment && (
+                                        <div className="flex items-center gap-1">
                                           <MdOutlineNotes />
                                           <div className="truncate w-full text-left">{d.comment}</div>
                                         </div>
-                                        <div className="flex items-center gap-2">
+                                      )}
+                                      {d.proofs.length > 0 && (
+                                        <div className="flex items-center gap-1">
                                           <MdOutlineInsertDriveFile />
-                                          có {d.proofs.length} tệp
+                                          <div className="truncate w-full text-left">tệp: {d.proofs.length}</div>
                                         </div>
-                                      </> :
-                                      d?.comment ?
-                                        <div className="flex items-center gap-2 text-ellipsis overflow-hidden" >
-                                          <MdOutlineNotes />
-                                          {d.comment}
-                                        </div> :
-                                        d.proofs.length > 0 &&
-                                        <div className="flex items-center gap-2">
-                                          <MdOutlineInsertDriveFile />
-                                          có {d.proofs.length} tệp
-                                        </div>
-                                  }
-                                </button>
-                              </TimesheetViewFile>
-                            </div>
+                                      )}
+                                    </>
+                                  </button>
+                                </TimesheetViewFile>
+                              </div>
+                            );
                           }
-                      })
-                    }
+                        }
+                      })}
                   </div>
                 </Td>
               }
@@ -200,7 +211,7 @@ function TimesheetPanel({ timesheet, slug, isManager, isLeader, isMember, isAdmi
           </Tr>
         })
       }
-    </Table>
+    </Table >
   </>
 
 };
