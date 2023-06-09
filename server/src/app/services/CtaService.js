@@ -45,16 +45,12 @@ class CtaService {
 
             const project = await Project.findById(projectId)
                 .populate({
-                    path: 'manager',
-                    select: '_id name',
-                    populate: { path: 'job', select: '_id name' },
-                })
-                .populate({
-                    path: 'leaders',
-                    select: '_id name',
-                    populate: { path: 'job', select: '_id name' },
+                    path: 'manager leaders',
+                    select: ' name',
+                    populate: { path: 'job', select: ' name' },
                 })
                 .populate(populateProject('originalSummary updatedSummary'))
+                .lean()
                 .exec();
 
             // Find original and updated quantity
@@ -183,7 +179,7 @@ class CtaService {
                                         continue;
                                     } else {
                                         exportItem.itemName = updatedItem.detail.name;
-                                        exportItem.comment = updatedItem.comment;
+                                        exportItem.comment = updatedItem.comment ? updatedItem.comment : '';
                                         exportItem.originalQuantity = originalItem?.quantity ?? 0;
                                         exportItem.updatedQuantity = updatedItem?.quantity ?? 0;
                                     }
@@ -205,7 +201,9 @@ class CtaService {
                                         groupItemMap[exportItem.itemName].distance += exportPillar.distance;
                                         groupItemMap[exportItem.itemName].updatedQuantity += exportItem.updatedQuantity;
                                         groupItemMap[exportItem.itemName].lastPillarName = exportPillar.name;
-                                        groupItemMap[exportItem.itemName].comment.push(exportItem.comment);
+                                        exportItem.comment !== ''
+                                            ? groupItemMap[exportItem.itemName].comment.push(exportItem.comment)
+                                            : null;
                                     }
 
                                     // Handle BM_Tram
@@ -246,59 +244,67 @@ class CtaService {
                                         groupItemMap[exportItem.itemName].comment.push(exportItem.comment);
 
                                         // Check cáp đồng
-                                        const capDongString = ['cáp đồng', 'cxv'];
-                                        const [pdCapDongOriginal, pdCapDongUpdated] = await Promise.all([
-                                            originalPillar.dayDans.find((cd) =>
-                                                cd.detail.name.toLowerCase().includes(capDongString),
-                                            ),
-                                            updatedPillar.dayDans.find((cd) =>
-                                                cd.detail.name.toLowerCase().includes(capDongString),
-                                            ),
+                                        const [pdCapDongOriginalArr, pdCapDongUpdatedArr] = await Promise.all([
+                                            originalPillar.dayDans.filter((cd) => /cáp đồng|cxv/i.test(cd.detail.name)),
+                                            updatedPillar.dayDans.filter((cd) => /cáp đồng|cxv/i.test(cd.detail.name)),
                                         ]);
 
-                                        if (pdCapDongUpdated) {
-                                            if (!groupItemMap[pdCapDongUpdated.detail.name]) {
-                                                groupItemMap[pdCapDongUpdated.detail.name] = {
-                                                    updatedQuantity: 0,
-                                                    originalQuantity: 0,
-                                                    comment: [],
-                                                };
+                                        if (pdCapDongUpdatedArr.length > 0) {
+                                            for (const pdCapDongUpdated of pdCapDongUpdatedArr) {
+                                                if (!groupItemMap[pdCapDongUpdated.detail.name]) {
+                                                    groupItemMap[pdCapDongUpdated.detail.name] = {
+                                                        updatedQuantity: 0,
+                                                        originalQuantity: 0,
+                                                        comment: [],
+                                                    };
+                                                }
+                                                const pdCapDongOriginal = pdCapDongOriginalArr.find(
+                                                    (elem) =>
+                                                        elem.detail._id.toString() ===
+                                                        pdCapDongUpdated.detail._id.toString(),
+                                                );
+                                                groupItemMap[pdCapDongUpdated.detail.name].updatedQuantity +=
+                                                    pdCapDongUpdated.quantity;
+                                                groupItemMap[pdCapDongUpdated.detail.name].originalQuantity +=
+                                                    pdCapDongOriginal.quantity;
+                                                groupItemMap[pdCapDongUpdated.detail.name].comment.push(
+                                                    pdCapDongUpdated.comment,
+                                                );
                                             }
-                                            groupItemMap[pdCapDongUpdated.detail.name].updatedQuantity +=
-                                                pdCapDongUpdated.quantity;
-                                            groupItemMap[pdCapDongUpdated.detail.name].originalQuantity +=
-                                                pdCapDongOriginal.quantity;
-                                            groupItemMap[pdCapDongUpdated.detail.name].comment.push(
-                                                pdCapDongUpdated.comment,
-                                            );
                                         }
 
                                         // check dây chì
-                                        const dayChiString = ['fuselink', 'dây chì'];
-                                        const [pdDayChiOriginal, pdDayChiUpdated] = await Promise.all([
-                                            originalPillar.phuKiens.find((dc) =>
-                                                dc.detail.name.toLowerCase().includes(dayChiString),
+                                        const [pdDayChiOriginalArr, pdDayChiUpdatedArr] = await Promise.all([
+                                            originalPillar.phuKiens.filter((dc) =>
+                                                /fuselink|dây chì/i.test(dc.detail.name),
                                             ),
-                                            updatedPillar.phuKiens.find((dc) =>
-                                                dc.detail.name.toLowerCase().includes(dayChiString),
+                                            updatedPillar.phuKiens.filter((dc) =>
+                                                /fuselink|dây chì/i.test(dc.detail.name),
                                             ),
                                         ]);
 
-                                        if (pdDayChiUpdated) {
-                                            if (!groupItemMap[pdDayChiUpdated.detail.name]) {
-                                                groupItemMap[pdDayChiUpdated.detail.name] = {
-                                                    updatedQuantity: 0,
-                                                    originalQuantity: 0,
-                                                    comment: [],
-                                                };
+                                        if (pdDayChiUpdatedArr.length > 0) {
+                                            for (const pdDayChiUpdated of pdDayChiUpdatedArr) {
+                                                if (!groupItemMap[pdDayChiUpdated.detail.name]) {
+                                                    groupItemMap[pdDayChiUpdated.detail.name] = {
+                                                        updatedQuantity: 0,
+                                                        originalQuantity: 0,
+                                                        comment: [],
+                                                    };
+                                                }
+                                                const pdDayChiOriginal = pdDayChiOriginalArr.find(
+                                                    (elem) =>
+                                                        elem.detail._id.toString() ===
+                                                        pdDayChiUpdated.detail._id.toString(),
+                                                );
+                                                groupItemMap[pdDayChiUpdated.detail.name].updatedQuantity +=
+                                                    pdDayChiUpdated.quantity;
+                                                groupItemMap[pdDayChiUpdated.detail.name].originalQuantity +=
+                                                    pdDayChiOriginal.quantity;
+                                                groupItemMap[pdDayChiUpdated.detail.name].comment.push(
+                                                    pdDayChiUpdated.comment,
+                                                );
                                             }
-                                            groupItemMap[pdDayChiUpdated.detail.name].updatedQuantity +=
-                                                pdDayChiUpdated.quantity;
-                                            groupItemMap[pdDayChiUpdated.detail.name].originalQuantity +=
-                                                pdDayChiOriginal.quantity;
-                                            groupItemMap[pdDayChiUpdated.detail.name].comment.push(
-                                                pdDayChiUpdated.comment,
-                                            );
                                         }
                                     }
 
@@ -317,9 +323,18 @@ class CtaService {
                             );
                         } else {
                             exportStation.groupItem = Object.entries(groupItemMap)?.map(
-                                ([itemName, { ...properties }]) => ({
+                                ([itemName, { originalQuantity, updatedQuantity, distance, ...properties }]) => ({
                                     itemName,
                                     ...properties,
+                                    ...(originalQuantity && {
+                                        originalQuantity:
+                                            originalQuantity % 1 !== 0 ? originalQuantity.toFixed(2) : originalQuantity,
+                                    }),
+                                    ...(updatedQuantity && {
+                                        updatedQuantity:
+                                            updatedQuantity % 1 !== 0 ? updatedQuantity.toFixed(2) : updatedQuantity,
+                                    }),
+                                    ...(distance && { distance: distance.toFixed(2) }),
                                 }),
                             );
                         }
@@ -339,8 +354,8 @@ class CtaService {
                     exportRoute.routeDistance = routeDistance;
                     const checkGroupItemMap = /^BM_Tram\.|^BM_KeoDay\.|^BM_LapDatPD\./;
                     if (checkGroupItemMap.test(templateName)) {
-                        exportRoute.routeUpdatedQuantity = groupItemUpdatedQuantity;
-                        exportRoute.routeOriginalQuantity = groupItemOriginalQuantity;
+                        exportRoute.routeUpdatedQuantity = groupItemUpdatedQuantity.toFixed(2);
+                        exportRoute.routeOriginalQuantity = groupItemOriginalQuantity.toFixed(2);
                     } else {
                         exportRoute.routeUpdatedQuantity = routeUpdatedQuantity;
                         exportRoute.routeOriginalQuantity = routeOriginalQuantity;
@@ -368,7 +383,7 @@ class CtaService {
             };
 
             const { buf, outputFilename } = await exportToWord(templateName, data);
-            if (!buf) throw new ApiError(403, 'Không thể xuất tập tin, đã xảy ra sự cố');
+            if (!buf) throw new ApiError(403, 'Something went wrong when exporting');
 
             return { buf, outputFilename };
         } catch (err) {
