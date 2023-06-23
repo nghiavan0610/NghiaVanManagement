@@ -8,6 +8,7 @@ module.exports = {
     },
     production: {
         MONGODB_URI: `mongodb://${config.MONGODB_USER}:${config.MONGODB_PASSWORD}@${config.MONGODB_HOST}/${config.MONGODB_NAME}?authSource=admin`,
-        REDIS_URI: `redis://${config.REDIS_HOST}`,
+        // REDIS_URI: `redis://${config.REDIS_HOST}`,
+        REDIS_URI: `redis://:${config.REDIS_PASSWORD}@${config.REDIS_HOST}`,
     },
 };

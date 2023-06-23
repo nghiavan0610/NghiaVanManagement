@@ -15,6 +15,7 @@ const {
     MONGODB_PASSWORD,
 
     REDIS_HOST,
+    REDIS_PASSWORD,
 
     S3_ACCESS_KEY,
     S3_SECRET_KEY,
@@ -37,6 +38,7 @@ const config = {
     MONGODB_PASSWORD,
 
     REDIS_HOST,
+    REDIS_PASSWORD,
 
     S3_ACCESS_KEY,
     S3_SECRET_KEY,

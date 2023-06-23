@@ -26,8 +26,11 @@ services:
             - ./.env
         ports:
             - $REDIS_LOCAL_PORT:$REDIS_DOCKER_PORT
+        environment:
+            - REDIS_PASSWORD=$REDIS_PASSWORD
         networks:
             - electric-networks
+        command: redis-server --protected-mode yes --requirepass $REDIS_PASSWORD --user default
 
     electric-api:
         container_name: electric-api
@@ -39,6 +42,7 @@ services:
             NODE_ENV: 'production'
             MONGODB_HOST: 'mongo'
             REDIS_HOST: 'redis'
+            REDIS_PASSWORD: $REDIS_PASSWORD
         ports:
             - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
         depends_on:
