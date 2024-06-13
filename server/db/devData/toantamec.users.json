@@ -1,0 +1,1101 @@
+[
+    {
+        "_id": {
+            "$oid": "641d6cc8557176ab0c28211b"
+        },
+        "username": "admin",
+        "name": "Admin",
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "none",
+        "role": "admin",
+        "job": {
+            "$oid": "641d574846557d315c2fc912"
+        },
+        "deleted": false,
+        "slug": "admin",
+        "__v": 4,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:15.956Z"
+        },
+        "updatedAt": {
+            "$date": "2024-03-25T10:15:08.416Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d6cc8557176ab0c28211c"
+        },
+        "username": "manager",
+        "name": "Manager",
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "none",
+        "role": "manager",
+        "job": {
+            "$oid": "641d574846557d315c2fc912"
+        },
+        "deleted": false,
+        "slug": "manager",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:15.957Z"
+        },
+        "updatedAt": {
+            "$date": "2023-06-19T13:25:15.957Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d6cc8557176ab0c28211e"
+        },
+        "username": "nvthanh",
+        "name": "Nguyễn Vĩnh Thanh",
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "male",
+        "role": "admin",
+        "job": {
+            "$oid": "641d574846557d315c2fc911"
+        },
+        "deleted": false,
+        "slug": "nguyen-vinh-thanh",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:15.957Z"
+        },
+        "updatedAt": {
+            "$date": "2024-02-29T07:42:59.686Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d6cc8557176ab0c28211f"
+        },
+        "username": "pttlan",
+        "name": "Phạm Thị Thu Lan",
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "female",
+        "role": "manager",
+        "job": {
+            "$oid": "641d574846557d315c2fc912"
+        },
+        "deleted": false,
+        "slug": "pham-thi-thu-lan",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:15.957Z"
+        },
+        "updatedAt": {
+            "$date": "2024-02-29T07:43:41.308Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d6cc8557176ab0c282120"
+        },
+        "username": "nason",
+        "name": "Nguyễn Anh Sơn",
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "male",
+        "role": "admin",
+        "job": {
+            "$oid": "641d574846557d315c2fc913"
+        },
+        "deleted": false,
+        "slug": "nguyen-anh-son",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:15.957Z"
+        },
+        "updatedAt": {
+            "$date": "2024-02-29T07:41:07.217Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d6cc8557176ab0c282121"
+        },
+        "username": "ltgiang",
+        "name": "Lâm Trường Giang",
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "male",
+        "role": "admin",
+        "job": {
+            "$oid": "641d574846557d315c2fc914"
+        },
+        "deleted": false,
+        "slug": "lam-truong-giang",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:15.957Z"
+        },
+        "updatedAt": {
+            "$date": "2024-02-29T07:40:05.444Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d6cc8557176ab0c282123"
+        },
+        "username": "lakhuong",
+        "name": "Liêu An Khương",
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "male",
+        "role": "admin",
+        "job": {
+            "$oid": "641d574846557d315c2fc916"
+        },
+        "deleted": false,
+        "slug": "lieu-an-khuong",
+        "__v": 1,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:15.957Z"
+        },
+        "updatedAt": {
+            "$date": "2024-03-03T16:04:03.934Z"
+        },
+        "DOB": {
+            "$date": "1982-05-01T17:00:00.000Z"
+        },
+        "address": "",
+        "email": "khuongst252@gmail.com",
+        "phoneNumber": "0818074744"
+    },
+    {
+        "_id": {
+            "$oid": "641d6cc8557176ab0c282126"
+        },
+        "username": "pmtrieu",
+        "name": "Phạm Minh Triệu",
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "male",
+        "role": "manager",
+        "job": {
+            "$oid": "641d574846557d315c2fc918"
+        },
+        "deleted": false,
+        "slug": "pham-minh-trieu",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:15.958Z"
+        },
+        "updatedAt": {
+            "$date": "2024-02-29T07:43:19.581Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d6cc8557176ab0c282128"
+        },
+        "username": "ttthien",
+        "name": "Trần Trọng Thiên",
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "male",
+        "role": "manager",
+        "job": {
+            "$oid": "641d66e11fe7091301fa8191"
+        },
+        "deleted": false,
+        "slug": "tran-trong-thien",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:15.958Z"
+        },
+        "updatedAt": {
+            "$date": "2024-02-29T07:44:21.692Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d6cc8557176ab0c282129"
+        },
+        "username": "ntthuan",
+        "name": "Nguyễn Trung Thuận",
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "male",
+        "role": "manager",
+        "job": {
+            "$oid": "641d574846557d315c2fc919"
+        },
+        "deleted": false,
+        "slug": "nguyen-trung-thuan",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:15.958Z"
+        },
+        "updatedAt": {
+            "$date": "2024-02-29T07:42:23.779Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d6cc8557176ab0c28212a"
+        },
+        "username": "dtvu",
+        "name": "Đoàn Thanh Vũ",
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "male",
+        "role": "user",
+        "job": {
+            "$oid": "641d574846557d315c2fc91a"
+        },
+        "deleted": false,
+        "slug": "doan-thanh-vu",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:15.958Z"
+        },
+        "updatedAt": {
+            "$date": "2024-02-29T07:39:32.940Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d6cc8557176ab0c28212b"
+        },
+        "username": "tksanh",
+        "name": "Trang Kim Sanh",
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "male",
+        "role": "user",
+        "job": {
+            "$oid": "641d574846557d315c2fc91a"
+        },
+        "deleted": false,
+        "slug": "trang-kim-sanh",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:15.958Z"
+        },
+        "updatedAt": {
+            "$date": "2024-02-29T07:45:10.038Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d6cc8557176ab0c28212c"
+        },
+        "username": "nvhue",
+        "name": "Nguyễn Văn Huê",
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "male",
+        "role": "user",
+        "job": {
+            "$oid": "641d574846557d315c2fc91a"
+        },
+        "deleted": false,
+        "slug": "nguyen-van-hue",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:15.958Z"
+        },
+        "updatedAt": {
+            "$date": "2024-02-29T07:42:46.318Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d6cc8557176ab0c28212d"
+        },
+        "username": "tvmen",
+        "name": "Trần Văn Mến",
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "male",
+        "role": "manager",
+        "job": {
+            "$oid": "641d574846557d315c2fc91b"
+        },
+        "deleted": false,
+        "slug": "tran-van-men",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:15.958Z"
+        },
+        "updatedAt": {
+            "$date": "2024-02-29T07:44:49.390Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d6cc8557176ab0c28212e"
+        },
+        "username": "nhtien",
+        "name": "Nguyễn Hùng Tiến",
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "male",
+        "role": "user",
+        "job": {
+            "$oid": "641d574846557d315c2fc91c"
+        },
+        "deleted": false,
+        "slug": "nguyen-hung-tien",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:15.958Z"
+        },
+        "updatedAt": {
+            "$date": "2024-02-29T07:41:19.980Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d6cc8557176ab0c28212f"
+        },
+        "username": "ntbinh",
+        "name": "Nguyễn Thanh Bình",
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "male",
+        "role": "admin",
+        "job": {
+            "$oid": "641d574846557d315c2fc91d"
+        },
+        "deleted": false,
+        "slug": "nguyen-thanh-binh",
+        "__v": 2,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:15.959Z"
+        },
+        "updatedAt": {
+            "$date": "2024-03-05T01:32:45.981Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d6cc8557176ab0c282131"
+        },
+        "username": "thphuoc",
+        "name": "Trần Hữu Phước",
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "male",
+        "role": "manager",
+        "job": {
+            "$oid": "641d574846557d315c2fc91f"
+        },
+        "deleted": false,
+        "slug": "tran-huu-phuoc",
+        "__v": 1,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:15.959Z"
+        },
+        "updatedAt": {
+            "$date": "2024-03-04T14:54:54.555Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d6cc8557176ab0c282132"
+        },
+        "username": "tvtam",
+        "name": "Trần Văn Tâm",
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "male",
+        "role": "manager",
+        "job": {
+            "$oid": "641d574846557d315c2fc91f"
+        },
+        "deleted": false,
+        "slug": "tran-van-tam",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:15.959Z"
+        },
+        "updatedAt": {
+            "$date": "2024-02-29T07:44:56.936Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d6cc8557176ab0c282133"
+        },
+        "username": "ttngoc",
+        "name": "Thạch Thanh Ngọc",
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "female",
+        "role": "manager",
+        "job": {
+            "$oid": "641d574846557d315c2fc91f"
+        },
+        "deleted": false,
+        "slug": "thach-thanh-ngoc",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:15.959Z"
+        },
+        "updatedAt": {
+            "$date": "2024-03-04T02:40:00.787Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d6cc8557176ab0c282134"
+        },
+        "username": "tnkien",
+        "name": "Trương Ngọc Kiển",
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "male",
+        "role": "manager",
+        "job": {
+            "$oid": "641d574846557d315c2fc91f"
+        },
+        "deleted": false,
+        "slug": "truong-ngoc-kien",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:15.959Z"
+        },
+        "updatedAt": {
+            "$date": "2024-03-04T07:54:39.964Z"
+        },
+        "DOB": {
+            "$date": "1988-01-19T17:00:00.000Z"
+        },
+        "address": "",
+        "email": "",
+        "phoneNumber": "0941727353"
+    },
+    {
+        "_id": {
+            "$oid": "641d6cc8557176ab0c282135"
+        },
+        "username": "pmtuan",
+        "name": "Phan Minh Tuấn",
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "male",
+        "role": "manager",
+        "job": {
+            "$oid": "641d574846557d315c2fc91f"
+        },
+        "deleted": false,
+        "slug": "phan-minh-tuan",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:15.959Z"
+        },
+        "updatedAt": {
+            "$date": "2024-02-29T07:43:50.463Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d6cc8557176ab0c282137"
+        },
+        "username": "lttan",
+        "name": "Lâm Thành Tấn",
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "male",
+        "role": "manager",
+        "job": {
+            "$oid": "641d574846557d315c2fc91f"
+        },
+        "deleted": false,
+        "slug": "lam-thanh-tan",
+        "__v": 1,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:15.959Z"
+        },
+        "updatedAt": {
+            "$date": "2024-03-04T02:40:28.450Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d6cc8557176ab0c282138"
+        },
+        "username": "ttlam",
+        "name": "Thạch Thành Lâm",
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "male",
+        "role": "manager",
+        "job": {
+            "$oid": "641d574846557d315c2fc91f"
+        },
+        "deleted": false,
+        "slug": "thach-thanh-lam",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:15.959Z"
+        },
+        "updatedAt": {
+            "$date": "2023-06-19T13:25:15.959Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d6cc8557176ab0c28213a"
+        },
+        "username": "letgiang",
+        "name": "Lê Trường Giang",
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "male",
+        "role": "manager",
+        "job": {
+            "$oid": "641d574846557d315c2fc91f"
+        },
+        "deleted": false,
+        "slug": "le-truong-giang",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:15.959Z"
+        },
+        "updatedAt": {
+            "$date": "2024-02-29T07:40:41.264Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d6cc8557176ab0c28213b"
+        },
+        "username": "npttu",
+        "name": "Nguyễn Phan Thanh Tú",
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "male",
+        "role": "manager",
+        "job": {
+            "$oid": "641d574846557d315c2fc91f"
+        },
+        "deleted": false,
+        "slug": "nguyen-phan-thanh-tu",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:15.959Z"
+        },
+        "updatedAt": {
+            "$date": "2024-02-29T07:41:26.538Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d6cc8557176ab0c28213f"
+        },
+        "username": "hnhu",
+        "name": "Huỳnh Như",
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "female",
+        "role": "manager",
+        "job": {
+            "$oid": "641d574846557d315c2fc923"
+        },
+        "deleted": false,
+        "slug": "huynh-nhu",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:15.960Z"
+        },
+        "updatedAt": {
+            "$date": "2024-02-29T07:39:45.700Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d6cc8557176ab0c282140"
+        },
+        "username": "ntnbien",
+        "name": "Nguyễn Thị Ngọc Biến",
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "female",
+        "role": "manager",
+        "job": {
+            "$oid": "641d574846557d315c2fc924"
+        },
+        "deleted": false,
+        "slug": "nguyen-thi-ngoc-bien",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:15.960Z"
+        },
+        "updatedAt": {
+            "$date": "2024-02-29T07:42:12.433Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d6cc8557176ab0c282144"
+        },
+        "username": "nvmtam",
+        "name": "Nguyễn Vũ Minh Tâm",
+        "email": "nvmtamct@gmail.com",
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "male",
+        "role": "manager",
+        "job": {
+            "$oid": "641d574846557d315c2fc91f"
+        },
+        "deleted": false,
+        "slug": "nguyen-vu-minh-tam",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:15.960Z"
+        },
+        "updatedAt": {
+            "$date": "2024-02-29T07:43:08.599Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d6cc8557176ab0c282145"
+        },
+        "username": "lhdinh",
+        "name": "Lê Hiệp Định",
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "male",
+        "role": "manager",
+        "job": {
+            "$oid": "641d574846557d315c2fc91f"
+        },
+        "deleted": false,
+        "slug": "le-hiep-dinh",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:15.960Z"
+        },
+        "updatedAt": {
+            "$date": "2024-02-29T07:40:11.167Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "64b3ee9fbb55d2fe4564aa42"
+        },
+        "username": "ntgiang",
+        "name": "Nguyễn Trường Giang",
+        "email": null,
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "male",
+        "DOB": {
+            "$date": "1989-12-31T17:00:00.000Z"
+        },
+        "phoneNumber": null,
+        "address": null,
+        "role": "user",
+        "job": {
+            "$oid": "64b3ee644c293ace85c52089"
+        },
+        "deleted": false,
+        "createdAt": {
+            "$date": "2023-07-16T13:20:31.233Z"
+        },
+        "updatedAt": {
+            "$date": "2024-02-29T07:42:37.184Z"
+        },
+        "slug": "nguyen-truong-giang",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "64b3eed7bb55d2fe4564aa55"
+        },
+        "username": "thtrang",
+        "name": "Trương Huyền Trang",
+        "email": null,
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "male",
+        "DOB": {
+            "$date": "1989-12-31T17:00:00.000Z"
+        },
+        "phoneNumber": "0123456789",
+        "address": null,
+        "role": "admin",
+        "job": {
+            "$oid": "64b3ee644c293ace85c52089"
+        },
+        "deleted": false,
+        "createdAt": {
+            "$date": "2023-07-16T13:21:27.212Z"
+        },
+        "updatedAt": {
+            "$date": "2024-02-29T07:45:17.403Z"
+        },
+        "slug": "truong-huyen-trang",
+        "__v": 1
+    },
+    {
+        "_id": {
+            "$oid": "64b3ef63bb55d2fe4564ab05"
+        },
+        "username": "pttram",
+        "name": "Phạm Thanh Trâm",
+        "email": null,
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "female",
+        "DOB": {
+            "$date": "1989-12-31T17:00:00.000Z"
+        },
+        "phoneNumber": null,
+        "address": null,
+        "role": "user",
+        "job": {
+            "$oid": "64b3ee214c293ace85c52064"
+        },
+        "deleted": false,
+        "createdAt": {
+            "$date": "2023-07-16T13:23:47.760Z"
+        },
+        "updatedAt": {
+            "$date": "2024-02-29T07:43:34.022Z"
+        },
+        "slug": "pham-thanh-tram",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "64b3ef82bb55d2fe4564ab14"
+        },
+        "username": "btai",
+        "name": "Bùi Thị Ái",
+        "email": null,
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "female",
+        "DOB": {
+            "$date": "1989-12-31T17:00:00.000Z"
+        },
+        "phoneNumber": null,
+        "address": null,
+        "role": "user",
+        "job": {
+            "$oid": "64b3ee644c293ace85c52089"
+        },
+        "deleted": false,
+        "createdAt": {
+            "$date": "2023-07-16T13:24:18.474Z"
+        },
+        "updatedAt": {
+            "$date": "2024-02-29T07:39:01.811Z"
+        },
+        "slug": "bui-thi-ai",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "64b3efb5bb55d2fe4564ab22"
+        },
+        "username": "ltdtrinh",
+        "name": "Lê Thị Diễm Trinh",
+        "email": null,
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "female",
+        "DOB": {
+            "$date": "1989-12-31T17:00:00.000Z"
+        },
+        "phoneNumber": null,
+        "address": null,
+        "role": "user",
+        "job": {
+            "$oid": "64b3efa34c293ace85c521b8"
+        },
+        "deleted": false,
+        "createdAt": {
+            "$date": "2023-07-16T13:25:09.415Z"
+        },
+        "updatedAt": {
+            "$date": "2024-02-29T07:40:33.818Z"
+        },
+        "slug": "le-thi-diem-trinh",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "64b3efcabb55d2fe4564ab2a"
+        },
+        "username": "dtknga",
+        "name": "Đặng Thị Kiều Nga",
+        "email": null,
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "female",
+        "DOB": {
+            "$date": "1989-12-31T17:00:00.000Z"
+        },
+        "phoneNumber": null,
+        "address": null,
+        "role": "user",
+        "job": {
+            "$oid": "64b3efa34c293ace85c521b8"
+        },
+        "deleted": false,
+        "createdAt": {
+            "$date": "2023-07-16T13:25:30.576Z"
+        },
+        "updatedAt": {
+            "$date": "2024-02-29T07:39:19.253Z"
+        },
+        "slug": "dang-thi-kieu-nga",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "64b3f07fbb55d2fe4564abb6"
+        },
+        "username": "nttrinh",
+        "name": "Nguyễn Thành Trình",
+        "email": null,
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "male",
+        "DOB": {
+            "$date": "1989-12-31T17:00:00.000Z"
+        },
+        "phoneNumber": null,
+        "address": null,
+        "role": "manager",
+        "job": {
+            "$oid": "641d574846557d315c2fc91f"
+        },
+        "deleted": false,
+        "createdAt": {
+            "$date": "2023-07-16T13:28:31.382Z"
+        },
+        "updatedAt": {
+            "$date": "2024-02-29T07:42:03.256Z"
+        },
+        "slug": "nguyen-thanh-trinh",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "64b3f093bb55d2fe4564abbf"
+        },
+        "username": "lhphuc",
+        "name": "Lê Hoàng Phúc",
+        "email": null,
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "male",
+        "DOB": {
+            "$date": "1989-12-31T17:00:00.000Z"
+        },
+        "phoneNumber": null,
+        "address": null,
+        "role": "manager",
+        "job": {
+            "$oid": "641d574846557d315c2fc91f"
+        },
+        "deleted": false,
+        "createdAt": {
+            "$date": "2023-07-16T13:28:51.477Z"
+        },
+        "updatedAt": {
+            "$date": "2024-02-29T07:40:18.509Z"
+        },
+        "slug": "le-hoang-phuc",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "64b3f0a5bb55d2fe4564abc7"
+        },
+        "username": "lhdong",
+        "name": "Lê Hữu Đồng",
+        "email": null,
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "male",
+        "DOB": {
+            "$date": "1989-12-31T17:00:00.000Z"
+        },
+        "phoneNumber": null,
+        "address": null,
+        "role": "manager",
+        "job": {
+            "$oid": "641d574846557d315c2fc91f"
+        },
+        "deleted": false,
+        "createdAt": {
+            "$date": "2023-07-16T13:29:09.042Z"
+        },
+        "updatedAt": {
+            "$date": "2024-02-29T07:40:23.936Z"
+        },
+        "slug": "le-huu-dong",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "64b3f0babb55d2fe4564abcf"
+        },
+        "username": "nvno",
+        "name": "Nguyễn Văn Nở",
+        "email": null,
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "male",
+        "DOB": {
+            "$date": "1989-12-31T17:00:00.000Z"
+        },
+        "phoneNumber": null,
+        "address": null,
+        "role": "manager",
+        "job": {
+            "$oid": "641d574846557d315c2fc91f"
+        },
+        "deleted": false,
+        "createdAt": {
+            "$date": "2023-07-16T13:29:30.607Z"
+        },
+        "updatedAt": {
+            "$date": "2024-02-29T07:42:52.250Z"
+        },
+        "slug": "nguyen-van-no",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "64b3f335bb55d2fe4564ac61"
+        },
+        "username": "nhthai",
+        "name": "Nguyễn Hùng Thái",
+        "email": null,
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "male",
+        "DOB": {
+            "$date": "1989-12-31T17:00:00.000Z"
+        },
+        "phoneNumber": null,
+        "address": null,
+        "role": "manager",
+        "job": {
+            "$oid": "641d574846557d315c2fc91f"
+        },
+        "deleted": false,
+        "createdAt": {
+            "$date": "2023-07-16T13:40:05.277Z"
+        },
+        "updatedAt": {
+            "$date": "2024-02-29T07:41:13.726Z"
+        },
+        "slug": "nguyen-hung-thai",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "64b3f347bb55d2fe4564ac69"
+        },
+        "username": "dtduong",
+        "name": "Đoàn Thái Dương",
+        "email": null,
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "male",
+        "DOB": {
+            "$date": "1989-12-31T17:00:00.000Z"
+        },
+        "phoneNumber": null,
+        "address": null,
+        "role": "manager",
+        "job": {
+            "$oid": "641d574846557d315c2fc91f"
+        },
+        "deleted": false,
+        "createdAt": {
+            "$date": "2023-07-16T13:40:23.846Z"
+        },
+        "updatedAt": {
+            "$date": "2024-02-29T07:39:26.395Z"
+        },
+        "slug": "doan-thai-duong",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "64b3f374bb55d2fe4564ac99"
+        },
+        "username": "lscanh",
+        "name": "Lê Sỉ Cảnh",
+        "email": null,
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "male",
+        "DOB": {
+            "$date": "1996-11-22T17:00:00.000Z"
+        },
+        "phoneNumber": null,
+        "address": null,
+        "role": "manager",
+        "job": {
+            "$oid": "641d574846557d315c2fc91f"
+        },
+        "deleted": false,
+        "createdAt": {
+            "$date": "2023-07-16T13:41:08.102Z"
+        },
+        "updatedAt": {
+            "$date": "2024-03-04T14:54:54.555Z"
+        },
+        "slug": "le-si-canh",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "64b3f386bb55d2fe4564aca1"
+        },
+        "username": "tvvong",
+        "name": "Trần Văn Vọng",
+        "email": "",
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "male",
+        "DOB": {
+            "$date": "1990-12-08T17:00:00.000Z"
+        },
+        "phoneNumber": null,
+        "address": "",
+        "role": "admin",
+        "job": {
+            "$oid": "641d574846557d315c2fc91f"
+        },
+        "deleted": false,
+        "createdAt": {
+            "$date": "2023-07-16T13:41:26.154Z"
+        },
+        "updatedAt": {
+            "$date": "2024-03-11T00:36:04.209Z"
+        },
+        "slug": "tran-van-vong",
+        "__v": 1
+    },
+    {
+        "_id": {
+            "$oid": "64b9268df0325d04ebbb26d0"
+        },
+        "username": "TreoTester",
+        "name": "TreoTester",
+        "email": null,
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "female",
+        "DOB": {
+            "$date": "2022-07-19T17:00:00.000Z"
+        },
+        "phoneNumber": null,
+        "address": null,
+        "role": "user",
+        "job": {
+            "$oid": "641d574846557d315c2fc927"
+        },
+        "deleted": false,
+        "createdAt": {
+            "$date": "2023-07-20T12:20:29.459Z"
+        },
+        "updatedAt": {
+            "$date": "2024-03-25T10:15:08.416Z"
+        },
+        "slug": "treotester",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "64ccb723eacebcf3992739cc"
+        },
+        "username": "hpthai",
+        "name": "Hà Phùng Thái",
+        "email": "thaingocvuong2710@gmail.com",
+        "password": "$argon2id$v=19$m=65536,t=3,p=4$RXXfi9cBIogKe+s9jZcuww$oc6WWykv8zKdnmTITkTDhbpJ9T/hVRgCRGp0cNDQuDc",
+        "gender": "male",
+        "DOB": {
+            "$date": "1985-03-14T17:00:00.000Z"
+        },
+        "phoneNumber": "0938362109",
+        "address": null,
+        "role": "user",
+        "job": {
+            "$oid": "641d574846557d315c2fc91f"
+        },
+        "deleted": false,
+        "createdAt": {
+            "$date": "2023-08-04T08:30:27.192Z"
+        },
+        "updatedAt": {
+            "$date": "2024-03-05T02:15:39.672Z"
+        },
+        "slug": "ha-phung-thai",
+        "__v": 0
+    }
+]

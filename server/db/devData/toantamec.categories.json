@@ -1,0 +1,128 @@
+[
+    {
+        "_id": {
+            "$oid": "6613f71375d9603a8ea196c5"
+        },
+        "name": "Trụ",
+        "createdAt": {
+            "$date": "2024-04-08T13:54:27.581Z"
+        },
+        "updatedAt": {
+            "$date": "2024-04-08T13:54:27.581Z"
+        },
+        "slug": "tru",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "6613f72b75d9603a8ea196c9"
+        },
+        "name": "Bộ Chằng",
+        "createdAt": {
+            "$date": "2024-04-08T13:54:51.714Z"
+        },
+        "updatedAt": {
+            "$date": "2024-04-08T13:54:51.714Z"
+        },
+        "slug": "bochang",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "6613f73075d9603a8ea196cd"
+        },
+        "name": "Móng",
+        "createdAt": {
+            "$date": "2024-04-08T13:54:56.514Z"
+        },
+        "updatedAt": {
+            "$date": "2024-04-08T13:54:56.514Z"
+        },
+        "slug": "mong",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "6613f73475d9603a8ea196d1"
+        },
+        "name": "Dây Dẫn",
+        "createdAt": {
+            "$date": "2024-04-08T13:55:00.943Z"
+        },
+        "updatedAt": {
+            "$date": "2024-04-08T13:55:00.943Z"
+        },
+        "slug": "daydan",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "6613f73a75d9603a8ea196d5"
+        },
+        "name": "Xà Sứ",
+        "createdAt": {
+            "$date": "2024-04-08T13:55:06.259Z"
+        },
+        "updatedAt": {
+            "$date": "2024-04-08T13:55:06.259Z"
+        },
+        "slug": "xasu",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "6613f73e75d9603a8ea196d9"
+        },
+        "name": "Tiếp Địa",
+        "createdAt": {
+            "$date": "2024-04-08T13:55:10.425Z"
+        },
+        "updatedAt": {
+            "$date": "2024-04-08T13:55:10.425Z"
+        },
+        "slug": "tiepdia",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "6613f74075d9603a8ea196dd"
+        },
+        "name": "Đà",
+        "createdAt": {
+            "$date": "2024-04-08T13:55:12.010Z"
+        },
+        "updatedAt": {
+            "$date": "2024-04-08T13:55:12.010Z"
+        },
+        "slug": "da",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "6613f74475d9603a8ea196e1"
+        },
+        "name": "Phụ Kiện",
+        "createdAt": {
+            "$date": "2024-04-08T13:55:16.723Z"
+        },
+        "updatedAt": {
+            "$date": "2024-04-08T13:55:16.723Z"
+        },
+        "slug": "phukien",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "6613f74975d9603a8ea196e5"
+        },
+        "name": "Thiết Bị",
+        "createdAt": {
+            "$date": "2024-04-08T13:55:21.026Z"
+        },
+        "updatedAt": {
+            "$date": "2024-04-08T13:55:21.026Z"
+        },
+        "slug": "thietbi",
+        "__v": 0
+    }
+]

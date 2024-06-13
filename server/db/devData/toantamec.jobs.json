@@ -1,0 +1,394 @@
+[
+    {
+        "_id": {
+            "$oid": "641d574846557d315c2fc911"
+        },
+        "name": "Giám đốc",
+        "slug": "giam-doc",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:16.095Z"
+        },
+        "updatedAt": {
+            "$date": "2023-06-19T13:25:16.095Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d574846557d315c2fc912"
+        },
+        "name": "Kế toán trưởng",
+        "slug": "ke-toan-truong",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:16.095Z"
+        },
+        "updatedAt": {
+            "$date": "2023-06-19T13:25:16.095Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d574846557d315c2fc913"
+        },
+        "name": "Trưởng phòng Hành chính",
+        "slug": "truong-phong-hanh-chinh",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:16.095Z"
+        },
+        "updatedAt": {
+            "$date": "2023-06-19T13:25:16.095Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d574846557d315c2fc914"
+        },
+        "name": "Phó phòng Hành chính",
+        "slug": "pho-phong-hanh-chinh",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:16.095Z"
+        },
+        "updatedAt": {
+            "$date": "2023-06-19T13:25:16.095Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d574846557d315c2fc915"
+        },
+        "name": "TCLĐTL",
+        "slug": "tcldtl",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:16.095Z"
+        },
+        "updatedAt": {
+            "$date": "2023-06-19T13:25:16.095Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d574846557d315c2fc916"
+        },
+        "name": "Trường phòng Vật tư",
+        "slug": "truong-phong-vat-tu",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:16.095Z"
+        },
+        "updatedAt": {
+            "$date": "2023-06-19T13:25:16.095Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d574846557d315c2fc917"
+        },
+        "name": "TKVT",
+        "slug": "tkvt",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:16.095Z"
+        },
+        "updatedAt": {
+            "$date": "2023-06-19T13:25:16.095Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d574846557d315c2fc918"
+        },
+        "name": "Thủ kho",
+        "slug": "thu-kho",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:16.095Z"
+        },
+        "updatedAt": {
+            "$date": "2023-06-19T13:25:16.095Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d574846557d315c2fc919"
+        },
+        "name": "TT tổ xe",
+        "slug": "tt-to-xe",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:16.095Z"
+        },
+        "updatedAt": {
+            "$date": "2023-06-19T13:25:16.095Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d574846557d315c2fc91a"
+        },
+        "name": "Tài xế",
+        "slug": "tai-xe",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:16.095Z"
+        },
+        "updatedAt": {
+            "$date": "2023-06-19T13:25:16.095Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d574846557d315c2fc91b"
+        },
+        "name": "TT Cơ điện",
+        "slug": "tt-co-dien",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:16.096Z"
+        },
+        "updatedAt": {
+            "$date": "2023-06-19T13:25:16.096Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d574846557d315c2fc91c"
+        },
+        "name": "NV Cơ điện",
+        "slug": "nv-co-dien",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:16.096Z"
+        },
+        "updatedAt": {
+            "$date": "2023-06-19T13:25:16.096Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d574846557d315c2fc91d"
+        },
+        "name": "Trưởng phòng Kỹ thuật",
+        "slug": "truong-phong-ky-thuat",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:16.096Z"
+        },
+        "updatedAt": {
+            "$date": "2023-06-19T13:25:16.096Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d574846557d315c2fc91e"
+        },
+        "name": "Phó phòng Kỹ thuật",
+        "slug": "pho-phong-ky-thuat",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:16.096Z"
+        },
+        "updatedAt": {
+            "$date": "2023-06-19T13:25:16.096Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d574846557d315c2fc91f"
+        },
+        "name": "Kỹ thuật viên",
+        "slug": "ky-thuat-vien",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:16.096Z"
+        },
+        "updatedAt": {
+            "$date": "2023-06-19T13:25:16.096Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d574846557d315c2fc920"
+        },
+        "name": "T.VPĐD",
+        "slug": "t.vpdd",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:16.096Z"
+        },
+        "updatedAt": {
+            "$date": "2023-06-19T13:25:16.096Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d574846557d315c2fc921"
+        },
+        "name": "KTV - TK",
+        "slug": "ktv-tk",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:16.096Z"
+        },
+        "updatedAt": {
+            "$date": "2023-06-19T13:25:16.096Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d574846557d315c2fc922"
+        },
+        "name": "CNKT - Phụ kho",
+        "slug": "cnkt-phu-kho",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:16.096Z"
+        },
+        "updatedAt": {
+            "$date": "2023-06-19T13:25:16.096Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d574846557d315c2fc923"
+        },
+        "name": "CVĐT",
+        "slug": "cvdt",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:16.096Z"
+        },
+        "updatedAt": {
+            "$date": "2023-06-19T13:25:16.096Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d574846557d315c2fc924"
+        },
+        "name": "PP.TCKT",
+        "slug": "pp.tckt",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:16.096Z"
+        },
+        "updatedAt": {
+            "$date": "2023-06-19T13:25:16.096Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d574846557d315c2fc925"
+        },
+        "name": "KTTSCĐ - TQ",
+        "slug": "kttscd-tq",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:16.096Z"
+        },
+        "updatedAt": {
+            "$date": "2023-06-19T13:25:16.096Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d574846557d315c2fc926"
+        },
+        "name": "Trưởng phòng Tư vấn",
+        "slug": "truong-phong-tu-van",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:16.096Z"
+        },
+        "updatedAt": {
+            "$date": "2023-06-19T13:25:16.096Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d574846557d315c2fc927"
+        },
+        "name": "TPKH",
+        "slug": "tpkh",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:16.096Z"
+        },
+        "updatedAt": {
+            "$date": "2023-06-19T13:25:16.096Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "641d66e11fe7091301fa8191"
+        },
+        "name": "NVTL",
+        "slug": "nvtl",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-06-19T13:25:16.096Z"
+        },
+        "updatedAt": {
+            "$date": "2023-06-19T13:25:16.096Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "64b3ee214c293ace85c52064"
+        },
+        "name": "P. KH",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-07-16T13:18:25.847Z"
+        },
+        "slug": "p-kh",
+        "updatedAt": {
+            "$date": "2023-07-16T13:18:25.847Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "64b3ee644c293ace85c52089"
+        },
+        "name": "Văn Phòng",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-07-16T13:19:32.499Z"
+        },
+        "slug": "van-phong",
+        "updatedAt": {
+            "$date": "2023-07-16T13:19:32.499Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "64b3efa34c293ace85c521b8"
+        },
+        "name": "Kế Toán",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2023-07-16T13:24:51.296Z"
+        },
+        "slug": "ke-toan",
+        "updatedAt": {
+            "$date": "2023-07-16T13:24:51.296Z"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "65e521b9a244e63a220c6f1b"
+        },
+        "name": "Công trình: Nâng cấp, cải tạo và phát triển lưới điện khu vực thị xã Vĩnh Châu năm 2024",
+        "__v": 0,
+        "createdAt": {
+            "$date": "2024-03-04T01:19:53.606Z"
+        },
+        "slug": "cong-trinh-nang-cap-cai-tao-va-phat-trien-luoi-dien-khu-vuc-thi-xa-vinh-chau-nam-2024",
+        "updatedAt": {
+            "$date": "2024-03-04T01:19:53.606Z"
+        }
+    }
+]

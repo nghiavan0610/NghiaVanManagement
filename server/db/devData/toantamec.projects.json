@@ -1,0 +1,253 @@
+[
+    {
+        "_id": {
+            "$oid": "65fd988dd31e11fa818a1764"
+        },
+        "name": "test",
+        "code": "test",
+        "location": "USA",
+        "description": "test",
+        "startedAt": {
+            "$date": "2024-03-19T00:00:00.000Z"
+        },
+        "isDone": false,
+        "members": [
+            {
+                "$oid": "6624e58b2aa04d92cb46cb53"
+            },
+            {
+                "$oid": "6624e58b2aa04d92cb46cb63"
+            }
+        ],
+        "createdAt": {
+            "$date": "2024-03-22T14:41:17.907Z"
+        },
+        "updatedAt": {
+            "$date": "2024-03-22T15:23:11.430Z"
+        },
+        "slug": "test",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "64b60e5cbb55d2fe4564af5e"
+        },
+        "name": "Lô 1: Công trình: Nâng cấp, cải tạo và phát triển lưới điện khu vực các xã Tham Đôn, Thạnh Phú, Hòa Tú 1, huyện Mỹ Xuyên năm 2023",
+        "code": "MSCT23062001-1",
+        "location": "huyện Mỹ Xuyên, tỉnh Sóc Trăng",
+        "description": "Hợp đồng số: 198/2023/ST2723198, ngày 20/06/2023",
+        "startedAt": {
+            "$date": "2023-06-29T17:00:00.000Z"
+        },
+        "isDone": false,
+        "members": [
+            {
+                "$oid": "6624e58b2aa04d92cb46cb54"
+            },
+            {
+                "$oid": "6624e58b2aa04d92cb46cb6c"
+            },
+            {
+                "$oid": "6624e58b2aa04d92cb46cb70"
+            }
+        ],
+        "deleted": false,
+        "createdAt": {
+            "$date": "2023-07-18T04:00:28.663Z"
+        },
+        "updatedAt": {
+            "$date": "2023-08-01T11:29:02.059Z"
+        },
+        "slug": "lo-1-cong-trinh-nang-cap-cai-tao-va-phat-trien-luoi-dien-khu-vuc-cac-xa-tham-don-thanh-phu-hoa-tu-1-huyen-my-xuyen-nam",
+        "__v": 6
+    },
+    {
+        "_id": {
+            "$oid": "64cb7664eacebcf39927311d"
+        },
+        "name": "Lô 2: Công trình: Nâng cấp, cải tạo và phát triển lưới điện khu vực các xã Hòa Tú 2, thị trấn Mỹ Xuyên, huyện Mỹ Xuyên năm 2023.",
+        "code": "MSCT23062001-2",
+        "location": "huyện Mỹ Xuyên, tỉnh Sóc Trăng",
+        "description": "HĐ số 198/2023/ST2723198, ngày 20/06/2023",
+        "startedAt": {
+            "$date": "2023-06-29T17:00:00.000Z"
+        },
+        "isDone": false,
+        "members": [
+            {
+                "$oid": "6624e58b2aa04d92cb46cb55"
+            },
+            {
+                "$oid": "6624e58b2aa04d92cb46cb73"
+            },
+            {
+                "$oid": "6624e58b2aa04d92cb46cb77"
+            }
+        ],
+        "deleted": false,
+        "createdAt": {
+            "$date": "2023-08-03T09:41:56.668Z"
+        },
+        "updatedAt": {
+            "$date": "2023-08-04T09:03:38.510Z"
+        },
+        "slug": "lo-2-cong-trinh-nang-cap-cai-tao-va-phat-trien-luoi-dien-khu-vuc-cac-xa-hoa-tu-2-thi-tran-my-xuyen-huyen-my-xuyen-nam",
+        "__v": 3
+    },
+    {
+        "_id": {
+            "$oid": "65dfe5ef241ef2a5f3bc3467"
+        },
+        "name": "Lô 2 công trình: Nâng cấp, cải tạo và phát triển lưới điện khu vực huyện Châu Thành năm 2024",
+        "code": "365/2023/ST2723365",
+        "location": "huyện Châu Thành tỉnh Sóc Trăng",
+        "description": null,
+        "startedAt": {
+            "$date": "2024-01-24T17:00:00.000Z"
+        },
+        "isDone": false,
+        "members": [
+            {
+                "$oid": "6624e58b2aa04d92cb46cb54"
+            },
+            {
+                "$oid": "6624e58b2aa04d92cb46cb66"
+            },
+            {
+                "$oid": "6624e58b2aa04d92cb46cb65"
+            },
+            {
+                "$oid": "6624e58b2aa04d92cb46cb67"
+            }
+        ],
+        "deleted": false,
+        "createdAt": {
+            "$date": "2024-02-29T02:03:27.907Z"
+        },
+        "updatedAt": {
+            "$date": "2024-03-01T11:49:32.163Z"
+        },
+        "slug": "lo-2-cong-trinh-nang-cap-cai-tao-va-phat-trien-luoi-dien-khu-vuc-huyen-chau-thanh-nam-2024",
+        "__v": 4
+    },
+    {
+        "_id": {
+            "$oid": "65e34bb1241ef2a5f3bfe63f"
+        },
+        "name": "Nâng cấp, cải tạo và phát triển lưới điện khu vực thị xã Vĩnh Châu năm 2024",
+        "code": "23122601",
+        "location": "Khu vực thị xã Vĩnh Châu, tỉnh Sóc Trăng",
+        "description": "số 359/2023/ST2623359 ngày 26/12/2023",
+        "startedAt": {
+            "$date": "2024-01-07T17:00:00.000Z"
+        },
+        "isDone": false,
+        "members": [
+            {
+                "$oid": "6624e58b2aa04d92cb46cb57"
+            }
+        ],
+        "deleted": false,
+        "createdAt": {
+            "$date": "2024-03-02T15:54:25.540Z"
+        },
+        "updatedAt": {
+            "$date": "2024-03-03T15:41:19.279Z"
+        },
+        "slug": "nang-cap-cai-tao-va-phat-trien-luoi-dien-khu-vuc-thi-xa-vinh-chau-nam-2024",
+        "__v": 3
+    },
+    {
+        "_id": {
+            "$oid": "65e49d1e241ef2a5f3c002c0"
+        },
+        "name": "Lô 1 công trình: Nâng cấp, cải tạo và phát triển lưới điện khu vực thành phố Sóc Trăng năm 2024",
+        "code": " 365/2023/ST2723365_01",
+        "location": "TP. Sóc Trăng, T. Sóc Trăng",
+        "description": null,
+        "startedAt": {
+            "$date": "2024-01-16T17:00:00.000Z"
+        },
+        "isDone": false,
+        "members": [
+            {
+                "$oid": "6624e58b2aa04d92cb46cb58"
+            }
+        ],
+        "deleted": false,
+        "createdAt": {
+            "$date": "2024-03-03T15:54:06.447Z"
+        },
+        "updatedAt": {
+            "$date": "2024-03-03T16:13:02.027Z"
+        },
+        "slug": "lo-1-cong-trinh-nang-cap-cai-tao-va-phat-trien-luoi-dien-khu-vuc-thanh-pho-soc-trang-nam-2024",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "65e52129241ef2a5f3c006d2"
+        },
+        "name": "Công trình: Nâng cấp, cải tạo và phát triển lưới điện khu vực thị xã Vĩnh Châu năm 2024",
+        "code": "MSCT 23122601",
+        "location": "Thị xã Vĩnh Châu",
+        "description": "ĐTXD 2024",
+        "startedAt": {
+            "$date": "2024-01-14T17:00:00.000Z"
+        },
+        "isDone": true,
+        "members": [
+            {
+                "$oid": "6624e58b2aa04d92cb46cb59"
+            },
+            {
+                "$oid": "6624e58b2aa04d92cb46cb6b"
+            },
+            {
+                "$oid": "6624e58b2aa04d92cb46cb6c"
+            }
+        ],
+        "deleted": false,
+        "createdAt": {
+            "$date": "2024-03-04T01:17:29.941Z"
+        },
+        "updatedAt": {
+            "$date": "2024-03-11T00:35:03.545Z"
+        },
+        "slug": "cong-trinh-nang-cap-cai-tao-va-phat-trien-luoi-dien-khu-vuc-thi-xa-vinh-chau-nam-2024",
+        "__v": 6
+    },
+    {
+        "_id": {
+            "$oid": "65e5dec3241ef2a5f3c00e9c"
+        },
+        "name": "Lô 3 công trình: Nâng cấp, cải tạo và phát triển lưới điện khu vực huyện Mỹ Xuyên năm 2024",
+        "code": "365/2023/ST2723365-L3",
+        "location": "Huyện Mỹ Xuyên",
+        "description": null,
+        "startedAt": {
+            "$date": "2024-01-16T17:00:00.000Z"
+        },
+        "isDone": false,
+        "members": [
+            {
+                "$oid": "6624e58b2aa04d92cb46cb5a"
+            },
+            {
+                "$oid": "6624e58b2aa04d92cb46cb77"
+            },
+            {
+                "$oid": "6624e58b2aa04d92cb46cb78"
+            }
+        ],
+        "deleted": false,
+        "createdAt": {
+            "$date": "2024-03-04T14:46:27.674Z"
+        },
+        "updatedAt": {
+            "$date": "2024-03-04T15:10:04.578Z"
+        },
+        "slug": "lo-3-cong-trinh-nang-cap-cai-tao-va-phat-trien-luoi-dien-khu-vuc-huyen-my-xuyen-nam-2024",
+        "__v": 3
+    }
+]
